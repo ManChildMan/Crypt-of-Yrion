@@ -3,7 +3,7 @@
 // This script will be responsible for managing user input.
 public class UserInterface : MonoBehaviour
 {
-    public MapSquare SelectedGridSquare
+    public GridSquare SelectedGridSquare
     {
         get
         {
@@ -15,7 +15,7 @@ public class UserInterface : MonoBehaviour
         }
     }
     
-    private MapSquare m_selectedTile;
+    private GridSquare m_selectedTile;
 
     void Start()
     {
@@ -23,23 +23,23 @@ public class UserInterface : MonoBehaviour
     }
     public void RegisterForMapEvents()
     {
-        MapSquare[] squares = FindObjectsOfType<MapSquare>();
-        foreach (MapSquare square in squares)
+        GridSquare[] squares = FindObjectsOfType<GridSquare>();
+        foreach (GridSquare square in squares)
         {
-            square.OnMapSquareSelected += MapSquareSelectedHandler;
+            square.OnGridSquareSelected += MapSquareSelectedHandler;
         }
     }
 
     public void OnDisable()
     {
-        MapSquare[] squares = FindObjectsOfType<MapSquare>();
-        foreach (MapSquare square in squares)
+        GridSquare[] squares = FindObjectsOfType<GridSquare>();
+        foreach (GridSquare square in squares)
         {
-            square.OnMapSquareSelected -= MapSquareSelectedHandler;
+            square.OnGridSquareSelected -= MapSquareSelectedHandler;
         }
     }
 
-    void MapSquareSelectedHandler(MapSquare square)
+    void MapSquareSelectedHandler(GridSquare square)
     {        
         if (SelectedGridSquare != null)
         {

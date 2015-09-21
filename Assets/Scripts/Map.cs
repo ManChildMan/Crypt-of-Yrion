@@ -1,9 +1,13 @@
 ﻿using Pathfinding;
 using UnityEngine;
 
-// This script creates a grid of GridSquare game objects to show the locations
-// of the maps grid squares and enable grid square selection via the mouse. If 
-// GenerateMap is true a random map is generated.
+// TO DO:
+//   * Scale texture coordinates so texture is not distorted at different map sizes.
+//   * Optimize by not creating grid square objects in terrain grid squares.
+
+/// <summary>
+/// 
+/// </summary>
 public class Map : MonoBehaviour 
 {
     public int Width = 50;
@@ -32,8 +36,8 @@ public class Map : MonoBehaviour
     public float WeightedGraphEdgeRadius = 50f;
 
 
-    private UnityEngine.Object m_mapSquare;
-    private Transform[,] m_map;
+    private UnityEngine.Object m_gridSquare;
+    private Transform[,] m_gridSquares;
     private AstarData m_astarData;
     private UnityEngine.Object m_rubble;
     private UnityEngine.Object m_stoneBlock;
@@ -43,44 +47,38 @@ public class Map : MonoBehaviour
     
 	void Start ()
     {
-        m_map = new Transform[Width, Depth];
-        m_mapSquare = Resources.Load("MapSquare");
-
         // Calculate the center of the first map element in world coordinates.
         m_minX = OriginX - ((Width * NodeSize) / 2) + (NodeSize / 2);
         m_minZ = OriginZ - ((Depth * NodeSize) / 2) + (NodeSize / 2);
 
-        // Scale and position the ground plane according to map width, map
-        // depth and origin.
-        // To do: Scale texture coordinates so texture is not distorted at
-        // different map sizes.
-        Ground.localScale = new Vector3(
-            ((float)Width * NodeSize) / 10, 1, ((float)Depth * NodeSize) / 10);
+        // Scale and position the ground plane according to map width, depth 
+        // and origin.
+        Ground.localScale = new Vector3(((float)Width * NodeSize) / 10, 1, 
+            ((float)Depth * NodeSize) / 10);
         Ground.transform.position = new Vector3(OriginX, 0, OriginZ);
-
-        m_rubble = Resources.Load("Rubble");
-        m_stoneBlock = Resources.Load("StoneBlock");
 
         if (GenerateMap)
         {
-            MapGenerator gen = new MapGenerator(Width, Depth, RandomSeed);
-            gen.RoomCount = RoomCount;
-            gen.SpawnDistance = SpawnDistance;
-            gen.MinRoomSideRatio = MinRoomSideRatio;
-            gen.SeparationStrength = SeparationStrength;
-            gen.MinRoomWidth = MinRoomWidth;
-            gen.MaxRoomWidth = MaxRoomWidth;
-            gen.MinRoomHeight = MinRoomHeight;
-            gen.MaxRoomHeight = MaxRoomHeight;
-            gen.UseSmoothing = UseSmoothing;
-            gen.SmoothingThreshold = SmoothingThreshold;
-            gen.SmoothingIterations = SmoothingIterations;
-            gen.WeightedGraphEdgeRadius = WeightedGraphEdgeRadius;
-            gen.Generate();
-            InstantiateMap(gen.Data);
+            MapGenerator generator = new MapGenerator(Width, Depth, RandomSeed);
+            generator.RoomCount = RoomCount;
+            generator.SpawnDistance = SpawnDistance;
+            generator.MinRoomSideRatio = MinRoomSideRatio;
+            generator.SeparationStrength = SeparationStrength;
+            generator.MinRoomWidth = MinRoomWidth;
+            generator.MaxRoomWidth = MaxRoomWidth;
+            generator.MinRoomHeight = MinRoomHeight;
+            generator.MaxRoomHeight = MaxRoomHeight;
+            generator.UseSmoothing = UseSmoothing;
+            generator.SmoothingThreshold = SmoothingThreshold;
+            generator.SmoothingIterations = SmoothingIterations;
+            generator.WeightedGraphEdgeRadius = WeightedGraphEdgeRadius;
+            generator.Generate();
+            // The map generator works with an array of integers. The following
+            // function converts this array to game objects in the scene.
+            InstantiateMap(generator.Data);
         }
 
-        // Initialise A* pathfinding graph.
+        // Initialize our A* pathfinding graph.
         m_astarData = AstarPath.active.astarData;
         GridGraph graph = (GridGraph)m_astarData.AddGraph(typeof(GridGraph));
         graph.width = Width;
@@ -97,20 +95,20 @@ public class Map : MonoBehaviour
 
         // Overlay a grid of game objects to allow granular selection of 
         // the maps grid squares.
-        // To do: Optimize by not creating grid square game objects in terrain
-        // squares.
+        m_gridSquare = Resources.Load("GridSquare");
+        m_gridSquares = new Transform[Width, Depth];
         float xPos = m_minX;
         float zPos = m_minZ;
         for (int x = 0; x < Width; x++)
         {
             for (int z = 0; z < Depth; z++)
             {
-                GameObject gridSquare = (GameObject)Instantiate(m_mapSquare);
+                GameObject gridSquare = (GameObject)Instantiate(m_gridSquare);
                 gridSquare.transform.parent = Grid;
                 gridSquare.transform.position = new Vector3(xPos, 0, zPos);
                 gridSquare.transform.localScale = 
                     new Vector3(NodeSize, 0.02f, NodeSize);
-                m_map[x, z] = gridSquare.transform;
+                m_gridSquares[x, z] = gridSquare.transform;
                 zPos += NodeSize;
             }
             zPos = m_minZ;
@@ -123,9 +121,11 @@ public class Map : MonoBehaviour
         UserInterface.RegisterForMapEvents();
 	}
 
-    // Instantiates the appropriate prefab at each map location. 
+    // Instantiates the appropriate prefab at each world space map location. 
     void InstantiateMap(int[,] data)
-    {    
+    {
+        m_rubble = Resources.Load("Rubble");
+        m_stoneBlock = Resources.Load("StoneBlock");
         for (int x = 0; x < Width; x++)
         {
             for (int z = 0; z < Depth; z++)

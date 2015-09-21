@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 
-// This script is a basic isometric camera. Changing the camera from 
-// orthographic to perspective mode changes the feel dramatically.
+/// <summary>
+/// This script implements a basic isometric camera. Changing the camera from 
+/// orthographic to perspective mode changes the look and feel dramatically.
+/// </summary>
 public class IsometricCameraController : MonoBehaviour
 {
     public Transform Target;

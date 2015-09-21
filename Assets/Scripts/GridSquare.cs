@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 
-public delegate void MapSquareSelected(MapSquare square);
+public delegate void GridSquareSelected(GridSquare square);
 
 // This script is attached to the GridSquare prefab which is responsible for
 // displaying grid squares and intercepting mouse clicks.
-public class MapSquare : MonoBehaviour
+public class GridSquare : MonoBehaviour
 {
 
-    public event MapSquareSelected OnMapSquareSelected;
+    public event GridSquareSelected OnGridSquareSelected;
     public bool IsSelected = false;
     public Material UnselectedMaterial;
     public Material SelectedMaterial;
@@ -25,16 +25,15 @@ public class MapSquare : MonoBehaviour
 
     void OnMouseUp()
     {
-        // Return if this is selected grid square.
         if (IsSelected)
             return;
 
         m_renderer.material = SelectedMaterial;
         IsSelected = true;
 
-        if (OnMapSquareSelected != null)
+        if (OnGridSquareSelected != null)
         {
-            OnMapSquareSelected(this);
+            OnGridSquareSelected(this);
         }
     }
 
