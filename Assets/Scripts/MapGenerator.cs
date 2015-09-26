@@ -17,10 +17,14 @@ public class MapGenerator
     public int SmoothingIterations = 2;
     public float WeightedGraphEdgeRadius = 50f;
 
+    public int[,] MapData { get { return m_mapData; } }
+    public int[,] ObjectData { get { return m_objectData; } }
+    public int[,] ItemData { get { return m_itemData; } }
+
     private int m_seed = 0;
+
     private int m_width = 0;
     private int m_depth = 0;
-
     private int m_middleX = 0;
     private int m_middleY = 0;
 
@@ -30,9 +34,12 @@ public class MapGenerator
     private int m_spawnMaxY;
 
     private List<Room> m_rooms;
-    private int[,] m_data;
 
-    public int[,] Data { get { return m_data; } }
+    private int[,] m_mapData;
+    private int[,] m_objectData;
+    private int[,] m_itemData;
+    
+
 
     public MapGenerator(int width, int depth, int seed)
     {
@@ -48,27 +55,360 @@ public class MapGenerator
         m_middleX = m_width / 2;
         m_middleY = m_depth / 2;
         m_rooms = new List<Room>();
-        m_data = GetEmptyMap(m_width, m_depth);
+        m_mapData = MapHelpers.EmptyMap(m_width, m_depth, -1);
+        m_objectData = MapHelpers.EmptyMap(m_width, m_depth, -1);
     }
-
 
 
     public void Generate()
     {
-        SpawnRooms();
+        int[,] data = null;
+        GenerateChasmsAndLakes(ref data);
+        int[,] mapData = MapHelpers.EmptyMap(m_width, m_depth,
+            TerrainKey.Impassable_Rubble_01);
+        for (int x = 0; x < m_width; x++)
+        {
+            for (int z = 0; z < m_depth; z++)
+            {
+                if (data[x, z] == 1)
+                {
+                    mapData[x, z] = TerrainKey.Chasm;
+                }
+                if (data[x, z] == 2)
+                {
+                    mapData[x, z] = TerrainKey.Water_Shallow;
+                }
+            }
+        }
+        GenerateRooms();
         SeparateRooms();
-        DrawRooms();
+        WriteRooms(ref mapData);
+        FindMinSpanTree();
+        GenerateCorridors(ref mapData);
+        MapHelpers.Smooth(ref data, SmoothingThreshold, SmoothingIterations);
 
-        FindMST();
-        DrawCorridors();
 
-        if (UseSmoothing)
-            Smooth(ref m_data, SmoothingThreshold, SmoothingIterations);
 
-        DrawWalls(ref m_data);
+        GenerateWalls(ref mapData);
+        //GenerateStairwells(ref mapData);
+        m_mapData = mapData;
+
+        m_objectData = MapHelpers.EmptyMap(m_width, m_depth, -1);
+        GenerateTorches(ref m_objectData);
+        GenerateChests(ref m_objectData);
     }
 
-    void DrawCorridors()
+
+    private void GenerateChasmsAndLakes(ref int[,] data)
+    {
+        CellularAutomaton automaton = new CellularAutomaton(96, 96);
+        automaton.MakeAlive(0.55f);
+        automaton.Iterate(6, 4, 10);
+        data = automaton.Data; 
+        MapHelpers.Smooth(ref data, 4, 3);
+        for (int i = 0; i <= 2; i++)
+        {
+            Point point = new Point(
+                UnityEngine.Random.Range(0, m_width - 1),
+                UnityEngine.Random.Range(0, m_depth - 1));
+            int sample = data[point.X, point.Y];
+            if (sample == TerrainKey.Generator_Default)
+            {
+                MapHelpers.FloodFill(ref data, point, 
+                    TerrainKey.Generator_Default, 
+                    TerrainKey.Generator_Secondary);  
+            }
+        }
+    }
+
+
+ 
+
+    Point SpawnUpStairwell(ref int[,] data)
+    {
+        for (int x = 0; x < m_width; x++)
+        {
+            for (int z = 0; z < m_depth; z++)
+            {
+                if (m_mapData[x, z] == TerrainKey.Wall_Stone_01)
+                {
+                    bool isHorizontalSection = false;
+                    bool isVerticalSection = false;
+                    if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 1, x + 1, z, z), TerrainKey.Wall_Stone_01))
+                    {
+                        isHorizontalSection = true;
+                    }
+                    if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x, x, z - 1, z + 1),
+                        TerrainKey.Wall_Stone_01))
+                    {
+                        isVerticalSection = true;
+                    }
+                    if (isHorizontalSection && isVerticalSection)
+                        continue;
+                    float stairChance = 0.035f;
+                    if (isHorizontalSection)
+                    {
+                        if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 1, x + 1, z + 1, z + 3),
+                            TerrainKey.Impassable_Rubble_01))
+                        {
+                            if (Random.value < stairChance)
+                            {
+                                data[x, z] = TerrainKey.Stairs_UpNorth;
+                                return new Point(x, z);
+                            }
+                        }
+                        else if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 1, x + 1, z - 1, z - 3),
+                            TerrainKey.Impassable_Rubble_01))
+                        {
+                            if (Random.value < stairChance)
+                            {
+                                data[x, z] = TerrainKey.Stairs_UpSouth;
+                                return new Point(x, z);
+                            }
+                        }
+                    }
+                    if (isVerticalSection)
+                    {
+                        if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x + 1, x + 3, z - 1, z + 1),
+                            TerrainKey.Impassable_Rubble_01))
+                        {
+                            if (Random.value < stairChance)
+                            {
+                                data[x, z] = TerrainKey.Stairs_UpEast;
+                                return new Point(x, z);
+                            }
+                        }
+                        else if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 3, x - 1, z - 1, z + 1),
+                            TerrainKey.Impassable_Rubble_01))
+                        {
+                            if (Random.value < stairChance)
+                            {
+                                data[x, z] = TerrainKey.Stairs_UpWest;
+                                return new Point(x, z);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return new Point(-1, -1);
+    }
+
+    Point SpawnDownStairwell(ref int[,] data, Point firstPos)
+    {
+        for (int x = 0; x < m_width; x++)
+        {
+            for (int z = 0; z < m_depth; z++)
+            {
+                if (m_mapData[x, z] == TerrainKey.Wall_Stone_01)
+                {
+                    bool isHorizontalSection = false;
+                    bool isVerticalSection = false;
+                    if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 1, x + 1, z, z),
+                        TerrainKey.Wall_Stone_01))
+                    {
+                        isHorizontalSection = true;
+                    }
+                    if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x, x, z - 1, z + 1),
+                        TerrainKey.Wall_Stone_01))
+                    {
+                        isVerticalSection = true;
+                    }
+                    if (isHorizontalSection && isVerticalSection)
+                        continue;
+                    float stairChance = 0.15f;
+                    if (isHorizontalSection)
+                    {
+                        if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 1, x + 1, z + 1, z + 3),
+                            TerrainKey.Impassable_Rubble_01))
+                        {
+                            if (Random.value < stairChance && Vector2.Distance(new Vector2(x,z), new Vector2(firstPos.X, firstPos.Y)) > 45)
+                            {
+                                data[x, z] = TerrainKey.Stairs_UpNorth;
+                                return new Point(x, z);
+                            }
+                        }
+                        else if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 1, x + 1, z - 1, z - 3),
+                            TerrainKey.Impassable_Rubble_01))
+                        {
+                            if (Random.value < stairChance && Vector2.Distance(new Vector2(x, z), new Vector2(firstPos.X, firstPos.Y)) > 45)
+                            {
+                                data[x, z] = TerrainKey.Stairs_UpSouth;
+                                return new Point(x, z);
+                            }
+                        }
+                    }
+                    if (isVerticalSection)
+                    {
+                        if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x + 1, x + 3, z - 1, z + 1),
+                            TerrainKey.Impassable_Rubble_01))
+                        {
+                            if (Random.value < stairChance && Vector2.Distance(new Vector2(x, z), new Vector2(firstPos.X, firstPos.Y)) > 45)
+                            {
+                                data[x, z] = TerrainKey.Stairs_UpEast;
+                                return new Point(x, z);
+                            }
+                        }
+                        else if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 3, x - 1, z - 1, z + 1),
+                            TerrainKey.Impassable_Rubble_01))
+                        {
+                            if (Random.value < stairChance && Vector2.Distance(new Vector2(x, z), new Vector2(firstPos.X, firstPos.Y)) > 45)
+                            {
+                                data[x, z] = TerrainKey.Stairs_UpWest;
+                                return new Point(x, z);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return new Point(-1, -1);
+    }
+
+    void GenerateStairwells(ref int[,] data)
+    {
+        Point point = new Point(-1, -1);
+        while (point.X < 0 || point.Y < 0)
+        {
+            point = SpawnUpStairwell(ref data);
+        }
+        Point point2 = new Point(-1, -1);
+        while (point2.X < 0 || point2.Y < 0)
+        {
+            point2 = SpawnDownStairwell(ref data, point);
+        }
+    }
+
+    void GenerateChests(ref int[,] data)
+    {
+        for (int x = 0; x < m_width; x++)
+        {
+            for (int z = 0; z < m_depth; z++)
+            {
+                if (m_mapData[x, z] == (int)TerrainKey.Wall_Stone_01)
+                {
+                    int neighbours = MapHelpers.CountNeighborsOfType(
+                        ref m_mapData, x, z, TerrainKey.Floor_01);
+                    if (neighbours == 3)
+                    {
+                        float chestChance = 0.035f;
+                        if (Random.value < chestChance)
+                        {
+                            // Scan region to the north.
+                            if (z + 3 < m_depth && x - 1 > 0 && x + 1 < m_width)
+                            {
+                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 1, x + 1, z + 1, z + 3),
+                                    TerrainKey.Floor_01))
+                                {
+                                    data[x, z] = TerrainKey.Item_Chest_North;
+                                    continue;
+                                }
+                            }
+                            // Scan region to the south.
+                            if (z - 3 > 0 && x - 1 > 0 && x + 1 < m_width)
+                            {
+                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 1, x + 1, z - 3, z - 1),
+                                    TerrainKey.Floor_01))
+                                {
+                                    data[x, z] = TerrainKey.Item_Chest_South;
+                                    continue;
+                                }
+                            }
+                            // Scan region to the south
+                            if (x - 3 > 0 && z + 1 < m_width && z - 1 > 0)
+                            {
+                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 3, x - 1, z - 1, z + 1),
+                                    TerrainKey.Floor_01))
+                                {
+                                    data[x, z] = TerrainKey.Item_Chest_East;
+                                    continue;
+                                }
+                            }
+
+                            // Scan region to the south             
+                            if (x + 3 < m_width && z + 1 < m_width && z - 1 > 0)
+                            {
+                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x + 1, x + 3, z - 1, z + 1),
+                                    TerrainKey.Floor_01))
+                                {
+                                    data[x, z] = TerrainKey.Item_Chest_West;
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    void GenerateTorches(ref int[,] data)
+    {
+        for (int x = 0; x < m_width; x++)
+        {
+            for (int z = 0; z < m_depth; z++)
+            {
+                if (m_mapData[x, z] == (int)TerrainKey.Wall_Stone_01)
+                {
+                    int neighbours = MapHelpers.CountNeighborsOfType(
+                        ref m_mapData, x, z, TerrainKey.Floor_01);
+                    if (neighbours == 3)
+                    {
+                        float torchChance = 0.15f;
+                        if (Random.value < torchChance)
+                        {             
+                            // Scan region to the north.
+                            if (z + 3 < m_depth && x - 1 > 0 && x + 1 < m_width)
+                            {
+                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 1, x + 1, z + 1, z + 3),
+                                    TerrainKey.Floor_01))
+                                {
+                                    data[x, z] = TerrainKey.Torch_WallMounted_North;
+                                    continue;
+                                }
+                            }
+                            // Scan region to the south.
+                            if (z - 3 > 0 && x - 1 > 0 && x + 1 < m_width)
+                            {
+                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 1, x + 1, z - 3, z - 1),
+                                    TerrainKey.Floor_01))
+                                {
+                                    data[x, z] = TerrainKey.Torch_WallMounted_South;
+                                    continue;
+                                }
+                            }
+                            // Scan region to the south
+                            if (x - 3 > 0 && z + 1 < m_width && z - 1 > 0)
+                            {
+                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 3, x - 1, z - 1, z + 1),
+                                    TerrainKey.Floor_01))
+                                {
+                                    data[x, z] = TerrainKey.Torch_WallMounted_East;
+                                    continue;
+                                }
+                            }
+                            
+                            // Scan region to the south             
+                            if (x + 3 < m_width && z + 1 < m_width && z - 1 > 0)
+                            {
+                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x + 1, x + 3, z - 1, z + 1),
+                                    TerrainKey.Floor_01))
+                                {
+                                    data[x, z] = TerrainKey.Torch_WallMounted_West;
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+ 
+
+    void GenerateCorridors(ref int[,] data)
     {
         foreach (WeightedEdge edge in m_mst)
         {
@@ -84,24 +424,26 @@ public class MapGenerator
                 position += direction * delta;
                 int ix = (int)Mathf.Round(position.x);
                 int iy = (int)Mathf.Round(position.y);
-                m_data[ix, iy] = 0;
-                m_data[ix, iy + 1] = 0;
-                //m_data[ix - 1, iy] = 0;
-                //m_data[ix - 1, iy + 1] = 0;
+                data[ix, iy] = (int)TerrainKey.Floor_01;
+                data[ix, iy + 1] = (int)TerrainKey.Floor_01;
             }
         }
     }
 
-    void DrawRooms()
+    // 
+    void WriteRooms(ref int[,] data)
     {
         foreach (Room room in m_rooms)
         {
-            FillRectangle(ref m_data, room.Rectangle, 0);
+            MapHelpers.FillRectangle(ref data, room.Rectangle, TerrainKey.Floor_01);
         }
     }
 
+
+
+
     List<WeightedEdge> m_mst;
-    void FindMST()
+    void FindMinSpanTree()
     {
         List<Vector3> points = new List<Vector3>();
         foreach (Room room in m_rooms)
@@ -117,7 +459,7 @@ public class MapGenerator
 
  
 
-    void SpawnRooms()
+    private void GenerateRooms()
     {
         m_spawnMinX = m_middleX - SpawnDistance;
         m_spawnMaxX = m_middleX + SpawnDistance;
@@ -208,7 +550,7 @@ public class MapGenerator
 
    
 
-    private void DrawWalls(ref int[,] data)
+    private void GenerateWalls(ref int[,] data)
     {
         int width = data.GetLength(0);
         int height = data.GetLength(1);
@@ -216,70 +558,64 @@ public class MapGenerator
         {
             for (int z = 0; z < height; z++)
             {
-                if (data[x, z] == -1)
+                if (data[x, z] == (int)TerrainKey.Impassable_Rubble_01)
                 {
                     bool convertToWall = false;
                     if (x != 0)
-                        if (data[x - 1, z] == 0)
+                        if (data[x - 1, z] == (int)TerrainKey.Floor_01)
                             convertToWall = true;
                     if (x != m_width - 1)
-                        if (data[x + 1, z] == 0)
+                        if (data[x + 1, z] == (int)TerrainKey.Floor_01)
                             convertToWall = true;
                     if (z != 0)
-                        if (data[x, z - 1] == 0)
+                        if (data[x, z - 1] == (int)TerrainKey.Floor_01)
                             convertToWall = true;
                     if (z != m_depth - 1)
-                        if (data[x, z + 1] == 0)
+                        if (data[x, z + 1] == (int)TerrainKey.Floor_01)
                             convertToWall = true;
                     if (x != 0 && z != 0)
-                        if (data[x - 1, z - 1] == 0)
+                        if (data[x - 1, z - 1] == (int)TerrainKey.Floor_01)
                             convertToWall = true;
                     if (x != 0 && z != m_depth - 1)
-                        if (data[x - 1, z + 1] == 0)
+                        if (data[x - 1, z + 1] == (int)TerrainKey.Floor_01)
                             convertToWall = true;
                     if (x != m_width - 1 && z != 0)
-                        if (data[x + 1, z - 1] == 0)
+                        if (data[x + 1, z - 1] == (int)TerrainKey.Floor_01)
                             convertToWall = true;
                     if (x != m_width - 1 && z != m_depth - 1)
-                        if (data[x + 1, z + 1] == 0)
+                        if (data[x + 1, z + 1] == (int)TerrainKey.Floor_01)
                             convertToWall = true;
-                    if (convertToWall) data[x, z] = 1;
+                    if (convertToWall)
+                    {
+                        
+                        int c = 0;
+                        if (x != 0)
+                            if (data[x - 1, z] == (int)TerrainKey.Chasm)
+                                c++;
+                        if (x != m_width - 1)
+                            if (data[x + 1, z] == (int)TerrainKey.Chasm)
+                                c++;
+                        if (z != 0)
+                            if (data[x, z - 1] == (int)TerrainKey.Chasm)
+                                c++;
+                        if (z != m_depth - 1)
+                            if (data[x, z + 1] == (int)TerrainKey.Chasm)
+                                c++;
+                        if (c <= 1)
+                        {
+                            data[x, z] = (int)TerrainKey.Wall_Stone_01;
+                        }
+                    }
                 }
             }
         }
     }
 
 
-    private void FillRectangle(ref int[,] data, Rect rect, int value)
-    {
-        int xMin = (int)Mathf.Round(rect.x);
-        int xMax = (int)Mathf.Round(rect.xMax);
-        int yMin = (int)Mathf.Round(rect.y);
-        int yMax = (int)Mathf.Round(rect.yMax);
-        for (int x = xMin; x <= xMax; x++)
-        {    
-            for (int y = yMin; y <= yMax; y++)
-            {
-                data[x, y] = value;
-            }
-        }
-    }
 
 
 
 
-    public static int[,] GetEmptyMap(int width, int height)
-    {
-        int[,] data = new int[width, height];
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                data[x, y] = -1;
-            }
-        }
-        return data;
-    }
     double SampleDistribution(double factor, double upperLimit)
     {
         double result = double.MaxValue;
@@ -325,8 +661,6 @@ public class MapGenerator
                 }
             }
         }
-        //if (neighbours == 0)
-        //    return velocity;
         if (neighbourIntersections > 0)
         {
             separationVelocity.x /= neighbourCount;
@@ -337,56 +671,6 @@ public class MapGenerator
             return separationVelocity;
         }
         return Vector2.zero;
-    }
-
-    public static int Smooth(ref int[,] data, int threshold, int iterations)
-    {
-        int width = data.GetUpperBound(0) + 1;
-        int height = data.GetUpperBound(1) + 1;
-        int removed = 0;
-        for (int i = 0; i < iterations; i++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                for (int y = 0; y < height; y++)
-                {
-                    if (data[x, y] == -1)
-                    {
-                        int count = 0;
-                        // Check cell on the right.
-                        if (x != width - 1)
-                            if (data[x + 1, y] == 0)
-                                count++;
-                        // Check cell on the bottom.
-                        if (y != height - 1)
-                            if (data[x, y + 1] == 0)
-                                count++;
-                        // Check cell on the left.
-                        if (x != 0)
-                            if (data[x - 1, y] == 0)
-                                count++;
-                        // Check cell on the top.
-                        if (y != 0)
-                            if (data[x, y - 1] == 0)
-                                count++;
-                        if (x != 0 && y != 0)
-                            if (data[x - 1, y - 1] == 0)
-                                count++;
-                        if (x != 0 && y != height - 1)
-                            if (data[x - 1, y + 1] == 0)
-                                count++;
-                        if (x != width - 1 && y != 0)
-                            if (data[x + 1, y - 1] == 0)
-                                count++;
-                        if (x != width - 1 && y != height - 1)
-                            if (data[x + 1, y + 1] == 0)
-                                count++;
-                        if (count > threshold) data[x, y] = 0;
-                    }
-                }
-            }
-        }
-        return removed;
-    }
+    } 
 }
 
