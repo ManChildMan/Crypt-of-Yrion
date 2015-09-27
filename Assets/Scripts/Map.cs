@@ -92,6 +92,7 @@ public class Map : MonoBehaviour
             InstantiateTorches(generator.ObjectData);
             InstantiateStairwells(generator.MapData);
             //InstantiateMap(CellularAutomaton.GetCellularAutomata());
+            UserInterface.InitializeMiniMap(generator.MapData);
             
         }
 
