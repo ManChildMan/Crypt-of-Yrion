@@ -94,16 +94,16 @@ public class UserInterface : MonoBehaviour
                     {
                         switch (mapData[startX + x, startY + y])
                         {
-                            case TerrainKey.Floor_01:
+                            case TerrainType.Floor_01:
                                 miniMapTexture.SetPixel(x, y, Color.white);
                                 break;
-                            case TerrainKey.Wall_Stone_01:
+                            case TerrainType.Wall_Stone_01:
                                 miniMapTexture.SetPixel(x, y, Color.gray);
                                 break;
-                            case TerrainKey.Water_Deep:
+                            case TerrainType.Water_Deep:
                                 miniMapTexture.SetPixel(x, y, Color.blue);
                                 break;
-                            case TerrainKey.Water_Shallow:
+                            case TerrainType.Water_Shallow:
                                 miniMapTexture.SetPixel(x, y, new Color(0.0f, 0.0f, 0.6f));
                                 break;
                             default:
