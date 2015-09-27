@@ -7,73 +7,11 @@ using UnityEngine;
 using WeightedGraph = System.Collections.Generic.Dictionary<UnityEngine.Vector3,
     System.Collections.Generic.List<WeightedEdge>>;
 
-public static class TerrainKey
-{
-    public const int Impassable = -100;
-    public const int Impassable_Rubble_01 = -101;
-
-    public const int Chasm = 0;
-
-    public const int Floor = 100;
-    public const int Floor_01 = 101;
-
-    public const int Wall = 200;
-    public const int Wall_Stone_01 = 201;
-
-    public const int Water = 300;
-    public const int Water_Shallow = 301;
-    public const int Water_Deep = 302;
-
-    public const int Torch = 400;
-    public const int Torch_WallMounted_North = 401;
-    public const int Torch_WallMounted_South = 402;
-    public const int Torch_WallMounted_East = 403;
-    public const int Torch_WallMounted_West = 404;
-
-    public const int Item = 500;
-    public const int Item_Chest_North = 501;
-    public const int Item_Chest_South = 502;
-    public const int Item_Chest_East = 503;
-    public const int Item_Chest_West = 504;
-
-    public const int Stairs = 600;
-    public const int Stairs_UpNorth = 601;
-    public const int Stairs_UpSouth = 602;
-    public const int Stairs_UpEast = 603;
-    public const int Stairs_UpWest = 604;
-    public const int Stairs_DownNorth = 601;
-    public const int Stairs_DownSouth = 602;
-    public const int Stairs_DownEast = 603;
-    public const int Stairs_DownWest = 604;
-
-    public const int Generator_Empty = -1;
-    public const int Generator_Default = 1;
-    public const int Generator_Secondary = 2;
-    public const int Generator_Selection = int.MaxValue;
-}
-
-public struct Point
-{
-    public int X, Y;
-    public Point(int x, int y)
-    {
-        X = x;
-        Y = y;
-    }
-}
 /// <summary>
 /// 
 /// </summary>
 public class MapHelpers
 {
-    public const int GEN_EMPTY = 0;
-    public const int GEN_DATA = 1;
-    public const int GEN_HIGHLIGHT = int.MaxValue;
-
-    public const int TILE_RUBBLE = -1;
-    public const int TILE_EMPTY = 0;
-    public const int TILE_STONEBLOCK = 1;
-
     /// <summary>
     /// This method converts a point cloud into an graph of undirected weighted 
     /// edges. Undirected graphs are used to calculate minimum spanning trees.
@@ -169,85 +107,7 @@ public class MapHelpers
         return minimumSpanningTree;
     }
 
-
    
-
-    class AreaSample
-    {
-        public Point Position { get; set; }
-        public int Area { get; set; }
-    }
-
-    public static int[,] ExtractLargestRegion(int[,] data, float sampleFraction = 0.45f, bool crop = true)
-    {
-        int width = data.GetUpperBound(0) + 1;
-        int height = data.GetUpperBound(1) + 1;
-        int[,] copy = new int[width, height];
-        Array.Copy(data, copy, width * height);
-
-        // Cache the area and position of a random sampling of rooms.
-        int sampleCount = (int)Math.Round(
-            width * height * Mathf.Clamp(sampleFraction, 0, 1));
-        AreaSample[] samples = new AreaSample[sampleCount];
-        for (int i = 0; i < sampleCount; i++)
-        {
-            AreaSample sample = new AreaSample();
-            sample.Position = new Point(
-                UnityEngine.Random.Range(0, width),
-                UnityEngine.Random.Range(0, height));
-            sample.Area = GetArea(copy, sample.Position, 1);
-            samples[i] = sample;
-        }
-
-        // Find the largest area amongst the sampled areas.
-        Point largestAreaPosition = new Point(-1, -1);
-        int largestArea = -1;
-        for (int i = 0; i < sampleCount; i++)
-        {
-            AreaSample sample = samples[i];
-            if (sample.Area > largestArea)
-            {
-                largestAreaPosition = sample.Position;
-                largestArea = sample.Area;
-            }
-        }
-        // Flood fill largest area with int.MaxValue to make it distinct.    
-        FloodFill(ref copy, largestAreaPosition, 1, int.MaxValue);
-        // Get a bounding rectangle containing the largest region.
-        Rectangle bounds = MapHelpers.GetBoundingRectangle(copy, int.MaxValue);
-
-
-
-
-        if (crop)
-        {
-            int[,] room = EmptyMap(bounds.Right - bounds.X, bounds.Bottom - bounds.Y, 0); 
-            for (int x = bounds.X; x < bounds.Right; x++)
-            {
-                for (int y = bounds.Y; y < bounds.Bottom; y++)
-                {
-                    room[x - bounds.X, y - bounds.Y] =
-                        (copy[x, y] == int.MaxValue) ? 1 : 0;
-
-                }
-            }
-            return room;
-        }
-        else
-        {
-            int[,] room = EmptyMap(width, height, 0);
-            for (int x = bounds.X; x <= bounds.Right; x++)
-            {
-                for (int y = bounds.Y; y <= bounds.Bottom; y++)
-                {
-                    room[x, y] =
-                        (copy[x, y] == int.MaxValue) ? 1 : 0;
-
-                }
-            }
-            return room;
-        }
-    }
     // Fills the specified region with the supplied value.
     public static void FillRectangle(ref int[,] data, Rect rect, int value)
     {
@@ -283,10 +143,7 @@ public class MapHelpers
         }
         return true;
     }
-
-
-
-
+    //
     public static Rectangle GetBoundingRectangle(int[,] data, int target)
     {
         int width = data.GetUpperBound(0) + 1;
@@ -382,8 +239,8 @@ public class MapHelpers
 
     public static int CountNeighborsOfType(ref int[,] data, int x, int z, int type)
     {
-        int width = data.GetLength(0);
-        int depth = data.GetLength(1);
+        int width = data.GetLength(0) - 1;
+        int depth = data.GetLength(1) - 1;
         int count = 0;
         // Check cell on the right.
         if (x != width - 1)
@@ -419,11 +276,17 @@ public class MapHelpers
                 count++;
         return count;
     }
-
+    /// <summary>
+    /// Smooths generator-level map data.
+    /// </summary>
+    /// <param name="data">A 2D array of generator-level map data (-1s & 1s).</param>
+    /// <param name="threshold">The number of neighbours required to trigger change.</param>
+    /// <param name="iterations">The number of times to perform smoothing.</param>
+    /// <returns></returns>
     public static int Smooth(ref int[,] data, int threshold, int iterations)
     {
-        int width = data.GetUpperBound(0) + 1;
-        int height = data.GetUpperBound(1) + 1;
+        int width = data.GetLength(0) - 1;
+        int height = data.GetLength(1) - 1;
         int removed = 0;
         for (int i = 0; i < iterations; i++)
         {
@@ -470,176 +333,84 @@ public class MapHelpers
         return removed;
     }
 }
-    public struct Rectangle
-    {
-        public int X, Y, Right, Bottom;
-        public Rectangle(int x, int y, int right, int bottom)
-        {
-            X = x;
-            Y = y;
-            Right = right;
-            Bottom = bottom;
-        }
-        public static Rectangle ToRectangle(Rect rect)
-        {
-            return new Rectangle(
-                (int)Mathf.Max(rect.xMin, rect.xMax), 
-                (int)Mathf.Min(rect.xMin, rect.xMax),
-                (int)Mathf.Max(rect.yMin, rect.yMax), 
-                (int)Mathf.Min(rect.yMin, rect.yMax));
-        }
-    }
 
 
-/// <summary>
-/// Represents a weighted graph edge.
-/// </summary>
-public class WeightedEdge
-{
-    Vector3 m_source;
-    Vector3 m_target;
-    double m_weight;
-    public Vector3 Source { get { return this.m_source; } }
-    public Vector3 Target { get { return this.m_target; } }
-    public double Weight { get { return this.m_weight; } }
-    public WeightedEdge(Vector3 source, Vector3 target, double weight)
-    {
-        m_source = source;
-        m_target = target;
-        m_weight = weight;
-    }
-}
 
-/// <summary>
-/// 
-/// </summary>
-public class CellularAutomaton
-{
-    // Represents a single cell.
-    class Cell
-    {
-        public Vector2 Position { get; private set; }
-        public bool IsAlive { get; set; }
 
-        public Cell(Vector2 position)
-        {
-            Position = position;
-            IsAlive = false;
-        }
-    }
 
-    public int[,] Data
-    {
-        get { return m_cells; }
-    }
 
-    private int m_width;
-    private int m_depth;
-    private int[,] m_cells;
-    private const int DEAD = (int)TerrainKey.Generator_Empty;
-    private const int ALIVE = (int)TerrainKey.Generator_Default;
 
-    public CellularAutomaton(int width, int depth)
-    {
-        m_width = width;
-        m_depth = depth;
-        m_cells = MapHelpers.EmptyMap(m_width, m_depth,
-            (int)TerrainKey.Generator_Empty);
-    }
+//private class AreaSample
+//{
+//    public Point Position { get; set; }
+//    public int Area { get; set; }
+//}
 
-    public void MakeAlive(float fraction)
-    {
-        int quantity = (int)Mathf.Round(m_width * m_depth * 
-            Mathf.Clamp(fraction, 0, 1));
-        while (quantity > 0)
-        {
-            int x = UnityEngine.Random.Range(0, m_width - 1);
-            int z = UnityEngine.Random.Range(0, m_depth - 1);
-            if (m_cells[x, z] == DEAD)
-            {
-                m_cells[x, z] = ALIVE;
-                quantity--;
-            }
-        }
-    }
+//public static int[,] ExtractLargestRegion(int[,] data, float sampleFraction = 0.45f, bool crop = true)
+//{
+//    int width = data.GetUpperBound(0) + 1;
+//    int height = data.GetUpperBound(1) + 1;
+//    int[,] copy = new int[width, height];
+//    Array.Copy(data, copy, width * height);
 
-    public void Iterate(int birthThreshold, int survivalThreshold,
-        int iterations)
-    {
-        int neighbours = -1;
-        bool isAlive = false;
-        for (int i = 0; i < iterations; i++)
-        {
-            for (int x = 0; x < m_width; x++)
-            {
-                for (int z = 0; z < m_depth; z++)
-                {
-                    neighbours = GetLivingNeighbors(x, z);
+//    // Cache the area and position of a random sampling of rooms.
+//    int sampleCount = (int)Math.Round(
+//        width * height * Mathf.Clamp(sampleFraction, 0, 1));
+//    AreaSample[] samples = new AreaSample[sampleCount];
+//    for (int i = 0; i < sampleCount; i++)
+//    {
+//        AreaSample sample = new AreaSample();
+//        sample.Position = new Point(
+//            UnityEngine.Random.Range(0, width),
+//            UnityEngine.Random.Range(0, height));
+//        sample.Area = GetArea(copy, sample.Position, 1);
+//        samples[i] = sample;
+//    }
 
-                    isAlive = m_cells[x, z] == ALIVE;
-                    if (isAlive)
-                    {
-                        if (neighbours >= survivalThreshold)
-                            isAlive = true;
-                        else isAlive = false;
-                    }
-                    else if (neighbours >= birthThreshold)
-                        isAlive = true;
+//    // Find the largest area amongst the sampled areas.
+//    Point largestAreaPosition = new Point(-1, -1);
+//    int largestArea = -1;
+//    for (int i = 0; i < sampleCount; i++)
+//    {
+//        AreaSample sample = samples[i];
+//        if (sample.Area > largestArea)
+//        {
+//            largestAreaPosition = sample.Position;
+//            largestArea = sample.Area;
+//        }
+//    }
 
-                    m_cells[x, z] = isAlive ? ALIVE : DEAD;
-                }
-            }
-        }
-    }
+//    // Flood fill largest area with int.MaxValue to make it distinct.    
+//    FloodFill(ref copy, largestAreaPosition, 1, int.MaxValue);
 
-    private int GetLivingNeighbors(int x, int z)
-    {
-        int count = 0;
-        // Check cell on the right.
-        if (x != m_width - 1)
-            if (m_cells[x + 1, z] == ALIVE)
-                count++;
-        // Check cell on the bottom right.
-        if (x != m_width - 1 && z != m_depth - 1)
-            if (m_cells[x + 1, z + 1] == ALIVE)
-                count++;
-        // Check cell on the bottom.
-        if (z != m_depth - 1)
-            if (m_cells[x, z + 1] == ALIVE)
-                count++;
-        // Check cell on the bottom left.
-        if (x != 0 && z != m_depth - 1)
-            if (m_cells[x - 1, z + 1] == ALIVE)
-                count++;
-        // Check cell on the left.
-        if (x != 0)
-            if (m_cells[x - 1, z] == ALIVE)
-                count++;
-        // Check cell on the top left.
-        if (x != 0 && z != 0)
-            if (m_cells[x - 1, z - 1] == ALIVE)
-                count++;
-        // Check cell on the top.
-        if (z != 0)
-            if (m_cells[x, z - 1] == ALIVE)
-                count++;
-        // Check cell on the top right.
-        if (x != m_width - 1 && z != 0)
-            if (m_cells[x + 1, z - 1] == ALIVE)
-                count++;
-        return count;
-    }
+//    // Get a bounding rectangle containing the largest region.
+//    Rectangle bounds = MapHelpers.GetBoundingRectangle(copy, int.MaxValue);
 
-    public static int[,] GetCellularAutomata()
-    {
-        CellularAutomaton ca = new CellularAutomaton(96, 96);
-        ca.MakeAlive(0.55f);
-        ca.Iterate(6, 4, 2);
+//    if (crop)
+//    {
+//        int[,] room = EmptyMap(bounds.Right - bounds.X, bounds.Bottom - bounds.Y, 0); 
+//        for (int x = bounds.X; x < bounds.Right; x++)
+//        {
+//            for (int y = bounds.Y; y < bounds.Bottom; y++)
+//            {
+//                room[x - bounds.X, y - bounds.Y] = 
+//                    (copy[x, y] == int.MaxValue) ? 1 : 0;
+//            }
+//        }
+//        return room;
+//    }
+//    else
+//    {
+//        int[,] room = EmptyMap(width, height, 0);
+//        for (int x = bounds.X; x <= bounds.Right; x++)
+//        {
+//            for (int y = bounds.Y; y <= bounds.Bottom; y++)
+//            {
+//                room[x, y] = (copy[x, y] == int.MaxValue) ? 1 : 0;
 
-        int[,] data = ca.Data; // MapHelpers.ExtractLargestRegion(ca.Data, 0.5f, false);
+//            }
+//        }
+//        return room;
+//    }
+//}
 
-        MapHelpers.Smooth(ref data, 4, 3);
-        return data;
-        
-    }
-}

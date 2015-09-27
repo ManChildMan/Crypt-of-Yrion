@@ -2,10 +2,8 @@
 using UnityEngine;
 
 // TO DO:
-//   * Scale texture coordinates so texture is not distorted at different map sizes.
-//   * Optimize by not creating grid square objects in terrain grid squares.
-//   * Remove plane and implement tiles foor each floor grid that assume resp. of grid squares.
-//   * Implement chasms, water and lava.
+
+//   * Implement lava.
 //   * Implement inanimate objects such as coffins, thrones, tables, etc and implement cover system.
 //   * Implement spawning of items.
 
@@ -149,7 +147,7 @@ public class Map : MonoBehaviour
         {
             for (int z = 0; z < Depth; z++)
             {
-                if (torchData[x, z] == (int)TerrainKey.Torch_WallMounted_North)
+                if (torchData[x, z] == (int)TerrainType.Torch_WallMounted_North)
                 {
                     GameObject torch = (GameObject)Instantiate(m_torch);
                     torch.transform.parent = Obstacles;
@@ -158,7 +156,7 @@ public class Map : MonoBehaviour
                     torch.transform.position = new Vector3(xPos, 1.2f, zPos - 0.35f);
                     torch.transform.rotation = Quaternion.Euler(0f, 140f, 0f);
                 }
-                else if (torchData[x, z] == (int)TerrainKey.Torch_WallMounted_South)
+                else if (torchData[x, z] == (int)TerrainType.Torch_WallMounted_South)
                 {
                     GameObject torch = (GameObject)Instantiate(m_torch);
                     torch.transform.parent = Obstacles;
@@ -167,7 +165,7 @@ public class Map : MonoBehaviour
                     torch.transform.position = new Vector3(xPos, 1.2f, zPos + 0.35f);
                     torch.transform.rotation = Quaternion.Euler(0f, 140f + 180f, 0f);
                 }
-                else if (torchData[x, z] == (int)TerrainKey.Torch_WallMounted_East)
+                else if (torchData[x, z] == (int)TerrainType.Torch_WallMounted_East)
                 {
                     GameObject torch = (GameObject)Instantiate(m_torch);
                     torch.transform.parent = Obstacles;
@@ -176,7 +174,7 @@ public class Map : MonoBehaviour
                     torch.transform.position = new Vector3(xPos - 0.65f, 1.2f, zPos);
                     torch.transform.rotation = Quaternion.Euler(0f, 140f - 90f, 0f);
                 }
-                else if (torchData[x, z] == (int)TerrainKey.Torch_WallMounted_West)
+                else if (torchData[x, z] == (int)TerrainType.Torch_WallMounted_West)
                 {
                     GameObject torch = (GameObject)Instantiate(m_torch);
                     torch.transform.parent = Obstacles;
@@ -185,7 +183,7 @@ public class Map : MonoBehaviour
                     torch.transform.position = new Vector3(xPos + 0.65f, 1.2f, zPos);
                     torch.transform.rotation = Quaternion.Euler(0f, 140f + 90f, 0f);
                 }
-                else if (torchData[x, z] == (int)TerrainKey.Item_Chest_North)
+                else if (torchData[x, z] == (int)TerrainType.Item_Chest_North)
                 {
                     GameObject chest = (GameObject)Instantiate(m_chest);
                     chest.transform.parent = Obstacles;
@@ -194,7 +192,7 @@ public class Map : MonoBehaviour
                     chest.transform.position = new Vector3(xPos, 0, zPos);
                     chest.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
                 }
-                else if (torchData[x, z] == (int)TerrainKey.Item_Chest_South)
+                else if (torchData[x, z] == (int)TerrainType.Item_Chest_South)
                 {
                     GameObject chest = (GameObject)Instantiate(m_chest);
                     chest.transform.parent = Obstacles;
@@ -203,7 +201,7 @@ public class Map : MonoBehaviour
                     chest.transform.position = new Vector3(xPos, 0, zPos);
                     chest.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
                 }
-                else if (torchData[x, z] == (int)TerrainKey.Item_Chest_East)
+                else if (torchData[x, z] == (int)TerrainType.Item_Chest_East)
                 {
                     GameObject chest = (GameObject)Instantiate(m_chest);
                     chest.transform.parent = Obstacles;
@@ -212,7 +210,7 @@ public class Map : MonoBehaviour
                     chest.transform.position = new Vector3(xPos - 1, 0, zPos);
                     chest.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
                 }
-                else if (torchData[x, z] == (int)TerrainKey.Item_Chest_West)
+                else if (torchData[x, z] == (int)TerrainType.Item_Chest_West)
                 {
                     GameObject chest = (GameObject)Instantiate(m_chest);
                     chest.transform.parent = Obstacles;
@@ -240,7 +238,7 @@ public class Map : MonoBehaviour
         {
             for (int z = 0; z < Depth; z++)
             {
-                if (data[x, z] == TerrainKey.Stairs_UpNorth)
+                if (data[x, z] == TerrainType.Stairs_UpNorth)
                 {
                     GameObject stairwell = (GameObject)Instantiate(m_stairwellUp);
                     
@@ -249,7 +247,7 @@ public class Map : MonoBehaviour
                     stairwell.transform.position = new Vector3(xPos, y, zPos);
 
                 }
-                if (data[x, z] == TerrainKey.Stairs_UpSouth)
+                if (data[x, z] == TerrainType.Stairs_UpSouth)
                 {
                     GameObject stairwell = (GameObject)Instantiate(m_stairwellUp);
 
@@ -258,7 +256,7 @@ public class Map : MonoBehaviour
                     stairwell.transform.position = new Vector3(xPos, y, zPos);
 
                 }
-                if (data[x, z] == TerrainKey.Stairs_UpEast)
+                if (data[x, z] == TerrainType.Stairs_UpEast)
                 {
                     GameObject stairwell = (GameObject)Instantiate(m_stairwellUp);
 
@@ -268,7 +266,7 @@ public class Map : MonoBehaviour
 
 
                 }
-                if (data[x, z] == TerrainKey.Stairs_UpWest)
+                if (data[x, z] == TerrainType.Stairs_UpWest)
                 {
                     GameObject stairwell = (GameObject)Instantiate(m_stairwellUp);
 
@@ -277,7 +275,7 @@ public class Map : MonoBehaviour
                     stairwell.transform.position = new Vector3(xPos, y, zPos);
 
                 }
-                if (data[x, z] == TerrainKey.Stairs_DownNorth)
+                if (data[x, z] == TerrainType.Stairs_DownNorth)
                 {
                     GameObject stairwell = (GameObject)Instantiate(m_stairwellDown);
 
@@ -286,7 +284,7 @@ public class Map : MonoBehaviour
                     stairwell.transform.position = new Vector3(xPos, y, zPos);
 
                 }
-                if (data[x, z] == TerrainKey.Stairs_DownSouth)
+                if (data[x, z] == TerrainType.Stairs_DownSouth)
                 {
                     GameObject stairwell = (GameObject)Instantiate(m_stairwellDown);
 
@@ -295,7 +293,7 @@ public class Map : MonoBehaviour
                     stairwell.transform.position = new Vector3(xPos, y, zPos);
 
                 }
-                if (data[x, z] == TerrainKey.Stairs_DownEast)
+                if (data[x, z] == TerrainType.Stairs_DownEast)
                 {
 
                     GameObject stairwell = (GameObject)Instantiate(m_stairwellDown);
@@ -304,7 +302,7 @@ public class Map : MonoBehaviour
                     float zPos = m_minZ + (z * NodeSize);
                     stairwell.transform.position = new Vector3(xPos, y, zPos);
                 }
-                if (data[x, z] == TerrainKey.Stairs_DownWest)
+                if (data[x, z] == TerrainType.Stairs_DownWest)
                 {
                     GameObject stairwell = (GameObject)Instantiate(m_stairwellDown);
 
@@ -330,12 +328,12 @@ public class Map : MonoBehaviour
         {
             for (int z = 0; z < Depth; z++)
             {
-                if (data[x, z] == (int)TerrainKey.Chasm)
+                if (data[x, z] == (int)TerrainType.Chasm)
                 {
          
 
                 }
-                else if (data[x, z] == (int)TerrainKey.Floor_01)
+                else if (data[x, z] == (int)TerrainType.Floor_01)
                 {
                     GameObject floor = (GameObject)Instantiate(m_floor);
                     floor.transform.parent = Obstacles;
@@ -343,7 +341,7 @@ public class Map : MonoBehaviour
                     float zPos = m_minZ + (z * NodeSize);
                     floor.transform.position = new Vector3(xPos, 0, zPos);
                 }
-                else if (data[x, z] == (int)TerrainKey.Impassable_Rubble_01)
+                else if (data[x, z] == (int)TerrainType.Impassable_Rubble_01)
                 {
                     // Floor
                     GameObject rubble = (GameObject)Instantiate(m_rubble);
@@ -352,7 +350,7 @@ public class Map : MonoBehaviour
                     float zPos = m_minZ + (z * NodeSize);
                     rubble.transform.position = new Vector3(xPos, 0, zPos);
                 }
-                else if (data[x, z] == (int)TerrainKey.Wall_Stone_01)
+                else if (data[x, z] == (int)TerrainType.Wall_Stone_01)
                 {
                     // Stone Block                 
                     GameObject block = (GameObject)Instantiate(m_stoneBlock);
@@ -361,7 +359,7 @@ public class Map : MonoBehaviour
                     float zPos = m_minZ + (z * NodeSize);
                     block.transform.position = new Vector3(xPos, 0, zPos);
                 }
-                else if (data[x, z] == (int)TerrainKey.Water_Shallow)
+                else if (data[x, z] == (int)TerrainType.Water_Shallow)
                 {
                     // Stone Block                 
                     GameObject water = (GameObject)Instantiate(m_water);
