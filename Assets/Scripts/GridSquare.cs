@@ -2,11 +2,14 @@
 
 public delegate void GridSquareSelected(GridSquare square);
 
-// This script is attached to the GridSquare prefab which is responsible for
-// displaying grid squares and intercepting mouse clicks.
+/// <summary>
+/// This script is attached to the GridSquare prefab. It is responsible for 
+/// changing the material applied to a grid square when it is selected or
+/// unselected. UI code needs to subscribe to the OnGridSquareSelected event
+/// for each GridSquare to receive selected notifications.
+/// </summary>
 public class GridSquare : MonoBehaviour
 {
-
     public event GridSquareSelected OnGridSquareSelected;
     public bool IsSelected = false;
     public Material UnselectedMaterial;
@@ -19,26 +22,24 @@ public class GridSquare : MonoBehaviour
         m_renderer = GetComponentInChildren<MeshRenderer>();
 	}
 
-	void Update ()
-    {
-	}
-
     void OnMouseUp()
     {
+        // Return if already selected.
         if (IsSelected)
             return;
 
+        // Set the 'selected' material.
         m_renderer.material = SelectedMaterial;
         IsSelected = true;
 
+        // Fire the selected event.
         if (OnGridSquareSelected != null)
-        {
             OnGridSquareSelected(this);
-        }
     }
 
     public void Unselect()
     {
+        // Set the 'unselected' material.
         m_renderer.material = UnselectedMaterial;
         IsSelected = false;
     }

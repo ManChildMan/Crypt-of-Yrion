@@ -1,4 +1,8 @@
 ﻿using UnityEngine;
+
+/// <summary>
+/// 
+/// </summary>
 public struct Rectangle
 {
     public int X, Y, Right, Bottom;

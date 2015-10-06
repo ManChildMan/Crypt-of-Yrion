@@ -102,7 +102,7 @@ public class MapGenerator
     private void GenerateChasmsAndLakes(ref int[,] data)
     {
         CellularAutomaton automaton = new CellularAutomaton(96, 96);
-        automaton.MakeAlive(0.55f);
+        automaton.Spawn(0.55f);
         automaton.Iterate(6, 4, 10);
         data = automaton.Data; 
         MapHelpers.Smooth(ref data, 4, 3);
@@ -297,7 +297,7 @@ public class MapGenerator
                             // Scan region to the north.
                             if (z + 3 < m_depth && x - 1 > 0 && x + 1 < m_width)
                             {
-                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 1, x + 1, z + 1, z + 3),
+                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 1, z + 1, x + 1, z + 3),
                                     TerrainType.Floor_01))
                                 {
                                     data[x, z] = TerrainType.Item_Chest_North;
@@ -307,7 +307,7 @@ public class MapGenerator
                             // Scan region to the south.
                             if (z - 3 > 0 && x - 1 > 0 && x + 1 < m_width)
                             {
-                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 1, x + 1, z - 3, z - 1),
+                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 1, z - 3, x + 1, z - 1),
                                     TerrainType.Floor_01))
                                 {
                                     data[x, z] = TerrainType.Item_Chest_South;
@@ -317,7 +317,7 @@ public class MapGenerator
                             // Scan region to the south
                             if (x - 3 > 0 && z + 1 < m_width && z - 1 > 0)
                             {
-                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 3, x - 1, z - 1, z + 1),
+                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 3, z - 1, x - 1, z + 1),
                                     TerrainType.Floor_01))
                                 {
                                     data[x, z] = TerrainType.Item_Chest_East;
@@ -328,7 +328,7 @@ public class MapGenerator
                             // Scan region to the south             
                             if (x + 3 < m_width && z + 1 < m_width && z - 1 > 0)
                             {
-                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x + 1, x + 3, z - 1, z + 1),
+                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x + 1, z - 1, x + 3, z + 1),
                                     TerrainType.Floor_01))
                                 {
                                     data[x, z] = TerrainType.Item_Chest_West;
@@ -357,10 +357,10 @@ public class MapGenerator
                         float torchChance = 0.15f;
                         if (Random.value < torchChance)
                         {             
-                            // Scan region to the north.
+                            //// Scan region to the north.
                             if (z + 3 < m_depth && x - 1 > 0 && x + 1 < m_width)
                             {
-                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 1, x + 1, z + 1, z + 3),
+                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 1, z + 1, x + 1, z + 3),
                                     TerrainType.Floor_01))
                                 {
                                     data[x, z] = TerrainType.Torch_WallMounted_North;
@@ -370,31 +370,31 @@ public class MapGenerator
                             // Scan region to the south.
                             if (z - 3 > 0 && x - 1 > 0 && x + 1 < m_width)
                             {
-                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 1, x + 1, z - 3, z - 1),
+                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 1, z-3, x+1, z-1),
                                     TerrainType.Floor_01))
                                 {
                                     data[x, z] = TerrainType.Torch_WallMounted_South;
                                     continue;
                                 }
                             }
-                            // Scan region to the south
+                            // Scan region to the west
                             if (x - 3 > 0 && z + 1 < m_width && z - 1 > 0)
                             {
-                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 3, x - 1, z - 1, z + 1),
-                                    TerrainType.Floor_01))
-                                {
-                                    data[x, z] = TerrainType.Torch_WallMounted_East;
-                                    continue;
-                                }
-                            }
-                            
-                            // Scan region to the south             
-                            if (x + 3 < m_width && z + 1 < m_width && z - 1 > 0)
-                            {
-                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x + 1, x + 3, z - 1, z + 1),
+                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x - 3, z-1, x - 1, z + 1),
                                     TerrainType.Floor_01))
                                 {
                                     data[x, z] = TerrainType.Torch_WallMounted_West;
+                                    continue;
+                                }
+                            }
+
+                            // Scan region to the east             
+                            if (x + 3 < m_width && z + 1 < m_width && z - 1 > 0)
+                            {
+                                if (MapHelpers.IsUniformRegion(m_mapData, new Rectangle(x + 1, z - 1, x + 3, z + 1),
+                                    TerrainType.Floor_01))
+                                {
+                                    data[x, z] = TerrainType.Torch_WallMounted_East;
                                     continue;
                                 }
                             }

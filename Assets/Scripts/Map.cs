@@ -46,9 +46,6 @@ public class Map : MonoBehaviour
     public int SmoothingIterations = 2;
     public float WeightedGraphEdgeRadius = 50f;
 
-
-    private UnityEngine.Object m_gridSquare;
-    private Transform[,] m_gridSquares;
     private AstarData m_astarData;
     private UnityEngine.Object m_floor;
     private UnityEngine.Object m_rubble;
@@ -58,43 +55,46 @@ public class Map : MonoBehaviour
     private UnityEngine.Object m_chest;
     private UnityEngine.Object m_stairwellUp;
     private UnityEngine.Object m_stairwellDown;
-    float m_minX;
-    float m_minZ;
+    private float m_minX;
+    private float m_minZ;
 
     
 	void Start ()
     {
-        // Calculate the center of the first map element in world coordinates.
+        // Calculate the center of the first map element (i.e. (0, 0)) in 
+        // world space coordinates.
         m_minX = OriginX - ((Width * NodeSize) / 2) + (NodeSize / 2);
         m_minZ = OriginZ - ((Depth * NodeSize) / 2) + (NodeSize / 2);
 
-        if (GenerateMap)
-        {
-            MapGenerator generator = new MapGenerator(Width, Depth, RandomSeed);
-            generator.RoomCount = RoomCount;
-            generator.SpawnDistance = SpawnDistance;
-            generator.MinRoomSideRatio = MinRoomSideRatio;
-            generator.SeparationStrength = SeparationStrength;
-            generator.MinRoomWidth = MinRoomWidth;
-            generator.MaxRoomWidth = MaxRoomWidth;
-            generator.MinRoomHeight = MinRoomHeight;
-            generator.MaxRoomHeight = MaxRoomHeight;
-            generator.UseSmoothing = UseSmoothing;
-            generator.SmoothingThreshold = SmoothingThreshold;
-            generator.SmoothingIterations = SmoothingIterations;
-            generator.WeightedGraphEdgeRadius = WeightedGraphEdgeRadius;
-            generator.Generate();
-            // The map generator works with an array of integers. The following
-            // function converts this array to game objects in the scene.
-            InstantiateMap(generator.MapData);
-            InstantiateTorches(generator.ObjectData);
-            InstantiateStairwells(generator.MapData);
-            //InstantiateMap(CellularAutomaton.GetCellularAutomata());
-            UserInterface.InitializeMiniMap(generator.MapData);
-            
-        }
+        MapGenerator generator = new MapGenerator(Width, Depth, RandomSeed);
+        generator.RoomCount = RoomCount;
+        generator.SpawnDistance = SpawnDistance;
+        generator.MinRoomSideRatio = MinRoomSideRatio;
+        generator.SeparationStrength = SeparationStrength;
+        generator.MinRoomWidth = MinRoomWidth;
+        generator.MaxRoomWidth = MaxRoomWidth;
+        generator.MinRoomHeight = MinRoomHeight;
+        generator.MaxRoomHeight = MaxRoomHeight;
+        generator.UseSmoothing = UseSmoothing;
+        generator.SmoothingThreshold = SmoothingThreshold;
+        generator.SmoothingIterations = SmoothingIterations;
+        generator.WeightedGraphEdgeRadius = WeightedGraphEdgeRadius;
+        generator.Generate();
 
-        // Initialize our A* pathfinding graph.
+        // The map generator works with 2D arrays of integers. The following
+        // functions convert the output arrays into actual game objects in 
+        // the scene.
+        InstantiateMap(generator.MapData);
+        InstantiateProps(generator.ObjectData);
+        InstantiateStairwells(generator.MapData);
+
+        // The user interface script can't register for map events until all 
+        // grid square prefabs are created. Instruct the script to register for
+        // events now. We can also initialise the minimap at this stage.
+        UserInterface.RegisterForMapEvents();
+        UserInterface.InitializeMiniMap(generator.MapData);         
+
+        // Initialize a A* pathfinding graph.
         m_astarData = AstarPath.active.astarData;
         GridGraph graph = (GridGraph)m_astarData.AddGraph(typeof(GridGraph));
         graph.width = Width;
@@ -109,113 +109,93 @@ public class Map : MonoBehaviour
         graph.collision.heightMask = 1 << LayerMask.NameToLayer("Ground");
         AstarPath.active.Scan();
 
-        // Overlay a grid of game objects to allow granular selection of 
-        // the maps grid squares.
-        //m_gridSquare = Resources.Load("GridSquare");
-        //m_gridSquares = new Transform[Width, Depth];
-        //float xPos = m_minX;
-        //float zPos = m_minZ;
-        //for (int x = 0; x < Width; x++)
-        //{
-        //    for (int z = 0; z < Depth; z++)
-        //    {
-        //        GameObject gridSquare = (GameObject)Instantiate(m_gridSquare);
-        //        gridSquare.transform.parent = Grid;
-        //        gridSquare.transform.position = new Vector3(xPos, 0, zPos);
-        //        gridSquare.transform.localScale = 
-        //            new Vector3(NodeSize, 0.02f, NodeSize);
-        //        m_gridSquares[x, z] = gridSquare.transform;
-        //        zPos += NodeSize;
-        //    }
-        //    zPos = m_minZ;
-        //    xPos += NodeSize;
-        //}
-
-        // The user interface script can't register for map events until all 
-        // grid square prefabs are created. Instruct the script to register for
-        // events now.
-        UserInterface.RegisterForMapEvents();
 	}
 
     // Instantiates the appropriate prefab at each world space map location. 
 
-    void InstantiateTorches(int[,] torchData)
+    void InstantiateProps(int[,] propData)
     {
         m_torch = Resources.Load("WallTorch");
         m_chest = Resources.Load("Chest");
+        GameObject instance = null;
+        float xPos = 0, zPos = 0;
         for (int x = 0; x < Width; x++)
         {
             for (int z = 0; z < Depth; z++)
             {
-                if (torchData[x, z] == (int)TerrainType.Torch_WallMounted_North)
+                int element = propData[x, z];
+                if (element == TerrainType.Torch_WallMounted_North)
                 {
-                    GameObject torch = (GameObject)Instantiate(m_torch);
-                    torch.transform.parent = Obstacles;
-                    float xPos = m_minX + (x * NodeSize);
-                    float zPos = m_minZ + (z * NodeSize) + 1;
-                    torch.transform.position = new Vector3(xPos, 1.2f, zPos - 0.35f);
-                    torch.transform.rotation = Quaternion.Euler(0f, 140f, 0f);
+                    instance = (GameObject)Instantiate(m_torch);
+                    instance.transform.parent = Obstacles;
+                    xPos = m_minX + (x * NodeSize);
+                    zPos = m_minZ + (z * NodeSize) + 1;
+                    instance.transform.position = new Vector3(xPos, 1.2f, zPos - 0.35f);
+                    instance.transform.rotation = Quaternion.Euler(0f, 180f - 45f, 0f);
                 }
-                else if (torchData[x, z] == (int)TerrainType.Torch_WallMounted_South)
+                else if (element == TerrainType.Torch_WallMounted_South)
                 {
-                    GameObject torch = (GameObject)Instantiate(m_torch);
-                    torch.transform.parent = Obstacles;
-                    float xPos = m_minX + (x * NodeSize);
-                    float zPos = m_minZ + (z * NodeSize) - 1;
-                    torch.transform.position = new Vector3(xPos, 1.2f, zPos + 0.35f);
-                    torch.transform.rotation = Quaternion.Euler(0f, 140f + 180f, 0f);
+                    instance = (GameObject)Instantiate(m_torch);
+                    instance.transform.parent = Obstacles;
+                    xPos = m_minX + (x * NodeSize);
+                    zPos = m_minZ + (z * NodeSize) - 1;
+                    instance.transform.position = new Vector3(xPos, 1.2f, zPos + 0.35f);
+                    instance.transform.rotation = Quaternion.Euler(0f, 0f - 45f, 0f);
                 }
-                else if (torchData[x, z] == (int)TerrainType.Torch_WallMounted_East)
+                else if (element == TerrainType.Torch_WallMounted_East)
                 {
-                    GameObject torch = (GameObject)Instantiate(m_torch);
-                    torch.transform.parent = Obstacles;
-                    float xPos = m_minX + (x * NodeSize);
-                    float zPos = m_minZ + (z * NodeSize);
-                    torch.transform.position = new Vector3(xPos - 0.65f, 1.2f, zPos);
-                    torch.transform.rotation = Quaternion.Euler(0f, 140f - 90f, 0f);
+                    instance = (GameObject)Instantiate(m_torch);
+                    instance.transform.parent = Obstacles;
+                    xPos = m_minX + (x * NodeSize);
+                    zPos = m_minZ + (z * NodeSize);
+                    instance.transform.position = new Vector3(xPos + 0.65f, 1.2f, zPos);
+                    instance.transform.rotation = Quaternion.Euler(0f, 270f - 45f, 0f);
                 }
-                else if (torchData[x, z] == (int)TerrainType.Torch_WallMounted_West)
+                else if (element == TerrainType.Torch_WallMounted_West)
                 {
-                    GameObject torch = (GameObject)Instantiate(m_torch);
-                    torch.transform.parent = Obstacles;
-                    float xPos = m_minX + (x * NodeSize);
-                    float zPos = m_minZ + (z * NodeSize);
-                    torch.transform.position = new Vector3(xPos + 0.65f, 1.2f, zPos);
-                    torch.transform.rotation = Quaternion.Euler(0f, 140f + 90f, 0f);
+                    instance = (GameObject)Instantiate(m_torch);
+                    instance.transform.parent = Obstacles;
+                    xPos = m_minX + (x * NodeSize);
+                    zPos = m_minZ + (z * NodeSize);
+                    instance.transform.position = new Vector3(xPos - 0.65f, 1.2f, zPos);
+                    instance.transform.rotation = Quaternion.Euler(0f, 90f - 45f, 0f);
                 }
-                else if (torchData[x, z] == (int)TerrainType.Item_Chest_North)
+
+
+
+                else if (propData[x, z] == (int)TerrainType.Item_Chest_North)
                 {
                     GameObject chest = (GameObject)Instantiate(m_chest);
                     chest.transform.parent = Obstacles;
-                    float xPos = m_minX + (x * NodeSize);
-                    float zPos = m_minZ + (z * NodeSize) + 1;
+                    xPos = m_minX + (x * NodeSize);
+                    zPos = m_minZ + (z * NodeSize) + 1;
                     chest.transform.position = new Vector3(xPos, 0, zPos);
                     chest.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
                 }
-                else if (torchData[x, z] == (int)TerrainType.Item_Chest_South)
+                else if (propData[x, z] == (int)TerrainType.Item_Chest_South)
                 {
                     GameObject chest = (GameObject)Instantiate(m_chest);
                     chest.transform.parent = Obstacles;
-                    float xPos = m_minX + (x * NodeSize);
-                    float zPos = m_minZ + (z * NodeSize) - 1;
+                    xPos = m_minX + (x * NodeSize);
+                    zPos = m_minZ + (z * NodeSize) - 1;
                     chest.transform.position = new Vector3(xPos, 0, zPos);
                     chest.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
                 }
-                else if (torchData[x, z] == (int)TerrainType.Item_Chest_East)
+                else if (propData[x, z] == (int)TerrainType.Item_Chest_East)
                 {
                     GameObject chest = (GameObject)Instantiate(m_chest);
                     chest.transform.parent = Obstacles;
-                    float xPos = m_minX + (x * NodeSize);
-                    float zPos = m_minZ + (z * NodeSize);
+                    xPos = m_minX + (x * NodeSize);
+                    zPos = m_minZ + (z * NodeSize);
                     chest.transform.position = new Vector3(xPos - 1, 0, zPos);
                     chest.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
                 }
-                else if (torchData[x, z] == (int)TerrainType.Item_Chest_West)
+                else if (propData[x, z] == (int)TerrainType.Item_Chest_West)
                 {
                     GameObject chest = (GameObject)Instantiate(m_chest);
                     chest.transform.parent = Obstacles;
-                    float xPos = m_minX + (x * NodeSize);
-                    float zPos = m_minZ + (z * NodeSize);
+                    xPos = m_minX + (x * NodeSize);
+                    zPos = m_minZ + (z * NodeSize);
                     chest.transform.position = new Vector3(xPos + 1, 0, zPos);
                     chest.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
                 }
