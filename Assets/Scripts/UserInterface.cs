@@ -13,6 +13,9 @@ public class UserInterface : MonoBehaviour
     private Vector3 prevPlayerPosition;
     private Texture2D miniMapTexture;
 
+    private int prevStartX;
+    private int prevStartZ;
+
     public GridSquare SelectedGridSquare
     {
         get
@@ -80,40 +83,42 @@ public class UserInterface : MonoBehaviour
         Vector3 playerPosition = playerTransform.transform.position;
 
         // Only redraw the minimap if the player moved.
-        if (playerPosition != prevPlayerPosition)
+        int startX = (int)(playerPosition.x + map.Width * map.NodeSize / 2.0f - miniMapTexture.width / 2.0f);
+        int startZ = (int)(playerPosition.z + map.Depth * map.NodeSize / 2.0f - miniMapTexture.height / 2.0f);
+
+        if (startX != prevStartX || startZ != prevStartZ)
         {
-            prevPlayerPosition = playerPosition;
-            int startX = (int)(playerPosition.x + map.Width * map.NodeSize / 2.0f - miniMapTexture.width / 2.0f);
-            int startY = (int)(playerPosition.z + map.Depth * map.NodeSize / 2.0f - miniMapTexture.height / 2.0f);
+            prevStartX = startX;
+            prevStartZ = startZ;
             for (int x = 0; x < miniMapTexture.width; x++)
             {
-                for (int y = 0; y < miniMapTexture.height; y++)
+                for (int z = 0; z < miniMapTexture.height; z++)
                 {
                     // Ensure element is inside the map, otherwise just draw the pixel as black.
-                    if (startX + x < mapData.GetLength(0) && startX + x >= 0 && startY + y < mapData.GetLength(1) && startY + y >= 0)
+                    if (startX + x < mapData.GetLength(0) && startX + x >= 0 && startZ + z < mapData.GetLength(1) && startZ + z >= 0)
                     {
-                        switch (mapData[startX + x, startY + y])
+                        switch (mapData[startX + x, startZ + z])
                         {
                             case TerrainType.Floor_01:
-                                miniMapTexture.SetPixel(x, y, Color.white);
+                                miniMapTexture.SetPixel(x, z, Color.white);
                                 break;
                             case TerrainType.Wall_Stone_01:
-                                miniMapTexture.SetPixel(x, y, Color.gray);
+                                miniMapTexture.SetPixel(x, z, Color.gray);
                                 break;
                             case TerrainType.Water_Deep:
-                                miniMapTexture.SetPixel(x, y, Color.blue);
+                                miniMapTexture.SetPixel(x, z, Color.blue);
                                 break;
                             case TerrainType.Water_Shallow:
-                                miniMapTexture.SetPixel(x, y, new Color(0.0f, 0.0f, 0.6f));
+                                miniMapTexture.SetPixel(x, z, new Color(0.0f, 0.0f, 0.6f));
                                 break;
                             default:
-                                miniMapTexture.SetPixel(x, y, Color.black);
+                                miniMapTexture.SetPixel(x, z, Color.black);
                                 break;
                         }
                     }
                     else
                     {
-                        miniMapTexture.SetPixel(x, y, Color.black);
+                        miniMapTexture.SetPixel(x, z, Color.black);
                     }
                 }
             }

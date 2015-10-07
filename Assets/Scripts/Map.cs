@@ -30,6 +30,7 @@ public class Map : MonoBehaviour
     public Transform Obstacles;
     public Transform Grid;
     public UserInterface UserInterface;
+    public MapCrafter MapCrafter;
 
     public bool GenerateMap = false;
     public int RandomSeed = 1;
@@ -45,6 +46,7 @@ public class Map : MonoBehaviour
     public int SmoothingThreshold = 4;
     public int SmoothingIterations = 2;
     public float WeightedGraphEdgeRadius = 50f;
+
 
     private AstarData m_astarData;
     private UnityEngine.Object m_floor;
@@ -66,33 +68,45 @@ public class Map : MonoBehaviour
         m_minX = OriginX - ((Width * NodeSize) / 2) + (NodeSize / 2);
         m_minZ = OriginZ - ((Depth * NodeSize) / 2) + (NodeSize / 2);
 
-        MapGenerator generator = new MapGenerator(Width, Depth, RandomSeed);
-        generator.RoomCount = RoomCount;
-        generator.SpawnDistance = SpawnDistance;
-        generator.MinRoomSideRatio = MinRoomSideRatio;
-        generator.SeparationStrength = SeparationStrength;
-        generator.MinRoomWidth = MinRoomWidth;
-        generator.MaxRoomWidth = MaxRoomWidth;
-        generator.MinRoomHeight = MinRoomHeight;
-        generator.MaxRoomHeight = MaxRoomHeight;
-        generator.UseSmoothing = UseSmoothing;
-        generator.SmoothingThreshold = SmoothingThreshold;
-        generator.SmoothingIterations = SmoothingIterations;
-        generator.WeightedGraphEdgeRadius = WeightedGraphEdgeRadius;
-        generator.Generate();
+        int[,] mapData;
+        int[,] objectData;
+        if (GenerateMap)
+        {
+            MapGenerator generator = new MapGenerator(Width, Depth, RandomSeed);
+            generator.RoomCount = RoomCount;
+            generator.SpawnDistance = SpawnDistance;
+            generator.MinRoomSideRatio = MinRoomSideRatio;
+            generator.SeparationStrength = SeparationStrength;
+            generator.MinRoomWidth = MinRoomWidth;
+            generator.MaxRoomWidth = MaxRoomWidth;
+            generator.MinRoomHeight = MinRoomHeight;
+            generator.MaxRoomHeight = MaxRoomHeight;
+            generator.UseSmoothing = UseSmoothing;
+            generator.SmoothingThreshold = SmoothingThreshold;
+            generator.SmoothingIterations = SmoothingIterations;
+            generator.WeightedGraphEdgeRadius = WeightedGraphEdgeRadius;
+            generator.Generate();
+            mapData = generator.MapData;
+            objectData = generator.ObjectData;
+        }
+        else
+        {
+            mapData = MapCrafter.GetMapData(this);
+            objectData = MapCrafter.GetPropData(this);
+        }
 
         // The map generator works with 2D arrays of integers. The following
         // functions convert the output arrays into actual game objects in 
         // the scene.
-        InstantiateMap(generator.MapData);
-        InstantiateProps(generator.ObjectData);
-        InstantiateStairwells(generator.MapData);
+        InstantiateMap(mapData);
+        InstantiateProps(objectData);
+        InstantiateStairwells(mapData);
 
         // The user interface script can't register for map events until all 
         // grid square prefabs are created. Instruct the script to register for
         // events now. We can also initialise the minimap at this stage.
         UserInterface.RegisterForMapEvents();
-        UserInterface.InitializeMiniMap(generator.MapData);         
+        UserInterface.InitializeMiniMap(mapData);
 
         // Initialize a A* pathfinding graph.
         m_astarData = AstarPath.active.astarData;
