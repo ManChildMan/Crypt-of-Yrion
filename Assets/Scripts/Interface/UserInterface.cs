@@ -1,15 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-// This script will be responsible for managing user input.
+/// <summary>
+/// This is will be responsible for managing user input within the world.
+/// </summary>
 public class UserInterface : MonoBehaviour
 {
-    // Reference to the map object.
-    private Map map;
+    // References set by unity.
+    public Map map;
+    public GameObject miniMap;
+    public Transform playerTransform;
 
     // Variables used for the minimap.
     private int[,] mapData;
-    private Transform playerTransform;
     private Vector3 prevPlayerPosition;
     private Texture2D miniMapTexture;
 
@@ -63,14 +66,8 @@ public class UserInterface : MonoBehaviour
 
     public void InitializeMiniMap(int[,] data)
     {
-        // Obtain required object references needed for initializing the minimap.
-        GameObject miniMap = GameObject.Find("MiniMap");
-        GameObject adventurer = GameObject.Find("Adventurer");
-        map = GameObject.Find("Map").GetComponent<Map>();
-
         // Set variables which will be used when updating/rendering the minimap.
         mapData = data;
-        playerTransform = adventurer.transform;
 
         // Create minimap texture and apply it to the UI image.
         Rect miniMapRect = miniMap.GetComponent<RectTransform>().rect;
@@ -78,6 +75,8 @@ public class UserInterface : MonoBehaviour
         miniMapTexture.filterMode = FilterMode.Point;
         miniMap.GetComponent<Image>().sprite = Sprite.Create(miniMapTexture, new Rect(0, 0, miniMapTexture.width, miniMapTexture.height), Vector2.zero);
     }
+
+
     public void Update()
     {
         Vector3 playerPosition = playerTransform.transform.position;
