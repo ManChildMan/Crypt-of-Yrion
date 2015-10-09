@@ -38,23 +38,30 @@ public class EnemyController : MonoBehaviour {
         distance = Vector3.Distance(transform.position, target.position);
         // If the distance is less than 10 and the enemy is not
         // currently moving...
-        if (Input.GetMouseButtonUp(1) && !m_moving)
+        if (distance < 10 && distance > 2)
         {
-            // Cast a ray from the cursor to find the point it intersects
-            // the floor in world coordinates.
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 100, MouseSelectionLayerMask))
-            {
-                // Attempt to path to the ray intersection.
-                m_seeker.StartPath(transform.position, hit.point,
-                    OnPathComplete);
-            }
+            // Attempt to path to the ray intersection.
+            m_seeker.StartPath(transform.position, target.position,
+                OnPathComplete);
         }
 
         // If we don't have a path return.
         if (m_path == null)
         {
+            return;
+        }
+
+        //Test to see if Player is in range to attack
+        //If so, stop and attack
+        if (distance <= 2)
+        {
+            m_path = null;
+            m_currentWaypoint = -1;
+            m_animator.SetFloat("Speed", 0);
+            m_moving = false;
+            transform.rotation = Quaternion.LookRotation(
+            m_controller.velocity);
+            m_animator.SetBool("Attack", true);
             return;
         }
 
@@ -84,6 +91,7 @@ public class EnemyController : MonoBehaviour {
         {
             m_currentWaypoint++;
         }
+
     }
 
     /// <summary>
