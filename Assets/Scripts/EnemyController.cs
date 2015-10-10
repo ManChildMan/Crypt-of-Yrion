@@ -38,7 +38,7 @@ public class EnemyController : MonoBehaviour {
         distance = Vector3.Distance(transform.position, target.position);
         // If the distance is less than 10 and the enemy is not
         // currently moving...
-        if (distance < 10 && distance > 2)
+        if (distance < 10 && distance > 2 && !m_moving)
         {
             // Attempt to path to the ray intersection.
             m_seeker.StartPath(transform.position, target.position,
@@ -63,6 +63,10 @@ public class EnemyController : MonoBehaviour {
             m_controller.velocity);
             m_animator.SetBool("Attack", true);
             return;
+        }
+        else
+        {
+            m_animator.SetBool("Attack", false);
         }
 
         // Test if we have just reached the end of the path. 
