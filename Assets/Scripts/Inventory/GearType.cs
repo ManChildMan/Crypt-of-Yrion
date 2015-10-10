@@ -6,7 +6,6 @@ public enum GearType
     Ring,
     Neck,
     Wrist,
-    Sword,
-    Dagger,
+    Weapon,
     OneAboveMax
 }

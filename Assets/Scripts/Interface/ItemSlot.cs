@@ -10,6 +10,7 @@ public class ItemSlot : MonoBehaviour
     public Inventory inventory;
     public ItemImages itemImages;
 
+    public InventoryType inventoryType;
     public int index;
     private Item prevItem;
     private Image image;
@@ -21,7 +22,7 @@ public class ItemSlot : MonoBehaviour
 
     void Update ()
     {
-        Item item = inventory.GetItem(index);
+        Item item = inventory.GetItem(inventoryType, index);
         if (prevItem != item)
         {
             prevItem = item;

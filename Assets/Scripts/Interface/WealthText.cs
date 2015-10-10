@@ -22,6 +22,7 @@ public class WealthText : MonoBehaviour
         int wealth = inventory.Wealth;
         if (prevWealth != wealth)
         {
+            prevWealth = wealth;
             wealthText.text = string.Format("{0:n0}", wealth);
         }
 	}
