@@ -18,11 +18,17 @@ public class EnemyController : MonoBehaviour {
     private Transform target;
     private float distance;
 
+    public string objectName;
+
+    private Color startColour;
+    private bool _displayObjectName;
+
     /// <summary>
     /// 
     /// </summary>
     public void Start()
     {
+        objectName = this.gameObject.name;
         m_animator = GetComponent<Animator>();
         m_controller = GetComponent<CharacterController>();
         m_seeker = GetComponent<Seeker>();
@@ -119,5 +125,31 @@ public class EnemyController : MonoBehaviour {
     public void OnDisable()
     {
         m_seeker.pathCallback -= OnPathComplete;
+    }
+
+    void OnGUI()
+    {
+        DisplayName();
+    }
+
+    void OnMouseEnter()
+    {
+        startColour = GetComponentInChildren<Renderer>().material.color;
+        GetComponentInChildren<Renderer>().material.color = Color.red;
+        _displayObjectName = true;
+    }
+
+    void OnMouseExit()
+    {
+        GetComponentInChildren<Renderer>().material.color = startColour;
+        _displayObjectName = false;
+    }
+
+    public void DisplayName()
+    {
+        if (_displayObjectName == true)
+        {
+            GUI.Box(new Rect(Event.current.mousePosition.x - 155, Event.current.mousePosition.y, 150, 25), objectName);
+        }
     }
 }
