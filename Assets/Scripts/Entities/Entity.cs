@@ -15,7 +15,7 @@ public class Entity : MonoBehaviour
 
     public virtual void Start()
     {
-        totalHealth = baseAttack;
+        totalHealth = baseHealth;
         totalSpeed = baseSpeed;
         totalAttack = baseAttack;
     }

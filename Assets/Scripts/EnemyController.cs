@@ -4,7 +4,7 @@ using System.Collections;
 
 public class EnemyController : MonoBehaviour {
 
-    public float WalkSpeed = 100;
+    public float WalkSpeed;
     public float WaypointArrivalThreshold = 0.1f;
     public LayerMask MouseSelectionLayerMask;
 
@@ -23,11 +23,19 @@ public class EnemyController : MonoBehaviour {
     private Color startColour;
     private bool _displayObjectName;
 
+    public int Health;
+    public int Speed;
+    public int Attack;
+
     /// <summary>
     /// 
     /// </summary>
     public void Start()
     {
+        Health = this.gameObject.GetComponent<Entity>().Health;
+        Speed = this.gameObject.GetComponent<Entity>().Speed;
+        Attack = this.gameObject.GetComponent<Entity>().Attack;
+
         objectName = this.gameObject.name;
         m_animator = GetComponent<Animator>();
         m_controller = GetComponent<CharacterController>();
@@ -44,7 +52,7 @@ public class EnemyController : MonoBehaviour {
         distance = Vector3.Distance(transform.position, target.position);
         // If the distance is less than 10 and the enemy is not
         // currently moving...
-        if (distance < 10 && distance > 2 && !m_moving)
+        if (distance < 10 && distance > 1.5 && !m_moving)
         {
             // Attempt to path to the ray intersection.
             m_seeker.StartPath(transform.position, target.position,
@@ -59,11 +67,10 @@ public class EnemyController : MonoBehaviour {
 
         //Test to see if Player is in range to attack
         //If so, stop and attack
-        if (distance <= 2)
+        if (distance <= 1.5)
         {
             m_path = null;
             m_currentWaypoint = -1;
-            m_animator.SetFloat("Speed", 0);
             m_moving = false;
             transform.rotation = Quaternion.LookRotation(
             m_controller.velocity);
@@ -152,4 +159,21 @@ public class EnemyController : MonoBehaviour {
             GUI.Box(new Rect(Event.current.mousePosition.x - 155, Event.current.mousePosition.y, 150, 25), objectName);
         }
     }
+
+    public void TakeDamage(int damage)
+    {
+        Health = Health - damage;
+    }
+
+    public int GiveDamage()
+    {
+        return Attack;
+    }
+
+    public void SetSpeed()
+    {
+        WalkSpeed = Speed;
+    }
+
+
 }

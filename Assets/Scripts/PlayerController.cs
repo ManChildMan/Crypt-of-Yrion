@@ -19,6 +19,10 @@ public class PlayerController : MonoBehaviour
     private bool m_moving = false;
     private int m_currentWaypoint = -1;
 
+    public int Health;
+    public int Speed;
+    public int Attack;
+
     /// <summary>
     /// 
     /// </summary>
@@ -27,6 +31,10 @@ public class PlayerController : MonoBehaviour
         m_animator = GetComponentInChildren<Animator>();
         m_controller = GetComponent<CharacterController>();
         m_seeker = GetComponent<Seeker>();
+
+        Health = this.gameObject.GetComponent<Player>().Health;
+        Speed = this.gameObject.GetComponent<Player>().Speed;
+        Attack = this.gameObject.GetComponent<Player>().Attack;
     }
 
     /// <summary>
@@ -105,5 +113,20 @@ public class PlayerController : MonoBehaviour
     public void OnDisable()
     {
         m_seeker.pathCallback -= OnPathComplete;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        Health = Health - damage;
+    }
+
+    public int GiveDamage()
+    {
+        return Attack;
+    }
+
+    public void SetSpeed()
+    {
+        WalkSpeed = Speed;
     }
 }
