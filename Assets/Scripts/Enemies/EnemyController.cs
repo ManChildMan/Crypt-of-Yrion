@@ -41,6 +41,8 @@ public class EnemyController : MonoBehaviour {
         m_controller = GetComponent<CharacterController>();
         m_seeker = GetComponent<Seeker>();
         target = GameObject.FindGameObjectWithTag("Player").transform;
+
+        SetSpeed();
     }
 
     /// <summary>

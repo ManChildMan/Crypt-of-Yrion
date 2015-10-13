@@ -46,16 +46,16 @@ public class PlayerController : MonoBehaviour
         // currently moving...
         if (Input.GetMouseButtonUp(1) && !m_moving)
         {
-            // Cast a ray from the cursor to find the point it intersects
-            // the floor in world coordinates.
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 100, MouseSelectionLayerMask))
-            {
-                // Attempt to path to the ray intersection.
-                m_seeker.StartPath(transform.position, hit.point, 
-                    OnPathComplete);
-            }         
+                // Cast a ray from the cursor to find the point it intersects
+                // the floor in world coordinates.
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, 100, MouseSelectionLayerMask))
+                {
+                    // Attempt to path to the ray intersection.
+                    m_seeker.StartPath(transform.position, hit.point, 
+                        OnPathComplete);
+                }         
         }
 
         // If we don't have a path return.
@@ -89,6 +89,11 @@ public class PlayerController : MonoBehaviour
             m_currentWaypoint]) < WaypointArrivalThreshold)
         {
             m_currentWaypoint++;
+        }
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            m_animator.SetTrigger("Attack");
         }
     }
 
