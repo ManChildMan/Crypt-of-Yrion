@@ -5,6 +5,11 @@ public class Player : Entity
     // References set by unity.
     public Inventory inventory;
 
+    public override void Start()
+    {
+        base.Start();
+    }
+
     public void RecalculateStats()
     {
         totalHealth = baseAttack;
@@ -12,12 +17,16 @@ public class Player : Entity
         totalAttack = baseAttack;
         for (int i = 0; i < (int)GearType.OneAboveMax; i++)
         {
-            GearItem item = (GearItem)inventory.GetItem(InventoryType.EquippedItems, i);
+            Item item = inventory.GetItem(InventoryType.EquippedItems, i);
             if (item != null)
             {
-                totalHealth += item.Health;
-                totalSpeed += item.Speed;
-                totalAttack += item.Attack;
+                GearItem gearItem = item as GearItem;
+                if (item != null)
+                {
+                    totalHealth += gearItem.Health;
+                    totalSpeed += gearItem.Speed;
+                    totalAttack += gearItem.Attack;
+                }
             }
         }
     }
