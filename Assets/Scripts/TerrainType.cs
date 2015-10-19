@@ -18,6 +18,10 @@ public static class TerrainType
     public const int Water_Shallow = 301;
     public const int Water_Deep = 302;
 
+    public const int Pillar_01 = 800;
+    public const int Pillar_02 = 801;
+    public const int Pillar_03 = 802;
+
     public const int Torch = 400;
     public const int Torch_WallMounted_North = 401;
     public const int Torch_WallMounted_South = 402;

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 /// <summary>
 /// Constructs the safe zone map.
@@ -12,6 +13,7 @@ public sealed class SafeZoneMap : MapCrafter {
         map.Depth = texture.height;
         int[,] mapData = new int[texture.width, texture.height];
         Color32[] pixelData = texture.GetPixels32();
+        //HashSet<string> colors = new HashSet<string>();
         for (int x = 0; x < texture.width; x++)
         {
             for (int z = 0; z < texture.height; z++)
@@ -29,6 +31,25 @@ public sealed class SafeZoneMap : MapCrafter {
                 {
                     mapData[x, z] = TerrainType.Water_Shallow;
                 }
+                else if (pixelColor.Equals(new Color32(175, 79, 0, 255)))
+                {
+                    mapData[x, z] = TerrainType.Pillar_03;
+                }
+                else if (pixelColor.Equals(new Color32(137, 61, 0, 255)))
+                {
+                    mapData[x, z] = TerrainType.Pillar_01;
+                }
+                else if (pixelColor.Equals(new Color32(216, 97, 0, 255)))
+                {
+                    mapData[x, z] = TerrainType.Pillar_02;
+                }
+                // Used for retrieving correct encoding values when creating a map.
+                //string name = pixelColor.r + " " + pixelColor.g + " " + pixelColor.b + " " + pixelColor.a;
+                //if (!colors.Contains(name))
+                //{
+                //    colors.Add(name);
+                //    Debug.Log(name);
+                //}
             }
         }
         Destroy(texture);

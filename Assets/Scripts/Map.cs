@@ -46,20 +46,21 @@ public class Map : MonoBehaviour
     public int SmoothingThreshold = 4;
     public int SmoothingIterations = 2;
     public float WeightedGraphEdgeRadius = 50f;
-
-
+    
     private AstarData m_astarData;
     private UnityEngine.Object m_floor;
     private UnityEngine.Object m_rubble;
     private UnityEngine.Object m_stoneBlock;
     private UnityEngine.Object m_water;
+    private UnityEngine.Object m_pillar1;
+    private UnityEngine.Object m_pillar2;
+    private UnityEngine.Object m_pillar3;
     private UnityEngine.Object m_torch;
     private UnityEngine.Object m_chest;
     private UnityEngine.Object m_stairwellUp;
     private UnityEngine.Object m_stairwellDown;
     private float m_minX;
     private float m_minZ;
-
     
 	void Start ()
     {
@@ -317,17 +318,20 @@ public class Map : MonoBehaviour
         m_rubble = Resources.Load("Rubble");
         m_stoneBlock = Resources.Load("StoneBlock");
         m_water = Resources.Load("Water_Shallow");
+        m_pillar1 = Resources.Load("Pillar1");
+        m_pillar2 = Resources.Load("Pillar2");
+        m_pillar3 = Resources.Load("Pillar3");
 
         for (int x = 0; x < Width; x++)
         {
             for (int z = 0; z < Depth; z++)
             {
-                if (data[x, z] == (int)TerrainType.Chasm)
+                if (data[x, z] == TerrainType.Chasm)
                 {
          
 
                 }
-                else if (data[x, z] == (int)TerrainType.Floor_01)
+                else if (data[x, z] == TerrainType.Floor_01)
                 {
                     GameObject floor = (GameObject)Instantiate(m_floor);
                     floor.transform.parent = Obstacles;
@@ -335,7 +339,7 @@ public class Map : MonoBehaviour
                     float zPos = m_minZ + (z * NodeSize);
                     floor.transform.position = new Vector3(xPos, 0, zPos);
                 }
-                else if (data[x, z] == (int)TerrainType.Impassable_Rubble_01)
+                else if (data[x, z] == TerrainType.Impassable_Rubble_01)
                 {
                     // Floor
                     GameObject rubble = (GameObject)Instantiate(m_rubble);
@@ -344,7 +348,7 @@ public class Map : MonoBehaviour
                     float zPos = m_minZ + (z * NodeSize);
                     rubble.transform.position = new Vector3(xPos, 0, zPos);
                 }
-                else if (data[x, z] == (int)TerrainType.Wall_Stone_01)
+                else if (data[x, z] == TerrainType.Wall_Stone_01)
                 {
                     // Stone Block                 
                     GameObject block = (GameObject)Instantiate(m_stoneBlock);
@@ -353,10 +357,34 @@ public class Map : MonoBehaviour
                     float zPos = m_minZ + (z * NodeSize);
                     block.transform.position = new Vector3(xPos, 0, zPos);
                 }
-                else if (data[x, z] == (int)TerrainType.Water_Shallow)
+                else if (data[x, z] == TerrainType.Water_Shallow)
                 {
                     // Stone Block                 
                     GameObject water = (GameObject)Instantiate(m_water);
+                    water.transform.parent = Obstacles;
+                    float xPos = m_minX + (x * NodeSize);
+                    float zPos = m_minZ + (z * NodeSize);
+                    water.transform.position = new Vector3(xPos, 0, zPos);
+                }
+                else if (data[x, z] == TerrainType.Pillar_01)
+                {                
+                    GameObject water = (GameObject)Instantiate(m_pillar1);
+                    water.transform.parent = Obstacles;
+                    float xPos = m_minX + (x * NodeSize);
+                    float zPos = m_minZ + (z * NodeSize);
+                    water.transform.position = new Vector3(xPos, 0, zPos);
+                }
+                else if (data[x, z] == TerrainType.Pillar_02)
+                {                
+                    GameObject water = (GameObject)Instantiate(m_pillar2);
+                    water.transform.parent = Obstacles;
+                    float xPos = m_minX + (x * NodeSize);
+                    float zPos = m_minZ + (z * NodeSize);
+                    water.transform.position = new Vector3(xPos, 0, zPos);
+                }
+                else if (data[x, z] == TerrainType.Pillar_03)
+                {               
+                    GameObject water = (GameObject)Instantiate(m_pillar3);
                     water.transform.parent = Obstacles;
                     float xPos = m_minX + (x * NodeSize);
                     float zPos = m_minZ + (z * NodeSize);
