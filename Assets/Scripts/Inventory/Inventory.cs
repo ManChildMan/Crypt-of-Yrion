@@ -39,6 +39,9 @@ public class Inventory : MonoBehaviour
         // Remove later.
         items[0] = new MagicalOrb();
         items[1] = new TheOneRing();
+        items[2] = new DebugSword1();
+        items[3] = new DebugSword2();
+        items[4] = new DebugSword3();
     }
 
     void Update()
