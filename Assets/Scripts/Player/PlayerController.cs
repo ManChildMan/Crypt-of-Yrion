@@ -79,9 +79,9 @@ public class PlayerController : MonoBehaviour
             transform.position).normalized;
         Vector3 displacement = direction * WalkSpeed * Time.deltaTime;
         m_controller.SimpleMove(displacement);
-        // Keep the adventurer looking in direction of movement.
+        // Keep the adventurer looking in direction of movement (ignores y axis)
         transform.rotation = Quaternion.LookRotation(
-            m_controller.velocity);
+            new Vector3(m_controller.velocity.x, 0.0f, m_controller.velocity.z));
 
         // If close enough to current waypoint switch to next waypoint.
         if (Vector3.Distance(transform.position, m_path.vectorPath[
