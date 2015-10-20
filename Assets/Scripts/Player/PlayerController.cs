@@ -42,8 +42,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void Update()
     {
-        // If the right mouse button was presses and the player is not
-        // currently moving...
+        // If the right mouse button was pressed start moving.
         if (Input.GetMouseButtonUp(1))
         {
                 // Cast a ray from the cursor to find the point it intersects

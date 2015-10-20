@@ -110,11 +110,20 @@ public class Inventory : MonoBehaviour
     public void StartMoveItem()
     {
         draggingItem = true;
+        if (lastNonDragItemIndex != -1)
+        {
+            Item item = allItems[(int)lastNonDragInventoryType][lastNonDragItemIndex];
+            if (item != null)
+            {
+                uiManager.ShowItemDrag(item);
+            }
+        }
     }
 
     public void EndMoveItem()
     {
         draggingItem = false;
+        uiManager.CloseItemDrag();
         if (lastNonDragItemIndex != -1 && lastDragItemIndex != -1 && allItems[(int)lastNonDragInventoryType][lastNonDragItemIndex] != null)
         {
             if (allItems[(int)lastDragInventoryType][lastDragItemIndex] == null)
@@ -131,6 +140,10 @@ public class Inventory : MonoBehaviour
                     {
                         player.RecalculateStats();
                     }
+                }
+                else
+                {
+                    uiManager.DisplayMessage(string.Format("Only {0} items may go into this slot.", (GearType)lastDragItemIndex));
                 }
             }
             else
@@ -151,7 +164,18 @@ public class Inventory : MonoBehaviour
                     {
                         player.RecalculateStats();
                     }
-                };
+                }
+                else
+                {
+                    if (lastDragInventoryType == InventoryType.EquippedItems)
+                    {
+                        uiManager.DisplayMessage(string.Format("Only {0} items may go into this slot.", (GearType)lastDragItemIndex));
+                    }
+                    else
+                    {
+                        uiManager.DisplayMessage(string.Format("Only {0} items may go into this slot.", (GearType)lastNonDragItemIndex));
+                    }
+                }
             }
         }
         lastNonDragItemIndex = lastDragItemIndex;

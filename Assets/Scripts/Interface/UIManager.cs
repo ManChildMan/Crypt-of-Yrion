@@ -4,28 +4,103 @@ using UnityEngine.UI;
 // Manages UI on the canvas game object (includes input on the canvas, use UserInterface for world input).
 public class UIManager : MonoBehaviour
 {
-    private GameObject inventoryWindow;
-    private GameObject statsWindow;
-    private GameObject equipmentWindow;
-    private GameObject itemPreviewWindow;
+    public ItemImages itemImages;
+
+    public GameObject transitionImageObject;
+    private Image transitionImage;
+    private float transition = 1.0f;
+
+    public GameObject inventoryWindow;
+    public GameObject statsWindow;
+    public GameObject equipmentWindow;
+    public GameObject itemPreviewWindow;
     private bool itemPreviewWindowOpen;
+
+    public GameObject itemDragContainerObject;
+    private Image itemDragImage;
+    private bool itemDragOpen;
+
+    public GameObject messageImageObject;
+    private Image messageImage;
+    private Text messageText;
+    private bool messageShowing;
+    private float messageDuration;
+    private float messageShowRatio;
     
 	void Start () {
-        inventoryWindow = transform.FindChild("Windows/InventoryWindow").gameObject;
-        inventoryWindow.SetActive(false);
-        statsWindow = transform.FindChild("Windows/StatsWindow").gameObject;
-        statsWindow.SetActive(false);
-        equipmentWindow = transform.FindChild("Windows/EquipmentWindow").gameObject;
-        equipmentWindow.SetActive(false);
-        itemPreviewWindow = transform.FindChild("ItemPreviewWindow").gameObject;
-        itemPreviewWindow.SetActive(false);
+        transitionImage = transitionImageObject.GetComponent<Image>();
+        transitionImage.color = new Color(0.0f, 0.0f, 0.0f, 1f);
+        transitionImageObject.SetActive(true);
+
+        itemDragImage = itemDragContainerObject.transform.FindChild("ItemDragImage").gameObject.GetComponent<Image>();
+
+        messageImage = messageImageObject.GetComponent<Image>();
+        messageImage.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+        messageText = messageImageObject.transform.FindChild("MessageText").gameObject.GetComponent<Text>();
+        messageText.color = new Color(1.0f, 0.7f, 0.0f, 0.0f);
     }
 
     void Update()
     {
+        // Update transiton.
+        if (transition != 0.0f)
+        {
+            transition -= Time.deltaTime;
+            if (transition <= 0.0f)
+            {
+                transition = 0.0f;
+                transitionImageObject.SetActive(false);
+            }
+            else
+            {
+                transitionImage.color = new Color(0.0f, 0.0f, 0.0f, transition);
+            }
+        }
+        
+        // Move the item preview window if its open.
         if (itemPreviewWindowOpen)
         {
             itemPreviewWindow.transform.position = new Vector3(Input.mousePosition.x + 200.0f, Input.mousePosition.y, 0.0f);
+        }
+        
+        // Move the item drag image if its open.
+        if (itemDragOpen)
+        {
+            itemDragContainerObject.transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0.0f);
+        }
+
+        // Show/hide/transition a message.
+        if (messageShowing)
+        {
+            messageDuration -= Time.deltaTime;
+            if (messageDuration <= 0.0f)
+            {
+                messageShowing = false;
+            }
+            else if (messageShowRatio != 1.0f)
+            {
+                messageShowRatio += Time.deltaTime;
+                if (messageShowRatio > 1.0f)
+                {
+                    messageShowRatio = 1.0f;
+                }
+                messageImage.color = new Color(1.0f, 1.0f, 1.0f, messageShowRatio);
+                messageText.color = new Color(1.0f, 0.7f, 0.0f, messageShowRatio);
+            }
+        }
+        else if (messageShowRatio != 0.0f)
+        {
+            messageShowRatio -= Time.deltaTime;
+            if (messageShowRatio <= 0.0f)
+            {
+                messageShowRatio = 0.0f;
+                messageImageObject.SetActive(false);
+            }
+            else
+            {
+                messageImage.color = new Color(1.0f, 1.0f, 1.0f, messageShowRatio);
+                messageText.color = new Color(1.0f, 0.7f, 0.0f, messageShowRatio);
+            }
         }
     }
 
@@ -137,5 +212,26 @@ public class UIManager : MonoBehaviour
     {
         itemPreviewWindowOpen = false;
         itemPreviewWindow.SetActive(false);
+    }
+
+    public void ShowItemDrag(Item item)
+    {
+        itemDragOpen = true;
+        itemDragContainerObject.SetActive(true);
+        itemDragImage.sprite = itemImages.GetItemSprite(item.Name);
+    }
+
+    public void CloseItemDrag()
+    {
+        itemDragOpen = false;
+        itemDragContainerObject.SetActive(false);
+    }
+
+    public void DisplayMessage(string message)
+    {
+        messageDuration = message.Length * 0.15f;
+        messageShowing = true;
+        messageImageObject.SetActive(true);
+        messageText.text = message;
     }
 }
