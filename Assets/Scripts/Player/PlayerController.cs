@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
     {
         // If the right mouse button was presses and the player is not
         // currently moving...
-        if (Input.GetMouseButtonUp(1) && !m_moving)
+        if (Input.GetMouseButtonUp(1))
         {
                 // Cast a ray from the cursor to find the point it intersects
                 // the floor in world coordinates.
