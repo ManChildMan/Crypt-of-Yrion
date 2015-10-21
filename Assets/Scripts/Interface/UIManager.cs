@@ -13,6 +13,8 @@ public class UIManager : MonoBehaviour
     public GameObject inventoryWindow;
     public GameObject statsWindow;
     public GameObject equipmentWindow;
+    public GameObject shopWindow;
+    private ShopWindow shopWindowC;
     public GameObject itemPreviewWindow;
     private bool itemPreviewWindowOpen;
 
@@ -31,6 +33,8 @@ public class UIManager : MonoBehaviour
         transitionImage = transitionImageObject.GetComponent<Image>();
         transitionImage.color = new Color(0.0f, 0.0f, 0.0f, 1f);
         transitionImageObject.SetActive(true);
+
+        shopWindowC = shopWindow.GetComponent<ShopWindow>();
 
         itemDragImage = itemDragContainerObject.transform.FindChild("ItemDragImage").gameObject.GetComponent<Image>();
 
@@ -134,6 +138,17 @@ public class UIManager : MonoBehaviour
         equipmentWindow.SetActive(false);
     }
 
+    public void ShowShopWindow(Shop shop)
+    {
+        shopWindow.SetActive(true);
+        shopWindowC.ShowShop(shop);
+    }
+
+    public void CloseShopWindow()
+    {
+        shopWindow.SetActive(false);
+    }
+
     public void ShowItemPreviewWindow(Item item)
     {
         itemPreviewWindowOpen = true;
@@ -160,7 +175,7 @@ public class UIManager : MonoBehaviour
                 titleText.color = Color.green;
                 break;
             case Rarity.Rare:
-                titleText.color = Color.blue;
+                titleText.color = Color.cyan;
                 break;
             case Rarity.Epic:
                 titleText.color = Color.magenta;

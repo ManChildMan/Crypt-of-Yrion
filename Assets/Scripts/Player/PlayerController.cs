@@ -66,10 +66,7 @@ public class PlayerController : MonoBehaviour
         // Test if we have just reached the end of the path. 
         if (m_currentWaypoint >= m_path.vectorPath.Count)
         {
-            m_path = null;
-            m_currentWaypoint = -1;
-            m_animator.SetFloat("Speed", 0);
-            m_moving = false;
+            StopMoving();
             return;
         }
         
@@ -132,5 +129,13 @@ public class PlayerController : MonoBehaviour
     public void SetSpeed()
     {
         WalkSpeed = Speed;
+    }
+
+    public void StopMoving()
+    {
+        m_path = null;
+        m_currentWaypoint = -1;
+        m_animator.SetFloat("Speed", 0);
+        m_moving = false;
     }
 }
