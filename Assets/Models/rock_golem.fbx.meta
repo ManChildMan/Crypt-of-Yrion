@@ -1,0 +1,2360 @@
+fileFormatVersion: 2
+guid: f946b6d47b1fc8942966201691c6b84b
+timeCreated: 1445515340
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: arm_L
+    100002: arm_R
+    100004: Armature
+    100006: Bone
+    100008: Cam
+    100010: chest
+    100012: eyebrow1_L
+    100014: eyebrow1_R
+    100016: eyebrow2_L
+    100018: eyebrow2_R
+    100020: foot_L
+    100022: foot_R
+    100024: head
+    100026: hip
+    100028: hip_L
+    100030: hip_R
+    100032: indexf1_L
+    100034: indexf1_R
+    100036: indexf2_L
+    100038: indexf2_R
+    100040: indexf3_L
+    100042: indexf3_R
+    100044: jaws
+    100046: leg1_L
+    100048: leg1_R
+    100050: leg2_L
+    100052: leg2_R
+    100054: master
+    100056: Plane
+    100058: Rock_2
+    100060: //RootNode
+    100062: shoulder_L
+    100064: shoulder_R
+    100066: spine
+    100068: stone
+    100070: Sun
+    100072: thumb1_L
+    100074: thumb1_R
+    100076: thumb2_L
+    100078: thumb2_R
+    100080: Thumb3_L
+    100082: Thumb3_R
+    100084: upperhand_L
+    100086: upperhand_R
+    100088: Weapon_L
+    100090: Weapon_R
+    100092: widef1_L
+    100094: widef1_R
+    100096: widef2_L
+    100098: widef2_R
+    100100: widef3_L
+    100102: widef3_R
+    400000: arm_L
+    400002: arm_R
+    400004: Armature
+    400006: Bone
+    400008: Cam
+    400010: chest
+    400012: eyebrow1_L
+    400014: eyebrow1_R
+    400016: eyebrow2_L
+    400018: eyebrow2_R
+    400020: foot_L
+    400022: foot_R
+    400024: head
+    400026: hip
+    400028: hip_L
+    400030: hip_R
+    400032: indexf1_L
+    400034: indexf1_R
+    400036: indexf2_L
+    400038: indexf2_R
+    400040: indexf3_L
+    400042: indexf3_R
+    400044: jaws
+    400046: leg1_L
+    400048: leg1_R
+    400050: leg2_L
+    400052: leg2_R
+    400054: master
+    400056: Plane
+    400058: Rock_2
+    400060: //RootNode
+    400062: shoulder_L
+    400064: shoulder_R
+    400066: spine
+    400068: stone
+    400070: Sun
+    400072: thumb1_L
+    400074: thumb1_R
+    400076: thumb2_L
+    400078: thumb2_R
+    400080: Thumb3_L
+    400082: Thumb3_R
+    400084: upperhand_L
+    400086: upperhand_R
+    400088: Weapon_L
+    400090: Weapon_R
+    400092: widef1_L
+    400094: widef1_R
+    400096: widef2_L
+    400098: widef2_R
+    400100: widef3_L
+    400102: widef3_R
+    2300000: Plane
+    3300000: Plane
+    4300000: Plane
+    4300002: stone
+    4300004: Rock_2
+    7400000: Default Take
+    7400002: Attack1
+    7400004: Attack2
+    7400006: Death
+    7400008: Hurt1
+    7400010: Hurt2
+    7400012: Hurt3
+    7400014: Idle
+    7400016: Run
+    7400018: Sleep_End
+    7400020: Sleep_Idle
+    7400022: Sleep_Start
+    7400024: Throw_Rock
+    7400026: Throw_Rock2
+    7400028: Walk
+    7400030: Idle0
+    7400032: Sleep_Idle0
+    9500000: //RootNode
+    13700000: Rock_2
+    13700002: stone
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 'MuscleClip ''rock_golem'' conversion warning: ''Armature/master/Bone/spine''
+      is between humanoid transforms and has rotation animation. This might lower
+      retargeting quality.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_L''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_R''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem'' conversion warning: ''Armature/master/Bone/hip'' is
+      between humanoid transforms and has rotation animation. This might lower retargeting
+      quality.
+
+
+      MuscleClip ''rock_golem'' conversion warning: ''Armature/master/Bone/spine''
+      is between humanoid transforms and has rotation animation. This might lower
+      retargeting quality.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_L''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_R''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem'' conversion warning: ''Armature/master/Bone/hip'' is
+      between humanoid transforms and has rotation animation. This might lower retargeting
+      quality.
+
+
+      MuscleClip ''rock_golem'' conversion warning: ''Armature/master/Bone/spine''
+      is between humanoid transforms and has rotation animation. This might lower
+      retargeting quality.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_L''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_R''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem'' conversion warning: ''Armature/master/Bone/hip'' is
+      between humanoid transforms and has rotation animation. This might lower retargeting
+      quality.
+
+
+      MuscleClip ''rock_golem'' conversion warning: ''Armature/master/Bone/spine''
+      is between humanoid transforms and has rotation animation. This might lower
+      retargeting quality.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_L''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_R''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem'' conversion warning: ''Armature/master/Bone/spine''
+      is between humanoid transforms and has rotation animation. This might lower
+      retargeting quality.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_L''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_R''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem'' conversion warning: ''Armature/master/Bone/spine''
+      is between humanoid transforms and has rotation animation. This might lower
+      retargeting quality.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_L''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_R''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem'' conversion warning: ''Armature/master/Bone/spine''
+      is between humanoid transforms and has rotation animation. This might lower
+      retargeting quality.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_L''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_R''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem'' conversion warning: ''Armature/master/Bone/spine''
+      is between humanoid transforms and has rotation animation. This might lower
+      retargeting quality.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_L''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_R''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem'' conversion warning: ''Armature/master/Bone/spine''
+      is between humanoid transforms and has rotation animation. This might lower
+      retargeting quality.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_L''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_R''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem'' conversion warning: ''Armature/master/Bone/spine''
+      is between humanoid transforms and has rotation animation. This might lower
+      retargeting quality.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_L''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_R''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem'' conversion warning: ''Armature/master/Bone/spine''
+      is between humanoid transforms and has rotation animation. This might lower
+      retargeting quality.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_L''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_R''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem'' conversion warning: ''Armature/master/Bone/spine''
+      is between humanoid transforms and has rotation animation. This might lower
+      retargeting quality.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_L''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_R''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem'' conversion warning: ''Armature/master/Bone/hip'' is
+      between humanoid transforms and has rotation animation. This might lower retargeting
+      quality.
+
+
+      MuscleClip ''rock_golem'' conversion warning: ''Armature/master/Bone/spine''
+      is between humanoid transforms and has rotation animation. This might lower
+      retargeting quality.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_L''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_R''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem'' conversion warning: ''Armature/master/Bone/hip'' is
+      between humanoid transforms and has rotation animation. This might lower retargeting
+      quality.
+
+
+      MuscleClip ''rock_golem'' conversion warning: ''Armature/master/Bone/spine''
+      is between humanoid transforms and has rotation animation. This might lower
+      retargeting quality.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_L''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem''conversion warning: ''Armature/master/Bone/spine/chest/shoulder_R''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''rock_golem'' conversion warning: ''Armature/master/Bone/hip'' is
+      between humanoid transforms and has rotation animation. This might lower retargeting
+      quality.
+
+
+'
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Sleep_Idle0
+      takeName: Sleep_Idle
+      firstFrame: -1
+      lastFrame: 49
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/master
+        weight: 1
+      - path: Armature/master/Bone
+        weight: 1
+      - path: Armature/master/Bone/hip
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L/leg2_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R/leg2_R
+        weight: 1
+      - path: Armature/master/Bone/spine
+        weight: 1
+      - path: Armature/master/Bone/spine/chest
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L/eyebrow2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R/eyebrow2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/jaws
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L/indexf3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L/Thumb3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/Weapon_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L/widef3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R/indexf3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R/Thumb3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/Weapon_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R/widef3_R
+        weight: 0
+      - path: Armature/master/foot_L
+        weight: 0
+      - path: Armature/master/foot_R
+        weight: 0
+      - path: Cam
+        weight: 0
+      - path: Plane
+        weight: 0
+      - path: Rock_2
+        weight: 0
+      - path: stone
+        weight: 0
+      - path: Sun
+        weight: 0
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Attack1
+      takeName: Attack1
+      firstFrame: -1
+      lastFrame: 84
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/master
+        weight: 1
+      - path: Armature/master/Bone
+        weight: 1
+      - path: Armature/master/Bone/hip
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L/leg2_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R/leg2_R
+        weight: 1
+      - path: Armature/master/Bone/spine
+        weight: 1
+      - path: Armature/master/Bone/spine/chest
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L/eyebrow2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R/eyebrow2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/jaws
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L/indexf3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L/Thumb3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/Weapon_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L/widef3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R/indexf3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R/Thumb3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/Weapon_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R/widef3_R
+        weight: 0
+      - path: Armature/master/foot_L
+        weight: 0
+      - path: Armature/master/foot_R
+        weight: 0
+      - path: Cam
+        weight: 0
+      - path: Plane
+        weight: 0
+      - path: Rock_2
+        weight: 0
+      - path: stone
+        weight: 0
+      - path: Sun
+        weight: 0
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Attack2
+      takeName: Attack2
+      firstFrame: -1
+      lastFrame: 84
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/master
+        weight: 1
+      - path: Armature/master/Bone
+        weight: 1
+      - path: Armature/master/Bone/hip
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L/leg2_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R/leg2_R
+        weight: 1
+      - path: Armature/master/Bone/spine
+        weight: 1
+      - path: Armature/master/Bone/spine/chest
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L/eyebrow2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R/eyebrow2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/jaws
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L/indexf3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L/Thumb3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/Weapon_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L/widef3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R/indexf3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R/Thumb3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/Weapon_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R/widef3_R
+        weight: 0
+      - path: Armature/master/foot_L
+        weight: 0
+      - path: Armature/master/foot_R
+        weight: 0
+      - path: Cam
+        weight: 0
+      - path: Plane
+        weight: 0
+      - path: Rock_2
+        weight: 0
+      - path: stone
+        weight: 0
+      - path: Sun
+        weight: 0
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Death
+      takeName: Death
+      firstFrame: -1
+      lastFrame: 138
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/master
+        weight: 1
+      - path: Armature/master/Bone
+        weight: 1
+      - path: Armature/master/Bone/hip
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L/leg2_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R/leg2_R
+        weight: 1
+      - path: Armature/master/Bone/spine
+        weight: 1
+      - path: Armature/master/Bone/spine/chest
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L/eyebrow2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R/eyebrow2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/jaws
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L/indexf3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L/Thumb3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/Weapon_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L/widef3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R/indexf3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R/Thumb3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/Weapon_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R/widef3_R
+        weight: 0
+      - path: Armature/master/foot_L
+        weight: 0
+      - path: Armature/master/foot_R
+        weight: 0
+      - path: Cam
+        weight: 0
+      - path: Plane
+        weight: 0
+      - path: Rock_2
+        weight: 0
+      - path: stone
+        weight: 0
+      - path: Sun
+        weight: 0
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Hurt1
+      takeName: Hurt1
+      firstFrame: -1
+      lastFrame: 34
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/master
+        weight: 1
+      - path: Armature/master/Bone
+        weight: 1
+      - path: Armature/master/Bone/hip
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L/leg2_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R/leg2_R
+        weight: 1
+      - path: Armature/master/Bone/spine
+        weight: 1
+      - path: Armature/master/Bone/spine/chest
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L/eyebrow2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R/eyebrow2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/jaws
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L/indexf3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L/Thumb3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/Weapon_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L/widef3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R/indexf3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R/Thumb3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/Weapon_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R/widef3_R
+        weight: 0
+      - path: Armature/master/foot_L
+        weight: 0
+      - path: Armature/master/foot_R
+        weight: 0
+      - path: Cam
+        weight: 0
+      - path: Plane
+        weight: 0
+      - path: Rock_2
+        weight: 0
+      - path: stone
+        weight: 0
+      - path: Sun
+        weight: 0
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Hurt2
+      takeName: Hurt2
+      firstFrame: -1
+      lastFrame: 39
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/master
+        weight: 1
+      - path: Armature/master/Bone
+        weight: 1
+      - path: Armature/master/Bone/hip
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L/leg2_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R/leg2_R
+        weight: 1
+      - path: Armature/master/Bone/spine
+        weight: 1
+      - path: Armature/master/Bone/spine/chest
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L/eyebrow2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R/eyebrow2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/jaws
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L/indexf3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L/Thumb3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/Weapon_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L/widef3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R/indexf3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R/Thumb3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/Weapon_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R/widef3_R
+        weight: 0
+      - path: Armature/master/foot_L
+        weight: 0
+      - path: Armature/master/foot_R
+        weight: 0
+      - path: Cam
+        weight: 0
+      - path: Plane
+        weight: 0
+      - path: Rock_2
+        weight: 0
+      - path: stone
+        weight: 0
+      - path: Sun
+        weight: 0
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Hurt3
+      takeName: Hurt3
+      firstFrame: -1
+      lastFrame: 39
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/master
+        weight: 1
+      - path: Armature/master/Bone
+        weight: 1
+      - path: Armature/master/Bone/hip
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L/leg2_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R/leg2_R
+        weight: 1
+      - path: Armature/master/Bone/spine
+        weight: 1
+      - path: Armature/master/Bone/spine/chest
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L/eyebrow2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R/eyebrow2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/jaws
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L/indexf3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L/Thumb3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/Weapon_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L/widef3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R/indexf3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R/Thumb3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/Weapon_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R/widef3_R
+        weight: 0
+      - path: Armature/master/foot_L
+        weight: 0
+      - path: Armature/master/foot_R
+        weight: 0
+      - path: Cam
+        weight: 0
+      - path: Plane
+        weight: 0
+      - path: Rock_2
+        weight: 0
+      - path: stone
+        weight: 0
+      - path: Sun
+        weight: 0
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Idle
+      takeName: Idle
+      firstFrame: -1
+      lastFrame: 254
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/master
+        weight: 1
+      - path: Armature/master/Bone
+        weight: 1
+      - path: Armature/master/Bone/hip
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L/leg2_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R/leg2_R
+        weight: 1
+      - path: Armature/master/Bone/spine
+        weight: 1
+      - path: Armature/master/Bone/spine/chest
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L/eyebrow2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R/eyebrow2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/jaws
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L/indexf3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L/Thumb3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/Weapon_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L/widef3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R/indexf3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R/Thumb3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/Weapon_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R/widef3_R
+        weight: 0
+      - path: Armature/master/foot_L
+        weight: 0
+      - path: Armature/master/foot_R
+        weight: 0
+      - path: Cam
+        weight: 0
+      - path: Plane
+        weight: 0
+      - path: Rock_2
+        weight: 0
+      - path: stone
+        weight: 0
+      - path: Sun
+        weight: 0
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Run
+      takeName: Run
+      firstFrame: -1
+      lastFrame: 49
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/master
+        weight: 1
+      - path: Armature/master/Bone
+        weight: 1
+      - path: Armature/master/Bone/hip
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L/leg2_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R/leg2_R
+        weight: 1
+      - path: Armature/master/Bone/spine
+        weight: 1
+      - path: Armature/master/Bone/spine/chest
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L/eyebrow2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R/eyebrow2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/jaws
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L/indexf3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L/Thumb3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/Weapon_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L/widef3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R/indexf3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R/Thumb3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/Weapon_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R/widef3_R
+        weight: 0
+      - path: Armature/master/foot_L
+        weight: 0
+      - path: Armature/master/foot_R
+        weight: 0
+      - path: Cam
+        weight: 0
+      - path: Plane
+        weight: 0
+      - path: Rock_2
+        weight: 0
+      - path: stone
+        weight: 0
+      - path: Sun
+        weight: 0
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Sleep_End
+      takeName: Sleep_End
+      firstFrame: -1
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/master
+        weight: 1
+      - path: Armature/master/Bone
+        weight: 1
+      - path: Armature/master/Bone/hip
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L/leg2_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R/leg2_R
+        weight: 1
+      - path: Armature/master/Bone/spine
+        weight: 1
+      - path: Armature/master/Bone/spine/chest
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L/eyebrow2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R/eyebrow2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/jaws
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L/indexf3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L/Thumb3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/Weapon_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L/widef3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R/indexf3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R/Thumb3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/Weapon_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R/widef3_R
+        weight: 0
+      - path: Armature/master/foot_L
+        weight: 0
+      - path: Armature/master/foot_R
+        weight: 0
+      - path: Cam
+        weight: 0
+      - path: Plane
+        weight: 0
+      - path: Rock_2
+        weight: 0
+      - path: stone
+        weight: 0
+      - path: Sun
+        weight: 0
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Sleep_Idle
+      takeName: Sleep_Idle
+      firstFrame: -1
+      lastFrame: 49
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/master
+        weight: 1
+      - path: Armature/master/Bone
+        weight: 1
+      - path: Armature/master/Bone/hip
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L/leg2_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R/leg2_R
+        weight: 1
+      - path: Armature/master/Bone/spine
+        weight: 1
+      - path: Armature/master/Bone/spine/chest
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L/eyebrow2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R/eyebrow2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/jaws
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L/indexf3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L/Thumb3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/Weapon_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L/widef3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R/indexf3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R/Thumb3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/Weapon_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R/widef3_R
+        weight: 0
+      - path: Armature/master/foot_L
+        weight: 0
+      - path: Armature/master/foot_R
+        weight: 0
+      - path: Cam
+        weight: 0
+      - path: Plane
+        weight: 0
+      - path: Rock_2
+        weight: 0
+      - path: stone
+        weight: 0
+      - path: Sun
+        weight: 0
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Sleep_Start
+      takeName: Sleep_Start
+      firstFrame: -1
+      lastFrame: 57
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/master
+        weight: 1
+      - path: Armature/master/Bone
+        weight: 1
+      - path: Armature/master/Bone/hip
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L/leg2_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R/leg2_R
+        weight: 1
+      - path: Armature/master/Bone/spine
+        weight: 1
+      - path: Armature/master/Bone/spine/chest
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L/eyebrow2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R/eyebrow2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/jaws
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L/indexf3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L/Thumb3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/Weapon_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L/widef3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R/indexf3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R/Thumb3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/Weapon_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R/widef3_R
+        weight: 0
+      - path: Armature/master/foot_L
+        weight: 0
+      - path: Armature/master/foot_R
+        weight: 0
+      - path: Cam
+        weight: 0
+      - path: Plane
+        weight: 0
+      - path: Rock_2
+        weight: 0
+      - path: stone
+        weight: 0
+      - path: Sun
+        weight: 0
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Throw_Rock
+      takeName: Throw_Rock
+      firstFrame: -1
+      lastFrame: 180
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/master
+        weight: 1
+      - path: Armature/master/Bone
+        weight: 1
+      - path: Armature/master/Bone/hip
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L/leg2_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R/leg2_R
+        weight: 1
+      - path: Armature/master/Bone/spine
+        weight: 1
+      - path: Armature/master/Bone/spine/chest
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L/eyebrow2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R/eyebrow2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/jaws
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L/indexf3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L/Thumb3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/Weapon_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L/widef3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R/indexf3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R/Thumb3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/Weapon_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R/widef3_R
+        weight: 0
+      - path: Armature/master/foot_L
+        weight: 0
+      - path: Armature/master/foot_R
+        weight: 0
+      - path: Cam
+        weight: 0
+      - path: Plane
+        weight: 0
+      - path: Rock_2
+        weight: 0
+      - path: stone
+        weight: 0
+      - path: Sun
+        weight: 0
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Throw_Rock2
+      takeName: Throw_Rock2
+      firstFrame: -1
+      lastFrame: 130
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/master
+        weight: 1
+      - path: Armature/master/Bone
+        weight: 1
+      - path: Armature/master/Bone/hip
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L/leg2_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R/leg2_R
+        weight: 1
+      - path: Armature/master/Bone/spine
+        weight: 1
+      - path: Armature/master/Bone/spine/chest
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L/eyebrow2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R/eyebrow2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/jaws
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L/indexf3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L/Thumb3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/Weapon_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L/widef3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R/indexf3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R/Thumb3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/Weapon_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R/widef3_R
+        weight: 0
+      - path: Armature/master/foot_L
+        weight: 0
+      - path: Armature/master/foot_R
+        weight: 0
+      - path: Cam
+        weight: 0
+      - path: Plane
+        weight: 0
+      - path: Rock_2
+        weight: 0
+      - path: stone
+        weight: 0
+      - path: Sun
+        weight: 0
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Walk
+      takeName: Walk
+      firstFrame: -1
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/master
+        weight: 1
+      - path: Armature/master/Bone
+        weight: 1
+      - path: Armature/master/Bone/hip
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_L/leg1_L/leg2_L
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R
+        weight: 1
+      - path: Armature/master/Bone/hip/hip_R/leg1_R/leg2_R
+        weight: 1
+      - path: Armature/master/Bone/spine
+        weight: 1
+      - path: Armature/master/Bone/spine/chest
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_L/eyebrow2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/eyebrow1_R/eyebrow2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/head/jaws
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/indexf1_L/indexf2_L/indexf3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/thumb1_L/thumb2_L/Thumb3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/Weapon_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_L/upperhand_L/arm_L/widef1_L/widef2_L/widef3_L
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/indexf1_R/indexf2_R/indexf3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/thumb1_R/thumb2_R/Thumb3_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/Weapon_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R
+        weight: 1
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R
+        weight: 0
+      - path: Armature/master/Bone/spine/chest/shoulder_R/upperhand_R/arm_R/widef1_R/widef2_R/widef3_R
+        weight: 0
+      - path: Armature/master/foot_L
+        weight: 0
+      - path: Armature/master/foot_R
+        weight: 0
+      - path: Cam
+        weight: 0
+      - path: Plane
+        weight: 0
+      - path: Rock_2
+        weight: 0
+      - path: stone
+        weight: 0
+      - path: Sun
+        weight: 0
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 30
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
