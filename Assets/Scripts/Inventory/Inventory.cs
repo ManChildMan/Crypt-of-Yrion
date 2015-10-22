@@ -29,19 +29,30 @@ public class Inventory : MonoBehaviour
 
     void Start()
     {
-        items = new Item[MaxItems];
-        equipped = new Item[(int)GearType.OneAboveMax]; // One slot for each gear type.
-        allItems = new Item[(int)InventoryType.OneAboveMax][];
-        allItems[(int)InventoryType.InventoryItems] = items;
-        allItems[(int)InventoryType.EquippedItems] = equipped;
-        wealth = WeathStart;
+        if (StateMigrator.allItems == null)
+        {
+            items = new Item[MaxItems];
+            equipped = new Item[(int)GearType.OneAboveMax]; // One slot for each gear type.
+            allItems = new Item[(int)InventoryType.OneAboveMax][];
+            allItems[(int)InventoryType.InventoryItems] = items;
+            allItems[(int)InventoryType.EquippedItems] = equipped;
+            wealth = WeathStart;
 
-        // Remove later.
-        items[0] = new MagicalOrb();
-        items[1] = new TheOneRing();
-        items[2] = new DebugSword1();
-        items[3] = new DebugSword2();
-        items[4] = new DebugSword3();
+            // Remove later.
+            items[0] = new MagicalOrb();
+            items[1] = new TheOneRing();
+            items[2] = new DebugSword1();
+            items[3] = new DebugSword2();
+            items[4] = new DebugSword3();
+        }
+        else
+        {
+            allItems = StateMigrator.allItems;
+            items = allItems[(int)InventoryType.InventoryItems];
+            equipped = allItems[(int)InventoryType.EquippedItems];
+            wealth = StateMigrator.wealth;
+            player.RecalculateStats();
+        }
     }
 
     void Update()
@@ -255,5 +266,11 @@ public class Inventory : MonoBehaviour
             lastDragItemIndex = -1;
         }
         uiManager.CloseItemPreviewWindow();
+    }
+
+    public void SaveState()
+    {
+        StateMigrator.allItems = allItems;
+        StateMigrator.wealth = wealth;
     }
 }

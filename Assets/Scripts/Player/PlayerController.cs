@@ -32,6 +32,17 @@ public class PlayerController : MonoBehaviour
         m_controller = GetComponent<CharacterController>();
         m_seeker = GetComponent<Seeker>();
 
+        // Positions the player correctly in the map, based on the last portal taken.
+        switch (StateMigrator.lastPortalActionTaken)
+        {
+            case PortalAction.ExitLevel1:
+                transform.position = new Vector3(10.0f, 0.0f, 0.0f);
+                break;
+            case PortalAction.ExitLevel2:
+                transform.position = new Vector3(-10.0f, 0.0f, 0.0f);
+                break;
+        }
+
         Health = this.gameObject.GetComponent<Player>().Health;
         Speed = this.gameObject.GetComponent<Player>().Speed;
         Attack = this.gameObject.GetComponent<Player>().Attack;

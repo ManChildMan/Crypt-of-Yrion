@@ -4,6 +4,7 @@ using UnityEngine.UI;
 // Manages UI on the canvas game object (includes input on the canvas, use UserInterface for world input).
 public class UIManager : MonoBehaviour
 {
+    public Inventory inventory;
     public ItemImages itemImages;
 
     public GameObject transitionImageObject;
@@ -18,6 +19,11 @@ public class UIManager : MonoBehaviour
     public GameObject itemPreviewWindow;
     private bool itemPreviewWindowOpen;
 
+    public GameObject portalDialog;
+    private Text portalDialogText;
+    private PortalAction portalAction;
+    private bool portalTransition;
+
     public GameObject itemDragContainerObject;
     private Image itemDragImage;
     private bool itemDragOpen;
@@ -28,6 +34,9 @@ public class UIManager : MonoBehaviour
     private bool messageShowing;
     private float messageDuration;
     private float messageShowRatio;
+
+    public GameObject loadDialog;
+    private CanvasGroup loadDialogCanvasGroup;
     
 	void Start () {
         transitionImage = transitionImageObject.GetComponent<Image>();
@@ -36,27 +45,50 @@ public class UIManager : MonoBehaviour
 
         shopWindowC = shopWindow.GetComponent<ShopWindow>();
 
+        portalDialogText = portalDialog.transform.FindChild("Text").gameObject.GetComponent<Text>();
+
         itemDragImage = itemDragContainerObject.transform.FindChild("ItemDragImage").gameObject.GetComponent<Image>();
 
         messageImage = messageImageObject.GetComponent<Image>();
         messageImage.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
         messageText = messageImageObject.transform.FindChild("MessageText").gameObject.GetComponent<Text>();
         messageText.color = new Color(1.0f, 0.7f, 0.0f, 0.0f);
+
+        loadDialogCanvasGroup = loadDialog.GetComponent<CanvasGroup>();
     }
 
     void Update()
     {
-        // Update transiton.
-        if (transition != 0.0f)
+        // Update transitons.
+        if (!portalTransition)
         {
-            transition -= Time.deltaTime;
-            if (transition <= 0.0f)
+            if (transition != 0.0f)
             {
-                transition = 0.0f;
-                transitionImageObject.SetActive(false);
+                transition -= Time.deltaTime;
+                if (transition <= 0.0f)
+                {
+                    transition = 0.0f;
+                    transitionImageObject.SetActive(false);
+                }
+                else
+                {
+                    transitionImage.color = new Color(0.0f, 0.0f, 0.0f, transition);
+                }
+            }
+        }
+        else
+        {
+            transition += Time.deltaTime;
+            if (transition >= 1.0f)
+            {
+                loadDialogCanvasGroup.alpha = 1.0f;
+                transitionImage.color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
+                UsePortalNow();
+                return;
             }
             else
             {
+                loadDialogCanvasGroup.alpha = transition;
                 transitionImage.color = new Color(0.0f, 0.0f, 0.0f, transition);
             }
         }
@@ -147,6 +179,47 @@ public class UIManager : MonoBehaviour
     public void CloseShopWindow()
     {
         shopWindow.SetActive(false);
+    }
+
+    public void ShowPortalDialog(string text, PortalAction portalAction)
+    {
+        portalDialog.SetActive(true);
+        portalDialogText.text = text;
+        this.portalAction = portalAction;
+    }
+
+    public void ClosePortalDialog()
+    {
+        portalDialog.SetActive(false);
+    }
+
+    public void UsePortal()
+    {
+        transitionImageObject.SetActive(true);
+        transitionImage.color = new Color(0.0f, 0.0f, 0.0f, 0.0f);
+        portalTransition = true;
+        loadDialog.SetActive(true);
+    }
+
+    public void UsePortalNow()
+    {
+        StateMigrator.lastPortalActionTaken = portalAction;
+        inventory.SaveState();
+        switch (portalAction)
+        {
+            case PortalAction.GotoLevel1:
+                Application.LoadLevel("level1");
+                break;
+            case PortalAction.ExitLevel1:
+                Application.LoadLevel("safezone");
+                break;
+            case PortalAction.GotoLevel2:
+                Application.LoadLevel("level2");
+                break;
+            case PortalAction.ExitLevel2:
+                Application.LoadLevel("safezone");
+                break;
+        }
     }
 
     public void ShowItemPreviewWindow(Item item)
