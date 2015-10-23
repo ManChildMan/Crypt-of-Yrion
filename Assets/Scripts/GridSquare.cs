@@ -22,22 +22,19 @@ public class GridSquare : MonoBehaviour
         m_renderer = GetComponentInChildren<MeshRenderer>();
 	}
 
-    void OnMouseOver()
+    void OnMouseDown()
     {
-        if (Input.GetMouseButtonUp(1))
-        {
-            // Return if already selected.
-            if (IsSelected)
-                return;
+        // Return if already selected.
+        if (IsSelected)
+            return;
 
-            // Set the 'selected' material.
-            m_renderer.material = SelectedMaterial;
-            IsSelected = true;
+        // Set the 'selected' material.
+        m_renderer.material = SelectedMaterial;
+        IsSelected = true;
 
-            // Fire the selected event.
-            if (OnGridSquareSelected != null)
-                OnGridSquareSelected(this);
-        }
+        // Fire the selected event.
+        if (OnGridSquareSelected != null)
+            OnGridSquareSelected(this);
     }
 
     public void Unselect()
