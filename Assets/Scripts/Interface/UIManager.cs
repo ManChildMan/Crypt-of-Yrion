@@ -16,6 +16,8 @@ public class UIManager : MonoBehaviour
     public GameObject equipmentWindow;
     public GameObject shopWindow;
     private ShopWindow shopWindowC;
+    public GameObject lootWindow;
+    private LootWindow lootWindowC;
     public GameObject itemPreviewWindow;
     private bool itemPreviewWindowOpen;
 
@@ -44,6 +46,7 @@ public class UIManager : MonoBehaviour
         transitionImageObject.SetActive(true);
 
         shopWindowC = shopWindow.GetComponent<ShopWindow>();
+        lootWindowC = lootWindow.GetComponent<LootWindow>();
 
         portalDialogText = portalDialog.transform.FindChild("Text").gameObject.GetComponent<Text>();
 
@@ -179,6 +182,17 @@ public class UIManager : MonoBehaviour
     public void CloseShopWindow()
     {
         shopWindow.SetActive(false);
+    }
+
+    public void ShowLootWindow(Loot loot)
+    {
+        lootWindow.SetActive(true);
+        lootWindowC.ShowLoot(loot);
+    }
+
+    public void CloseLootWindow()
+    {
+        lootWindow.SetActive(false);
     }
 
     public void ShowPortalDialog(string text, PortalAction portalAction)

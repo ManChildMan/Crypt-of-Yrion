@@ -132,6 +132,14 @@ public class Map : MonoBehaviour
     {
         m_torch = Resources.Load("WallTorch");
         m_chest = Resources.Load("Chest");
+
+        // Ensure the chests can talk with the game (for scripts).
+        GameObject m_chestGameObject = (GameObject)m_chest;
+        ChestLootAccessor chestLootAccessor = m_chestGameObject.transform.FindChild("ChestLootAccessor").GetComponent<ChestLootAccessor>();
+        GameObject uiAndInventory = GameObject.Find("UIAndInventory");
+        chestLootAccessor.inventory = uiAndInventory.transform.FindChild("Inventory").GetComponent<Inventory>();
+        chestLootAccessor.uiManager = uiAndInventory.transform.FindChild("Canvas").GetComponent<UIManager>();
+
         GameObject instance = null;
         float xPos = 0, zPos = 0;
         for (int x = 0; x < Width; x++)
