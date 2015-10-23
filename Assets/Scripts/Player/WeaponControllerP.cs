@@ -3,7 +3,7 @@ using System.Collections;
 
 public class WeaponControllerP : MonoBehaviour {
 
-    private int Damage;
+    public int Damage;
 
     public void OnTriggerEnter(Collider col)
     {

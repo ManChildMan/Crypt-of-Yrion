@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public float WalkSpeed = 100;
     public float WaypointArrivalThreshold = 0.1f;
     public LayerMask MouseSelectionLayerMask;
+    private Transform WeaponSlot;
 
     private Animator m_animator;
     private CharacterController m_controller;
@@ -28,9 +29,14 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void Start()
     {
+        Health = this.gameObject.GetComponent<Player>().Health;
+        Speed = this.gameObject.GetComponent<Player>().Speed;
+        Attack = this.gameObject.GetComponent<Player>().Attack;
+
         m_animator = GetComponentInChildren<Animator>();
         m_controller = GetComponent<CharacterController>();
         m_seeker = GetComponent<Seeker>();
+        WeaponSlot = this.transform.FindChild("WeaponSlot");
 
         // Positions the player correctly in the map, based on the last portal taken.
         switch (StateMigrator.lastPortalActionTaken)
@@ -41,14 +47,7 @@ public class PlayerController : MonoBehaviour
             case PortalAction.ExitLevel2:
                 transform.position = new Vector3(-10.0f, 0.0f, 0.0f);
                 break;
-            case PortalAction.ExitLevel3:
-                transform.position = new Vector3(0.0f, 0.0f, -10.0f);
-                break;
-        }
-
-        Health = this.gameObject.GetComponent<Player>().Health;
-        Speed = this.gameObject.GetComponent<Player>().Speed;
-        Attack = this.gameObject.GetComponent<Player>().Attack;
+        } 
     }
 
     /// <summary>
