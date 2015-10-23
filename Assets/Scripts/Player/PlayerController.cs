@@ -121,6 +121,12 @@ public class PlayerController : MonoBehaviour
             m_currentWaypoint = 0;
             m_animator.SetFloat("Speed", 1);
             m_moving = true;
+            // If path vector list length is greater than 1 then immediately move to the 2nd element instead.
+            // Lets the player move more smoothly, especially when spam right clicking.
+            if (m_path.vectorPath.Count > 1)
+            {
+                m_currentWaypoint++;
+            }
         }
     }
 

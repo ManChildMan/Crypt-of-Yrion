@@ -53,13 +53,46 @@ public class Level3Map : MapCrafter {
                 //}
             }
         }
-        Destroy(texture);
         return mapData;
     }
 
     public override int[,] GetPropData(Map map)
     {
         int[,] propData = new int[map.Width, map.Depth];
+        propData[17, 4] = TerrainType.Torch_WallMounted_East;
+        propData[17, 8] = TerrainType.Torch_WallMounted_East;
+        propData[17, 12] = TerrainType.Torch_WallMounted_East;
+        propData[30, 4] = TerrainType.Torch_WallMounted_West;
+        propData[30, 8] = TerrainType.Torch_WallMounted_West;
+        propData[30, 12] = TerrainType.Torch_WallMounted_West;
+        propData[14, 16] = TerrainType.Torch_WallMounted_East;
+        propData[14, 19] = TerrainType.Torch_WallMounted_East;
+        propData[33, 16] = TerrainType.Torch_WallMounted_West;
+        propData[33, 19] = TerrainType.Torch_WallMounted_West;
+        propData[14, 31] = TerrainType.Torch_WallMounted_South;
+        propData[17, 31] = TerrainType.Torch_WallMounted_South;
+        propData[33, 31] = TerrainType.Torch_WallMounted_South;
+        propData[30, 31] = TerrainType.Torch_WallMounted_South;
+        propData[20, 34] = TerrainType.Torch_WallMounted_East;
+        propData[20, 36] = TerrainType.Torch_WallMounted_East;
+        propData[20, 38] = TerrainType.Torch_WallMounted_East;
+        propData[20, 40] = TerrainType.Torch_WallMounted_East;
+        propData[27, 34] = TerrainType.Torch_WallMounted_West;
+        propData[27, 36] = TerrainType.Torch_WallMounted_West;
+        propData[27, 38] = TerrainType.Torch_WallMounted_West;
+        propData[27, 40] = TerrainType.Torch_WallMounted_West;
+        propData[11, 67] = TerrainType.Torch_WallMounted_East;
+        propData[11, 73] = TerrainType.Torch_WallMounted_East;
+        propData[11, 79] = TerrainType.Torch_WallMounted_East;
+        propData[36, 67] = TerrainType.Torch_WallMounted_West;
+        propData[36, 73] = TerrainType.Torch_WallMounted_West;
+        propData[36, 79] = TerrainType.Torch_WallMounted_West;
+        propData[16, 103] = TerrainType.Torch_WallMounted_South;
+        propData[18, 103] = TerrainType.Torch_WallMounted_South;
+        propData[20, 103] = TerrainType.Torch_WallMounted_South;
+        propData[31, 103] = TerrainType.Torch_WallMounted_South;
+        propData[29, 103] = TerrainType.Torch_WallMounted_South;
+        propData[27, 103] = TerrainType.Torch_WallMounted_South;
         return propData;
     }
 }
