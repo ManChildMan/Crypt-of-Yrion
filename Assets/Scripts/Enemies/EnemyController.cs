@@ -52,6 +52,12 @@ public class EnemyController : MonoBehaviour {
     {
         target = GameObject.FindGameObjectWithTag("Player").transform;
         distance = Vector3.Distance(transform.position, target.position);
+
+        if (Health <= 0)
+        {
+            StartCoroutine(DoAnimation());
+        }
+
         // If the distance is less than 10 and the enemy is not
         // currently moving...
         if (distance < 10 && distance > 1.5 && !m_moving && m_seeker.IsDone() == true)
@@ -131,6 +137,15 @@ public class EnemyController : MonoBehaviour {
     /// <summary>
     /// 
     /// </summary>
+
+    IEnumerator DoAnimation()
+    {
+        m_animator.SetTrigger("Die");
+        yield return new WaitForSeconds(2f);
+        Destroy(this.gameObject); //destroys the object after animation ended
+    }
+
+
     public void OnDisable()
     {
         m_seeker.pathCallback -= OnPathComplete;

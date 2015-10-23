@@ -20,7 +20,12 @@ public class PlayerController : MonoBehaviour
     private bool m_moving = false;
     private int m_currentWaypoint = -1;
 
-    public int Health;
+    public int MaxHealth;
+    public int CurrentHealth;
+    private int Heal;
+    private int IncHeal = 10;
+    private float HealTimer = 0f;
+
     public int Speed;
     public int Attack;
 
@@ -29,9 +34,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void Start()
     {
-        Health = this.gameObject.GetComponent<Player>().Health;
-        Speed = this.gameObject.GetComponent<Player>().Speed;
-        Attack = this.gameObject.GetComponent<Player>().Attack;
+        MaxHealth = this.gameObject.GetComponent<Player>().Health;
+        CurrentHealth = MaxHealth;
 
         m_animator = GetComponentInChildren<Animator>();
         m_controller = GetComponent<CharacterController>();
@@ -58,6 +62,23 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void Update()
     {
+        HealTimer += Time.deltaTime;
+
+        if (MaxHealth < this.gameObject.GetComponent<Player>().Health)
+        {
+            Heal = this.gameObject.GetComponent<Player>().Health - MaxHealth;
+            CurrentHealth = CurrentHealth + Heal;
+        }
+
+        if (HealTimer > 10)
+        {
+            CurrentHealth = CurrentHealth + IncHeal;
+            HealTimer = 0;
+        }
+
+        Speed = this.gameObject.GetComponent<Player>().Speed;
+        Attack = this.gameObject.GetComponent<Player>().Attack;
+
         // If the right mouse button was pressed start moving.
         if (Input.GetMouseButtonUp(1))
         {
@@ -140,17 +161,17 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        Health = Health - damage;
+        CurrentHealth = CurrentHealth - damage;
     }
 
     public int GiveDamage()
     {
-        return Attack;
+        return this.gameObject.GetComponent<Player>().Attack;
     }
 
     public void SetSpeed()
     {
-        WalkSpeed = Speed;
+        WalkSpeed = this.gameObject.GetComponent<Player>().Speed;
     }
 
     public void StopMoving()
