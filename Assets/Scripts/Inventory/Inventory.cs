@@ -118,8 +118,28 @@ public class Inventory : MonoBehaviour
         return allItems[(int)inventoryType][index];
     }
 
+    public bool IsEquipped(GearItem gearItem)
+    {
+        if (gearItem == null)
+        {
+            return false;
+        }
+        for (int i = 0; i < (int)GearType.OneAboveMax; i++)
+        {
+            if (equipped[i] != null && equipped[i].GetType().Equals(gearItem.GetType()))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public bool HasItem(Item item)
     {
+        if (item == null)
+        {
+            return false;
+        }
         for (int i = 0; i < MaxItems; i++)
         {
             if (items[i] != null && items[i].GetType().Equals(item.GetType()))
