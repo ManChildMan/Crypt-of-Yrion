@@ -207,17 +207,19 @@ public class UIManager : MonoBehaviour
         inventory.SaveState();
         switch (portalAction)
         {
+            case PortalAction.ExitLevel1:
+            case PortalAction.ExitLevel2:
+            case PortalAction.ExitLevel3:
+                Application.LoadLevel("safezone");
+                break;
             case PortalAction.GotoLevel1:
                 Application.LoadLevel("level1");
-                break;
-            case PortalAction.ExitLevel1:
-                Application.LoadLevel("safezone");
                 break;
             case PortalAction.GotoLevel2:
                 Application.LoadLevel("level2");
                 break;
-            case PortalAction.ExitLevel2:
-                Application.LoadLevel("safezone");
+            case PortalAction.GotoLevel3:
+                Application.LoadLevel("level3");
                 break;
         }
     }

@@ -27,6 +27,10 @@ public sealed class SafeZoneMap : MapCrafter {
                 {
                     mapData[x, z] = TerrainType.Wall_Stone_01;
                 }
+                else if (pixelColor.Equals(new Color32(0, 0, 0, 255)))
+                {
+                    mapData[x, z] = TerrainType.Impassable_Rubble_01;
+                }
                 else if (pixelColor.Equals(new Color32(0, 0, 255, 255)))
                 {
                     mapData[x, z] = TerrainType.Water_Shallow;
@@ -52,7 +56,6 @@ public sealed class SafeZoneMap : MapCrafter {
                 //}
             }
         }
-        Destroy(texture);
         return mapData;
     }
 

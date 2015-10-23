@@ -41,6 +41,9 @@ public class PlayerController : MonoBehaviour
             case PortalAction.ExitLevel2:
                 transform.position = new Vector3(-10.0f, 0.0f, 0.0f);
                 break;
+            case PortalAction.ExitLevel3:
+                transform.position = new Vector3(0.0f, 0.0f, -10.0f);
+                break;
         }
 
         Health = this.gameObject.GetComponent<Player>().Health;
