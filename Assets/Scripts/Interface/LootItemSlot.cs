@@ -17,7 +17,7 @@ public class LootItemSlot : MonoBehaviour
         if (item == null)
         {
             takeButtonObject.SetActive(false);
-
+            transform.GetChild(0).GetComponent<Image>().sprite = itemImages.GetItemSprite("Null");
         }
         else
         {
@@ -42,6 +42,9 @@ public class LootItemSlot : MonoBehaviour
 
     public void TakeItem()
     {
-        loot.TakeItem(index);
+        if (loot.TakeItem(index))
+        {
+            SetLoot(loot);
+        }
     }
 }

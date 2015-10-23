@@ -20,17 +20,19 @@ public class Loot
         return items[index];
     }
 
-    public void TakeItem(int index)
+    public bool TakeItem(int index)
     {
         if (inventory.HasItem(items[index]))
         {
             uiManager.DisplayMessage("You already have this item in your inventory.");
-            return;
+            return false;
         }
         if (!inventory.AddItem(items[index]))
         {
             uiManager.DisplayMessage("Your inventory is full.");
-            return;
+            return false;
         }
+        items[index] = null;
+        return true;
     }
 }
