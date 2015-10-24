@@ -211,8 +211,7 @@ public class GolemController : MonoBehaviour
         // If the player has moved significantly since last pathfinding and more
         // than the designated pathfinding interval has passed...
         m_pathfindingUpdateTime += Time.deltaTime;
-        if (m_pathfindingUpdateTime > HuntingPathfindingInterval &&
-            (m_playerPrevPos.magnitude - Player.transform.position.magnitude) > 1)
+        if (m_pathfindingUpdateTime > HuntingPathfindingInterval)
         {
             // Re-path to the player and reset pathfinding variables.
             Path path = m_seeker.StartPath(transform.position, Player.transform.position);
