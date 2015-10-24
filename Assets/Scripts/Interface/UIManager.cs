@@ -282,15 +282,27 @@ public class UIManager : MonoBehaviour
                 healthTextObject.SetActive(true);
                 healthTextObject.GetComponent<Text>().text = string.Format("+{0:n0} Health", gearItem.Health);
             }
+            else
+            {
+                healthTextObject.SetActive(false);
+            }
             if (gearItem.Speed != 0)
             {
                 speedTextObject.gameObject.SetActive(true);
                 speedTextObject.GetComponent<Text>().text = string.Format("+{0:n0} Speed", gearItem.Speed);
             }
+            else
+            {
+                speedTextObject.SetActive(false);
+            }
             if (gearItem.Attack != 0)
             {
                 attackTextObject.gameObject.SetActive(true);
-                attackTextObject.GetComponent<Text>().text = string.Format("+{0:n0} Attack", gearItem.Speed);
+                attackTextObject.GetComponent<Text>().text = string.Format("+{0:n0} Attack", gearItem.Attack);
+            }
+            else
+            {
+                attackTextObject.SetActive(false);
             }
         }
         else

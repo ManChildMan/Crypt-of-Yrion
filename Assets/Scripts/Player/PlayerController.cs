@@ -65,6 +65,9 @@ public class PlayerController : MonoBehaviour
 
         HealTimer += Time.deltaTime;
 
+        SetSpeed();
+        SetAttack();
+
         if (MaxHealth < this.gameObject.GetComponent<Player>().Health)
         {
             Heal = this.gameObject.GetComponent<Player>().Health - MaxHealth;
@@ -72,14 +75,16 @@ public class PlayerController : MonoBehaviour
             MaxHealth = this.gameObject.GetComponent<Player>().Health;
         }
 
-        if (HealTimer > 10)
+        if (HealTimer > 10 && CurrentHealth < MaxHealth)
         {
             CurrentHealth = CurrentHealth + IncHeal;
             HealTimer = 0;
         }
 
-        Speed = this.gameObject.GetComponent<Player>().Speed;
-        Attack = this.gameObject.GetComponent<Player>().Attack;
+        if (Input.GetButtonDown("Fire1"))
+        {
+            m_animator.SetTrigger("Attack");
+        }
 
         // If the right mouse button was pressed start moving.
         if (Input.GetMouseButtonUp(1))
@@ -125,11 +130,6 @@ public class PlayerController : MonoBehaviour
         {
             m_currentWaypoint++;
         }
-
-        if (Input.GetButtonDown("Fire1"))
-        {
-            m_animator.SetTrigger("Attack");
-        }
     }
 
     /// <summary>
@@ -174,6 +174,12 @@ public class PlayerController : MonoBehaviour
     public void SetSpeed()
     {
         WalkSpeed = this.gameObject.GetComponent<Player>().Speed;
+        Speed = this.gameObject.GetComponent<Player>().Speed;
+    }
+
+    public void SetAttack()
+    {
+        Attack = this.gameObject.GetComponent<Player>().Attack;
     }
 
     public void StopMoving()

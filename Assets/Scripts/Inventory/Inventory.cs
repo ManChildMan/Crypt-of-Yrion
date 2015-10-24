@@ -7,7 +7,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     // Inventory related constants.
-    private const int MaxItems = 16;
+    private const int MaxItems = 24;
     private const int WeathStart = 1000;
 
     // References set by unity.
@@ -27,8 +27,26 @@ public class Inventory : MonoBehaviour
     private InventoryType lastDragInventoryType;
     private bool draggingItem;
 
+    // The physical models to be shown/hidden based on the weapon in the weapon slot.
+    private GameObject longsword;
+    private GameObject shortsword;
+    private GameObject scimitar;
+    private GameObject dagger;
+    private GameObject axe;
+
     void Start()
     {
+        longsword = GameObject.Find("WEPLongsword");
+        shortsword = GameObject.Find("WEPShortsword");
+        scimitar = GameObject.Find("WEPScimitar");
+        dagger = GameObject.Find("WEPDagger");
+        axe = GameObject.Find("WEPAxe");
+        longsword.SetActive(false);
+        shortsword.SetActive(false);
+        scimitar.SetActive(false);
+        dagger.SetActive(false);
+        axe.SetActive(false);
+
         if (StateMigrator.allItems == null)
         {
             items = new Item[MaxItems];
@@ -44,6 +62,16 @@ public class Inventory : MonoBehaviour
             items[2] = new DebugSword1();
             items[3] = new DebugSword2();
             items[4] = new DebugSword3();
+            items[6] = new AmethystRingOfPower();
+            items[7] = new AncientRing();
+            items[8] = new BronzeRing();
+            items[9] = new DyadRingOfSpeed();
+            items[10] = new RingOfFortitude();
+            items[11] = new DaggerOfSpeed();
+            items[12] = new IronShortsword();
+            items[13] = new ScimitarOfTheEast();
+            items[14] = new SharpAxeOfPower();
+            items[15] = new SteelLongswordOfStrength();
         }
         else
         {
@@ -116,22 +144,6 @@ public class Inventory : MonoBehaviour
                 throw new ArgumentOutOfRangeException();
         }
         return allItems[(int)inventoryType][index];
-    }
-
-    public bool IsEquipped(GearItem gearItem)
-    {
-        if (gearItem == null)
-        {
-            return false;
-        }
-        for (int i = 0; i < (int)GearType.OneAboveMax; i++)
-        {
-            if (equipped[i] != null && equipped[i].GetType().Equals(gearItem.GetType()))
-            {
-                return true;
-            }
-        }
-        return false;
     }
 
     public bool HasItem(Item item)
@@ -211,6 +223,7 @@ public class Inventory : MonoBehaviour
                     if (lastDragInventoryType == InventoryType.EquippedItems || lastNonDragInventoryType == InventoryType.EquippedItems)
                     {
                         player.RecalculateStats();
+                        ChangePhysicalWeapon();
                     }
                 }
                 else
@@ -235,6 +248,7 @@ public class Inventory : MonoBehaviour
                     if (lastDragInventoryType == InventoryType.EquippedItems || lastNonDragInventoryType == InventoryType.EquippedItems)
                     {
                         player.RecalculateStats();
+                        ChangePhysicalWeapon();
                     }
                 }
                 else
@@ -301,5 +315,50 @@ public class Inventory : MonoBehaviour
     {
         StateMigrator.allItems = allItems;
         StateMigrator.wealth = wealth;
+    }
+
+    private void ChangePhysicalWeapon()
+    {
+        longsword.SetActive(false);
+        shortsword.SetActive(false);
+        scimitar.SetActive(false);
+        dagger.SetActive(false);
+        axe.SetActive(false);
+        if (IsEquipped(new SteelLongswordOfStrength()))
+        {
+            longsword.SetActive(true);
+        }
+        if (IsEquipped(new IronShortsword()))
+        {
+            shortsword.SetActive(true);
+        }
+        if (IsEquipped(new ScimitarOfTheEast()))
+        {
+            scimitar.SetActive(true);
+        }
+        if (IsEquipped(new DaggerOfSpeed()))
+        {
+            dagger.SetActive(true);
+        }
+        if (IsEquipped(new SharpAxeOfPower()))
+        {
+            axe.SetActive(true);
+        }
+    }
+
+    private bool IsEquipped(GearItem gearItem)
+    {
+        if (gearItem == null)
+        {
+            return false;
+        }
+        for (int i = 0; i < (int)GearType.OneAboveMax; i++)
+        {
+            if (equipped[i] != null && equipped[i].GetType().Equals(gearItem.GetType()))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
