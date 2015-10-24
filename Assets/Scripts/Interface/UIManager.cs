@@ -290,7 +290,7 @@ public class UIManager : MonoBehaviour
             if (gearItem.Attack != 0)
             {
                 attackTextObject.gameObject.SetActive(true);
-                attackTextObject.GetComponent<Text>().text = string.Format("+{0:n0} Attack", gearItem.Speed);
+                attackTextObject.GetComponent<Text>().text = string.Format("+{0:n0} Attack", gearItem.Attack);
             }
         }
         else

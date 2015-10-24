@@ -7,7 +7,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     // Inventory related constants.
-    private const int MaxItems = 16;
+    private const int MaxItems = 24;
     private const int WeathStart = 1000;
 
     // References set by unity.
@@ -44,6 +44,11 @@ public class Inventory : MonoBehaviour
             items[2] = new DebugSword1();
             items[3] = new DebugSword2();
             items[4] = new DebugSword3();
+            items[6] = new AmethystRingOfPower();
+            items[7] = new AncientRing();
+            items[8] = new BronzeRing();
+            items[9] = new DyadRingOfSpeed();
+            items[10] = new RingOfFortitude();
         }
         else
         {
