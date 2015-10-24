@@ -1,10 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
-using Pathfinding;
-
-public class SkeletonController : MonoBehaviour 
+﻿using Pathfinding;
+using UnityEngine;
+public class ZombieController : MonoBehaviour
 {
-   
+
     public PlayerController Player;
 
     public float MaxDetectionDistance = 12f;
@@ -13,15 +11,13 @@ public class SkeletonController : MonoBehaviour
     public float PatrolChance = 0.005f;
     public float PatrolRadius = 15f;
     public float WalkSpeed = 50f;
-    enum SkeletonMode
+    enum ZombieMode
     {
         Idle,
         Patrolling,
         Hunting,
         FacingOff,
         Attacking,
-        TakingDamage,
-        KnockedBack,
         Dying
     }
 
@@ -29,41 +25,42 @@ public class SkeletonController : MonoBehaviour
     private Animator m_animator;
     private CharacterController m_controller;
     private Seeker m_seeker;
-    private SkeletonMode m_mode = SkeletonMode.Idle;
+    private ZombieMode m_mode = ZombieMode.Idle;
     private float m_playerDistance;
     private Path m_currentPath;
     private int m_currentWaypoint = -1;
     private Vector3 m_lastPlayerPos;
-	void Start () {
+    void Start()
+    {
         m_animator = GetComponentInChildren<Animator>();
         m_controller = GetComponent<CharacterController>();
         m_seeker = GetComponent<Seeker>();
-	}
-	
+    }
 
-	void Update () 
+
+    void Update()
     {
         // Cache distance from the controller to the player.
         m_playerDistance = Vector3.Distance(transform.position,
             Player.transform.position);
 
-        if (m_mode == SkeletonMode.Idle)
+        if (m_mode == ZombieMode.Idle)
         {
             UpdateIdle();
         }
-        else if (m_mode == SkeletonMode.Patrolling)
+        else if (m_mode == ZombieMode.Patrolling)
         {
             UpdatePatrolling();
         }
-        else if (m_mode == SkeletonMode.Hunting)
+        else if (m_mode == ZombieMode.Hunting)
         {
             UpdateHunting();
         }
-        else if (m_mode == SkeletonMode.FacingOff)
+        else if (m_mode == ZombieMode.FacingOff)
         {
             UpdateFacingOff();
         }
-        else if (m_mode == SkeletonMode.Attacking)
+        else if (m_mode == ZombieMode.Attacking)
         {
             UpdateAttacking();
         }
@@ -79,7 +76,7 @@ public class SkeletonController : MonoBehaviour
         //{
         //    UpdateDying();
         //}   
-	}
+    }
 
 
 
@@ -93,12 +90,12 @@ public class SkeletonController : MonoBehaviour
 
             if (Random.value < 0.1f && Mathf.Abs(angle) < 10)
             {
-         
+
                 m_animator.SetBool("Attack", true);
-                m_animator.SetBool("FacingOff", false);
 
 
-                m_mode = SkeletonMode.Attacking;
+
+                m_mode = ZombieMode.Attacking;
                 return;
             }
         }
@@ -114,14 +111,12 @@ public class SkeletonController : MonoBehaviour
                 m_currentWaypoint = 0;
                 // Change the change to skeleton state and update animation 
                 // variables.
-                m_mode = SkeletonMode.Hunting;
+                m_mode = ZombieMode.Hunting;
 
-                m_animator.SetBool("Hunt", true);
-                m_animator.SetBool("Patrol", false);
-                m_animator.SetBool("FacingOff", false);
+
                 return;
             }
-            
+
         }
 
         // Orientate to player
@@ -143,7 +138,7 @@ public class SkeletonController : MonoBehaviour
             m_attackTime = 0;
             m_attackStart = false;
         }
-       
+
         m_attackTime += Time.deltaTime;
         if (m_attackTime > 2.76)
         {
@@ -153,8 +148,7 @@ public class SkeletonController : MonoBehaviour
             m_currentPath = null;
             m_currentWaypoint = -1;
             m_animator.SetBool("Attack", false);
-            m_animator.SetBool("FacingOff", true);
-            m_mode = SkeletonMode.FacingOff;
+            m_mode = ZombieMode.FacingOff;
         }
     }
 
@@ -163,7 +157,7 @@ public class SkeletonController : MonoBehaviour
     {
 
         if (DetectPlayer()) return;
-
+        m_animator.SetFloat("Speed", 0);
         // Check if the controller should transition from idle to patrolling.
         if (Random.value < PatrolChance)
         {
@@ -173,26 +167,22 @@ public class SkeletonController : MonoBehaviour
             end.x += randomPoint.x;
             end.y = 0.5f;
             end.z += randomPoint.y;
-      
+
             Path path = m_seeker.StartPath(transform.position, end);
             if (!path.error)
             {
                 m_lastPathfindingUpdate = 0f;
                 m_currentPath = path;
                 m_currentWaypoint = 0;
-                m_mode = SkeletonMode.Patrolling;
-             
-                m_animator.SetBool("Hunt", false);
-                m_animator.SetBool("Patrol", true);
-                m_animator.SetBool("FacingOff", false);
+                m_mode = ZombieMode.Patrolling;
                 return;
-            }     
+            }
         }
     }
 
     private void UpdatePatrolling()
     {
-        WalkSpeed = 50;
+        WalkSpeed = 25;
         if (DetectPlayer()) return;
 
         // Test if we have just reached the end of the path. 
@@ -200,29 +190,28 @@ public class SkeletonController : MonoBehaviour
         {
             m_currentPath = null;
             m_currentWaypoint = -1;
-   
-            m_animator.SetBool("Hunt", false);
-            m_animator.SetBool("Patrol", false);
-            m_animator.SetBool("FacingOff", false);
-            m_mode = SkeletonMode.Idle;
+
+            m_animator.SetFloat("Speed", 0);
+            m_mode = ZombieMode.Idle;
             return;
         }
+        else m_animator.SetFloat("Speed", 25);
 
         Move();
     }
     public float HuntingPathfindingInterval = 3.0f;
     private void UpdateHunting()
     {
-        WalkSpeed = 75;
+        WalkSpeed = 50;
         if (m_playerDistance < 2.0)
         {
-            
-            m_animator.SetBool("Hunt", false);
-            m_animator.SetBool("Patrol", false);
-            m_animator.SetBool("FacingOff", true);
-            m_mode = SkeletonMode.FacingOff;
+
+            m_animator.SetBool("Attack", true);
+            m_animator.SetFloat("Speed", 0);
+            m_mode = ZombieMode.FacingOff;
             return;
         }
+        else m_animator.SetFloat("Speed", 50);
 
 
         // Check if we have reached the end of the current path. 
@@ -261,7 +250,7 @@ public class SkeletonController : MonoBehaviour
 
 
     private void Move()
-    {        
+    {
         // Find direction and distance to the next waypoint and move the
         // player via the attached character controller.
         Vector3 direction = (m_currentPath.vectorPath[m_currentWaypoint] -
@@ -309,11 +298,8 @@ public class SkeletonController : MonoBehaviour
                     m_currentWaypoint = 0;
                     // Change the change to skeleton state and update animation 
                     // variables.
-                    m_mode = SkeletonMode.Hunting;
-                 
-                    m_animator.SetBool("Hunt", true);
-                    m_animator.SetBool("Patrol", false);
-                    m_animator.SetBool("FacingOff", false);
+                    m_mode = ZombieMode.Hunting;
+
                     return true;
                 }
             }
@@ -352,10 +338,8 @@ public class SkeletonController : MonoBehaviour
             m_currentPath = null;
             m_currentWaypoint = -1;
 
-            m_animator.SetBool("Hunt", false);
-            m_animator.SetBool("Patrol", false);
-            m_animator.SetBool("FacingOff", false);
-            m_mode = SkeletonMode.Idle;
+            m_animator.SetFloat("Speed", 0);
+            m_mode = ZombieMode.Idle;
             return;
         }
 
