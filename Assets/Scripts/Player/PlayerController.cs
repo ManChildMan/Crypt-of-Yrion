@@ -81,6 +81,11 @@ public class PlayerController : MonoBehaviour
         Speed = this.gameObject.GetComponent<Player>().Speed;
         Attack = this.gameObject.GetComponent<Player>().Attack;
 
+        if (Input.GetButtonDown("Fire1"))
+        {
+            m_animator.SetTrigger("Attack");
+        }
+
         // If the right mouse button was pressed start moving.
         if (Input.GetMouseButtonUp(1))
         {
@@ -124,11 +129,6 @@ public class PlayerController : MonoBehaviour
             m_currentWaypoint]) < WaypointArrivalThreshold)
         {
             m_currentWaypoint++;
-        }
-
-        if (Input.GetButtonDown("Fire1"))
-        {
-            m_animator.SetTrigger("Attack");
         }
     }
 
