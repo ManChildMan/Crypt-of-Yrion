@@ -332,33 +332,14 @@ public class SkeletonController : MonoBehaviour
     public float pushPower = 2.0F;
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        Rigidbody body = hit.collider.attachedRigidbody;
-        if (body == null || body.isKinematic)
-            return;
 
-        if (hit.moveDirection.y < -0.3F)
-            return;
-
-        Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
-        body.velocity = pushDir * pushPower;
-    }
-
-    private void OnTriggerEnter(Collider collision)
-    {
-
-
-        if (collision.gameObject.CompareTag("Player") ||
-            collision.gameObject.CompareTag("Enemy"))
+        if (hit.gameObject.CompareTag("Enemy") ||
+            hit.gameObject.CompareTag("Player"))
         {
-            // Idle.
-            m_currentPath = null;
-            m_currentWaypoint = -1;
-
-            m_animator.SetFloat("Speed", 0);
-            m_mode = SkeletonMode.Idle;
-            return;
+            Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
+            m_controller.Move(pushDir * pushPower);
         }
-
-
     }
+
+
 }
