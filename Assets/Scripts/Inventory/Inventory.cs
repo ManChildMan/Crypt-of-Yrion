@@ -8,7 +8,7 @@ public class Inventory : MonoBehaviour
 {
     // Inventory related constants.
     private const int MaxItems = 24;
-    private const int WeathStart = 1000;
+    private const int WeathStart = 120;
 
     // References set by unity.
     public UIManager uiManager;
@@ -56,28 +56,29 @@ public class Inventory : MonoBehaviour
             allItems[(int)InventoryType.EquippedItems] = equipped;
             wealth = WeathStart;
 
-            // Remove later.
-            items[0] = new MagicalOrb();
-            items[1] = new TheOneRing();
-            items[2] = new DebugSword1();
-            items[3] = new DebugSword2();
-            items[4] = new DebugSword3();
-            items[6] = new AmethystRingOfPower();
-            items[7] = new AncientRing();
-            items[8] = new BronzeRing();
-            items[9] = new DyadRingOfSpeed();
-            items[10] = new RingOfFortitude();
-            items[11] = new DaggerOfSpeed();
-            items[12] = new IronShortsword();
-            items[13] = new ScimitarOfTheEast();
-            items[14] = new SharpAxeOfPower();
-            items[15] = new SteelLongswordOfStrength();
-            items[16] = new GemstoneBelt();
-            items[17] = new BlueSash();
-            items[18] = new GreenSash();
-            items[19] = new ThornyNecklace();
-            items[20] = new GoldenPendant();
-            items[21] = new EnchantedLocket();
+            // Show all items for testing purposes.
+            // Uncomment to show.
+            /*
+            int index = 0;
+            items[index++] = new MagicalOrb();
+            items[index++] = new TheOneRing();
+            items[index++] = new AmethystRingOfPower();
+            items[index++] = new AncientRing();
+            items[index++] = new BronzeRing();
+            items[index++] = new DyadRingOfSpeed();
+            items[index++] = new RingOfFortitude();
+            items[index++] = new DaggerOfSpeed();
+            items[index++] = new IronShortsword();
+            items[index++] = new ScimitarOfTheEast();
+            items[index++] = new SharpAxeOfPower();
+            items[index++] = new SteelLongswordOfStrength();
+            items[index++] = new GemstoneBelt();
+            items[index++] = new BlueSash();
+            items[index++] = new GreenSash();
+            items[index++] = new ThornyNecklace();
+            items[index++] = new GoldenPendant();
+            items[index++] = new EnchantedLocket();*/
+            equipped[(int)GearType.Weapon] = new RustedShortsword();
         }
         else
         {
@@ -85,8 +86,9 @@ public class Inventory : MonoBehaviour
             items = allItems[(int)InventoryType.InventoryItems];
             equipped = allItems[(int)InventoryType.EquippedItems];
             wealth = StateMigrator.wealth;
-            player.RecalculateStats();
         }
+        player.RecalculateStats();
+        ChangePhysicalWeapon();
     }
 
     void Update()
@@ -334,7 +336,7 @@ public class Inventory : MonoBehaviour
         {
             longsword.SetActive(true);
         }
-        if (IsEquipped(new IronShortsword()))
+        if (IsEquipped(new IronShortsword()) || IsEquipped(new RustedShortsword()))
         {
             shortsword.SetActive(true);
         }
