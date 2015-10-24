@@ -140,7 +140,8 @@ public class EnemyController : MonoBehaviour {
 
     IEnumerator DoAnimation()
     {
-        m_animator.SetTrigger("Die");
+        WalkSpeed = 0;
+        m_animator.Play("Die");
         yield return new WaitForSeconds(2f);
         Destroy(this.gameObject); //destroys the object after animation ended
     }

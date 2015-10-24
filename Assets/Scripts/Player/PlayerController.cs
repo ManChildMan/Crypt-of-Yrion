@@ -62,12 +62,14 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void Update()
     {
+
         HealTimer += Time.deltaTime;
 
         if (MaxHealth < this.gameObject.GetComponent<Player>().Health)
         {
             Heal = this.gameObject.GetComponent<Player>().Health - MaxHealth;
             CurrentHealth = CurrentHealth + Heal;
+            MaxHealth = this.gameObject.GetComponent<Player>().Health;
         }
 
         if (HealTimer > 10)
