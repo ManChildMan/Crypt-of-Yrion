@@ -23,7 +23,7 @@ public class HealthText : MonoBehaviour
         if (prevHealth != health)
         {
             prevHealth = health;
-            healthText.text = string.Format("Health: {0:n0}", health);
+            healthText.text = string.Format("Max Health: {0:n0}", health);
         }
     }
 }

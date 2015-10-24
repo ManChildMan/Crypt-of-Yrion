@@ -6,7 +6,7 @@ public class MagicalOrb : GeneralItem
     /// Item used for testing, increases wealth by 10000.
     /// </summary>
     public MagicalOrb()
-        : base("Magical Orb", "Use: Right-click to instantly create 10,000 gold.", Rarity.Epic, true)
+        : base("Magical Orb", "Use: Right-click to instantly create 10,000 gold.", Rarity.Epic)
     {
     }
 

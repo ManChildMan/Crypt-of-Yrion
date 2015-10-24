@@ -5,14 +5,12 @@
 /// </summary>
 public abstract class GeneralItem : Item
 {
-    private bool usable;
-    public GeneralItem(string name, string description, Rarity rarity, bool usable)
+    public GeneralItem(string name, string description, Rarity rarity)
         : base(name, description, rarity)
     {
-        this.usable = usable;
     }
 
-    // If usable is set as true this method should be overridden.
+    // This method should be overridden if item is usable.
     public virtual void Use()
     {
     }

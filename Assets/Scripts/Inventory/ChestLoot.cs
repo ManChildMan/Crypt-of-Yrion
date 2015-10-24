@@ -8,5 +8,6 @@ public class ChestLoot : Loot
     {
         items = new Item[MaxItems];
         items[0] = new PortalBinding();
+        items[1] = new Coin(10000);
     }
 }

@@ -159,12 +159,21 @@ public class Inventory : MonoBehaviour
 
     public bool AddItem(Item item)
     {
-        for (int i = 0; i < MaxItems; i++)
+        Coin coin = item as Coin;
+        if (coin != null)
         {
-            if (items[i] == null)
+            wealth += coin.Amount;
+            return true;
+        }
+        else
+        {
+            for (int i = 0; i < MaxItems; i++)
             {
-                items[i] = item;
-                return true;
+                if (items[i] == null)
+                {
+                    items[i] = item;
+                    return true;
+                }
             }
         }
         return false;

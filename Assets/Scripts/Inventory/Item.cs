@@ -48,6 +48,10 @@ public abstract class Item
         {
             return description;
         }
+        protected set
+        {
+            description = value;
+        }
     }
 
     /// <summary>
