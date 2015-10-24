@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
 {
 
     public float WalkSpeed = 100;
-    public float WaypointArrivalThreshold = 0.1f;
+    public float WaypointArrivalThreshold = 0.4f;
     public LayerMask MouseSelectionLayerMask;
     private Transform WeaponSlot;
 
