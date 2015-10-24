@@ -46,6 +46,7 @@ public class UIManager : MonoBehaviour
     private float restartDelay = 5f;
 
     void Start () {
+        Ani = GetComponent<Animator>();
         transitionImage = transitionImageObject.GetComponent<Image>();
         transitionImage.color = new Color(0.0f, 0.0f, 0.0f, 1f);
         transitionImageObject.SetActive(true);
