@@ -75,6 +75,9 @@ public class Inventory : MonoBehaviour
             items[16] = new GemstoneBelt();
             items[17] = new BlueSash();
             items[18] = new GreenSash();
+            items[19] = new ThornyNecklace();
+            items[20] = new GoldenPendant();
+            items[21] = new EnchantedLocket();
         }
         else
         {
