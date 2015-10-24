@@ -2,26 +2,27 @@
 using System.Collections;
 using Pathfinding;
 
-public class SkeletonController : MonoBehaviour 
+public class MonsterController : MonoBehaviour
 {
-   
-    public PlayerController Player;
 
+    public PlayerController Player;
     public float MaxDetectionDistance = 12f;
     public float MaxDetectionChance = 0.15f;
     public float WaypointArrivalThreshold = 0.1f;
     public float PatrolChance = 0.005f;
     public float PatrolRadius = 15f;
     public float WalkSpeed = 50f;
-    enum SkeletonMode
+    public float HuntingPathfindingInterval = 3.0f;
+
+    enum MonsterMode
     {
         Idle,
         Patrolling,
         Hunting,
-        FacingOff,
         Attack1,
-        TakingDamage,
-        KnockedBack,
+        Attack2,
+        Attack3,
+        Roar,
         Dying
     }
 
@@ -29,43 +30,57 @@ public class SkeletonController : MonoBehaviour
     private Animator m_animator;
     private CharacterController m_controller;
     private Seeker m_seeker;
-    private SkeletonMode m_mode = SkeletonMode.Idle;
+    private MonsterMode m_mode = MonsterMode.Idle;
     private float m_playerDistance;
     private Path m_currentPath;
     private int m_currentWaypoint = -1;
     private Vector3 m_lastPlayerPos;
-	void Start () {
+    private float m_lastPathfindingUpdate = 0f;
+    private bool m_attackStart = true;
+    private float m_attackTime;
+
+
+    void Start()
+    {
         m_animator = GetComponentInChildren<Animator>();
         m_controller = GetComponent<CharacterController>();
         m_seeker = GetComponent<Seeker>();
-	}
-	
+    }
 
-	void Update () 
+
+    void Update()
     {
         // Cache distance from the controller to the player.
         m_playerDistance = Vector3.Distance(transform.position,
             Player.transform.position);
 
-        if (m_mode == SkeletonMode.Idle)
+        if (m_mode == MonsterMode.Idle)
         {
             UpdateIdle();
         }
-        else if (m_mode == SkeletonMode.Patrolling)
+        else if (m_mode == MonsterMode.Patrolling)
         {
             UpdatePatrolling();
         }
-        else if (m_mode == SkeletonMode.Hunting)
+        else if (m_mode == MonsterMode.Hunting)
         {
             UpdateHunting();
         }
-        else if (m_mode == SkeletonMode.FacingOff)
-        {
-            UpdateFacingOff();
-        }
-        else if (m_mode == SkeletonMode.Attack1)
+        else if (m_mode == MonsterMode.Attack1)
         {
             UpdateAttack1();
+        }
+        else if (m_mode == MonsterMode.Attack2)
+        {
+            UpdateAttack2();
+        }
+        else if (m_mode == MonsterMode.Attack3)
+        {
+            UpdateAttack3();
+        }
+        else if (m_mode == MonsterMode.Roar)
+        {
+            UpdateRoar();
         }
         //else if (m_mode == SkeletonMode.TakingDamage)
         //{
@@ -79,42 +94,6 @@ public class SkeletonController : MonoBehaviour
         //{
         //    UpdateDying();
         //}   
-	}
-
-
-
-    private void UpdateFacingOff()
-    {
-
-  
-    }
-
-
-    private float m_lastPathfindingUpdate = 0f;
-
-
-    private bool m_attackStart = true;
-    private float m_attackTime;
-    private void UpdateAttack1()
-    {
-        if (m_attackStart)
-        {
-            m_attackTime = 0;
-            m_attackStart = false;
-        }
-       
-        m_attackTime += Time.deltaTime;
-        if (m_attackTime > 2.76)
-        {
-            m_attackTime = 0;
-            m_attackStart = true;
-
-            m_currentPath = null;
-            m_currentWaypoint = -1;
-            m_animator.SetBool("Attack1", false);
-
-            m_mode = SkeletonMode.Idle;
-        }
     }
 
     bool m_playerDetected = false;
@@ -134,10 +113,25 @@ public class SkeletonController : MonoBehaviour
                 if (Random.value < 0.25f && Mathf.Abs(angle) < 10)
                 {
                     float r = Random.value;
-                    if (r < 1)
+                    if (r < 0.33)
                     {
                         m_animator.SetBool("Attack1", true);
-                        m_mode = SkeletonMode.Attack1;
+                        m_mode = MonsterMode.Attack1;
+                    }
+                    else if  (r < 0.66)
+                    {
+                        m_animator.SetBool("Attack2", true);
+                        m_mode = MonsterMode.Attack2;
+                    }
+                    else if (r < 82.5)
+                    {
+                        m_animator.SetBool("Attack3", true);
+                        m_mode = MonsterMode.Attack3;
+                    }
+                    else
+                    {
+                        m_animator.SetBool("Roar", true);
+                        m_mode = MonsterMode.Roar;
                     }
                     return;
                 }
@@ -149,20 +143,23 @@ public class SkeletonController : MonoBehaviour
             }
             else
             {
-                Path path = m_seeker.StartPath(transform.position,
-                    Player.transform.position);
-                if (!path.error)
+                if (m_seeker.IsDone())
                 {
-                    // Reset pathfinding variables.
-                    m_lastPathfindingUpdate = 0f;
-                    m_currentPath = path;
-                    m_currentWaypoint = 0;
-                    // Change the change to skeleton state and update animation 
-                    // variables.
-                    m_mode = SkeletonMode.Hunting;
+                    Path path = m_seeker.StartPath(transform.position,
+                        Player.transform.position);
+                    if (!path.error)
+                    {
+                        // Reset pathfinding variables.
+                        m_lastPathfindingUpdate = 0f;
+                        m_currentPath = path;
+                        m_currentWaypoint = 0;
+                        // Change the change to skeleton state and update animation 
+                        // variables.
+                        m_mode = MonsterMode.Hunting;
 
-                    m_animator.SetFloat("Speed", 1);
+                        m_animator.SetFloat("Speed", 1);
 
+                    }
                 }
             }
         }
@@ -181,18 +178,20 @@ public class SkeletonController : MonoBehaviour
                 end.x += randomPoint.x;
                 end.y = 0.5f;
                 end.z += randomPoint.y;
-
-                Path path = m_seeker.StartPath(transform.position, end);
-                if (!path.error)
+                if (m_seeker.IsDone())
                 {
-                    m_lastPathfindingUpdate = 0f;
-                    m_currentPath = path;
-                    m_currentWaypoint = 0;
-                    m_mode = SkeletonMode.Patrolling;
+                    Path path = m_seeker.StartPath(transform.position, end);
+                    if (!path.error)
+                    {
+                        m_lastPathfindingUpdate = 0f;
+                        m_currentPath = path;
+                        m_currentWaypoint = 0;
+                        m_mode = MonsterMode.Patrolling;
 
-                    m_animator.SetFloat("Speed", 0.5f);
-          
-                    return;
+                        m_animator.SetFloat("Speed", 0.5f);
+                        m_animator.SetBool("FacingOff", false);
+                        return;
+                    }
                 }
             }
         }
@@ -200,8 +199,8 @@ public class SkeletonController : MonoBehaviour
 
     private void UpdatePatrolling()
     {
-        WalkSpeed = 50;
-        if (DetectPlayer()) return;
+        m_playerDetected = DetectPlayer();
+        if (m_playerDetected) return;
 
         // Test if we have just reached the end of the path. 
         if (m_currentWaypoint >= m_currentPath.vectorPath.Count)
@@ -210,21 +209,22 @@ public class SkeletonController : MonoBehaviour
             m_currentWaypoint = -1;
 
             m_animator.SetFloat("Speed", 0);
-            m_mode = SkeletonMode.Idle;
+            m_animator.SetBool("FacingOff", false);
+            m_mode = MonsterMode.Idle;
             return;
         }
 
         Move();
     }
-    public float HuntingPathfindingInterval = 3.0f;
+
     private void UpdateHunting()
     {
         WalkSpeed = 75;
         if (m_playerDistance < 2.0)
         {
 
-            m_animator.SetFloat("Speed", 0f);
-            m_mode = SkeletonMode.Idle;
+            m_animator.SetFloat("Speed", 0);
+            m_mode = MonsterMode.Idle;
             return;
         }
 
@@ -249,23 +249,117 @@ public class SkeletonController : MonoBehaviour
         if (m_lastPathfindingUpdate > HuntingPathfindingInterval)
         {
             // Re-path to the player and reset pathfinding variables.
-            Path path = m_seeker.StartPath(transform.position, Player.transform.position);
-            if (!path.error)
+            if (m_seeker.IsDone())
             {
-                m_lastPlayerPos = Player.transform.position;
-                m_currentPath = path;
-                m_currentWaypoint = 0;
+                Path path = m_seeker.StartPath(transform.position, Player.transform.position);
+                if (!path.error)
+                {
+                    m_lastPlayerPos = Player.transform.position;
+                    m_currentPath = path;
+                    m_currentWaypoint = 0;
+                }
+                m_lastPathfindingUpdate = 0f;
             }
-            m_lastPathfindingUpdate = 0f;
+        
         }
 
         Move();
     }
 
+    private void UpdateFacingOff()
+    {
 
+
+    }
+
+    private void UpdateAttack1()
+    {
+        if (m_attackStart)
+        {
+            m_attackTime = 0;
+            m_attackStart = false;
+        }
+
+        m_attackTime += Time.deltaTime;
+        if (m_attackTime > 2.76)
+        {
+            m_attackTime = 0;
+            m_attackStart = true;
+
+            m_currentPath = null;
+            m_currentWaypoint = -1;
+            m_animator.SetBool("Attack1", false);
+            m_mode = MonsterMode.Idle;
+        }
+    }
+
+    private void UpdateAttack2()
+    {
+        if (m_attackStart)
+        {
+            m_attackTime = 0;
+            m_attackStart = false;
+        }
+
+        m_attackTime += Time.deltaTime;
+        if (m_attackTime > 2.76)
+        {
+            m_attackTime = 0;
+            m_attackStart = true;
+
+            m_currentPath = null;
+            m_currentWaypoint = -1;
+            m_animator.SetBool("Attack2", false);
+            m_mode = MonsterMode.Idle;
+        }
+    }
+
+    private void UpdateAttack3()
+    {
+        if (m_attackStart)
+        {
+            m_attackTime = 0;
+            m_attackStart = false;
+        }
+
+        m_attackTime += Time.deltaTime;
+        if (m_attackTime > 2.76)
+        {
+            m_attackTime = 0;
+            m_attackStart = true;
+
+            m_currentPath = null;
+            m_currentWaypoint = -1;
+            m_animator.SetBool("Attack3", false);
+            m_mode = MonsterMode.Idle;
+        }
+    }
+
+
+
+    private void UpdateRoar()
+    {
+        if (m_attackStart)
+        {
+            m_attackTime = 0;
+            m_attackStart = false;
+        }
+
+        m_attackTime += Time.deltaTime;
+        if (m_attackTime > 2.76)
+        {
+            m_attackTime = 0;
+            m_attackStart = true;
+
+            m_currentPath = null;
+            m_currentWaypoint = -1;
+            m_animator.SetBool("Roar", false);
+            m_mode = MonsterMode.Idle;
+        }
+    }
 
     private void Move()
-    {        
+    {
         // Find direction and distance to the next waypoint and move the
         // player via the attached character controller.
         Vector3 direction = (m_currentPath.vectorPath[m_currentWaypoint] -
@@ -303,20 +397,26 @@ public class SkeletonController : MonoBehaviour
             if (Random.value < playerDetectionChance)
             {
                 // If we have detected the player, attempt to get a path.
-                Path path = m_seeker.StartPath(transform.position,
-                    Player.transform.position);
-                if (!path.error)
+                if (m_seeker.IsDone())
                 {
-                    // Reset pathfinding variables.
-                    m_lastPathfindingUpdate = 0f;
-                    m_currentPath = path;
-                    m_currentWaypoint = 0;
-                    // Change the change to skeleton state and update animation 
-                    // variables.
-                    m_mode = SkeletonMode.Hunting;
+                    Path path = m_seeker.StartPath(transform.position,
+                        Player.transform.position);
+                    if (!path.error)
+                    {
+                        // Reset pathfinding variables.
 
-                    m_animator.SetFloat("Speed", 1);
-                    return true;
+                        m_lastPathfindingUpdate = 0f;
+                        m_currentPath = path;
+                        m_currentWaypoint = 0;
+                        // Change the change to skeleton state and update animation 
+                        // variables.
+                        m_mode = MonsterMode.Hunting;
+
+                        m_animator.SetFloat("Speed", 1);
+
+                        return true;
+
+                    }
                 }
             }
         }
@@ -329,6 +429,9 @@ public class SkeletonController : MonoBehaviour
     {
         return (x - a) / (b - a) * (d - c) + c;
     }
+
+
+
     public float pushPower = 2.0F;
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
@@ -343,22 +446,5 @@ public class SkeletonController : MonoBehaviour
         body.velocity = pushDir * pushPower;
     }
 
-    private void OnTriggerEnter(Collider collision)
-    {
 
-
-        if (collision.gameObject.CompareTag("Player") ||
-            collision.gameObject.CompareTag("Enemy"))
-        {
-            // Idle.
-            m_currentPath = null;
-            m_currentWaypoint = -1;
-
-            m_animator.SetFloat("Speed", 0);
-            m_mode = SkeletonMode.Idle;
-            return;
-        }
-
-
-    }
 }
