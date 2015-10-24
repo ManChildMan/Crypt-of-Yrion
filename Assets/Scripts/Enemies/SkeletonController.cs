@@ -18,6 +18,7 @@ public class SkeletonController : MonoBehaviour
         Idle,
         Patrolling,
         Hunting,
+        FacingOff,
         Attacking,
         TakingDamage,
         KnockedBack,
@@ -58,6 +59,10 @@ public class SkeletonController : MonoBehaviour
         {
             UpdateHunting();
         }
+        else if (m_mode == SkeletonMode.FacingOff)
+        {
+            UpdateFacingOff();
+        }
         else if (m_mode == SkeletonMode.Attacking)
         {
             UpdateAttacking();
@@ -75,6 +80,54 @@ public class SkeletonController : MonoBehaviour
         //    UpdateDying();
         //}   
 	}
+
+
+
+    private void UpdateFacingOff()
+    {
+
+        if (m_playerDistance < 2.5)
+        {
+            Vector3 directionToTarget = Player.transform.position - transform.position;
+            float angle = Vector3.Angle(transform.forward, directionToTarget);
+
+            if (Random.value < 0.1f && Mathf.Abs(angle) < 10)
+            {
+         
+                m_animator.SetTrigger("Attack");
+                //m_mode = SkeletonMode.Attacking;
+                return;
+            }
+        }
+        else
+        {
+            Path path = m_seeker.StartPath(transform.position,
+                                Player.transform.position);
+            if (!path.error)
+            {
+                // Reset pathfinding variables.
+                m_lastPathfindingUpdate = 0f;
+                m_currentPath = path;
+                m_currentWaypoint = 0;
+                // Change the change to skeleton state and update animation 
+                // variables.
+                m_mode = SkeletonMode.Hunting;
+
+                m_animator.SetBool("Hunt", true);
+                m_animator.SetBool("Patrol", false);
+                m_animator.SetBool("FacingOff", false);
+                return;
+            }
+            
+        }
+
+        // Orientate to player
+        Vector3 direction = Player.transform.position - transform.position;
+        direction.Normalize();
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), 3.5f * Time.deltaTime);
+    }
+
+
     private float m_lastPathfindingUpdate = 0f;
 
 
@@ -82,25 +135,23 @@ public class SkeletonController : MonoBehaviour
     private float m_attackTime;
     private void UpdateAttacking()
     {
-        if (m_attackStart)
-        {
-            m_attackTime = 0;
-            m_attackStart = false;
-        }
-        else m_attackTime += Time.deltaTime;
-        if (m_attackTime > 2.76)
-        {
-            m_attackTime = 0;
-            m_attackStart = true;
+        //if (m_attackStart)
+        //{
+        //    m_attackTime = 0;
+        //    m_attackStart = false;
+        //}
+        //else m_attackTime += Time.deltaTime;
+        //if (m_attackTime > 2.76)
+        //{
+        //    m_attackTime = 0;
+        //    m_attackStart = true;
 
-            m_currentPath = null;
-            m_currentWaypoint = -1;
-            m_animator.SetBool("Idle", true);
-            m_animator.SetBool("Hunt", false);
-            m_animator.SetBool("Patrol", false);
-            m_mode = SkeletonMode.Idle;
-            return;
-        }
+        //    m_currentPath = null;
+        //    m_currentWaypoint = -1;
+ 
+        //    m_mode = SkeletonMode.FacingOff;
+        //    return;
+        //}
     }
 
 
@@ -126,9 +177,10 @@ public class SkeletonController : MonoBehaviour
                 m_currentPath = path;
                 m_currentWaypoint = 0;
                 m_mode = SkeletonMode.Patrolling;
-                m_animator.SetBool("Idle", false);
+             
                 m_animator.SetBool("Hunt", false);
                 m_animator.SetBool("Patrol", true);
+                m_animator.SetBool("FacingOff", false);
                 return;
             }     
         }
@@ -144,9 +196,10 @@ public class SkeletonController : MonoBehaviour
         {
             m_currentPath = null;
             m_currentWaypoint = -1;
-            m_animator.SetBool("Idle", true);
+   
             m_animator.SetBool("Hunt", false);
             m_animator.SetBool("Patrol", false);
+            m_animator.SetBool("FacingOff", false);
             m_mode = SkeletonMode.Idle;
             return;
         }
@@ -157,10 +210,14 @@ public class SkeletonController : MonoBehaviour
     private void UpdateHunting()
     {
         WalkSpeed = 75;
-        if (m_playerDistance < 2.75)
+        if (m_playerDistance < 2.0)
         {
-            m_animator.SetTrigger("Attack");
-            m_mode = SkeletonMode.Attacking;
+            
+            m_animator.SetBool("Hunt", false);
+            m_animator.SetBool("Patrol", false);
+            m_animator.SetBool("FacingOff", true);
+            m_mode = SkeletonMode.FacingOff;
+            return;
         }
 
 
@@ -250,9 +307,10 @@ public class SkeletonController : MonoBehaviour
                     // Change the change to skeleton state and update animation 
                     // variables.
                     m_mode = SkeletonMode.Hunting;
-                    m_animator.SetBool("Idle", false);
+                 
                     m_animator.SetBool("Hunt", true);
                     m_animator.SetBool("Patrol", false);
+                    m_animator.SetBool("FacingOff", false);
                     return true;
                 }
             }
@@ -290,9 +348,10 @@ public class SkeletonController : MonoBehaviour
             // Idle.
             m_currentPath = null;
             m_currentWaypoint = -1;
-            m_animator.SetBool("Idle", true);
+
             m_animator.SetBool("Hunt", false);
             m_animator.SetBool("Patrol", false);
+            m_animator.SetBool("FacingOff", false);
             m_mode = SkeletonMode.Idle;
             return;
         }
