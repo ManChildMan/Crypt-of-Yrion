@@ -49,6 +49,11 @@ public class Inventory : MonoBehaviour
             items[8] = new BronzeRing();
             items[9] = new DyadRingOfSpeed();
             items[10] = new RingOfFortitude();
+            items[11] = new DaggerOfSpeed();
+            items[12] = new IronShortsword();
+            items[13] = new ScimitarOfTheEast();
+            items[14] = new SharpAxeOfPower();
+            items[15] = new SteelLongswordOfStrength();
         }
         else
         {
