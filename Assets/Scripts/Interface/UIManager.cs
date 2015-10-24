@@ -39,8 +39,14 @@ public class UIManager : MonoBehaviour
 
     public GameObject loadDialog;
     private CanvasGroup loadDialogCanvasGroup;
-    
-	void Start () {
+
+    private Animator Ani;
+    private int PlayerHealth;
+    private float restartTimer;
+    private float restartDelay = 5f;
+
+    void Start () {
+        Ani = GetComponent<Animator>();
         transitionImage = transitionImageObject.GetComponent<Image>();
         transitionImage.color = new Color(0.0f, 0.0f, 0.0f, 1f);
         transitionImageObject.SetActive(true);
@@ -58,10 +64,30 @@ public class UIManager : MonoBehaviour
         messageText.color = new Color(1.0f, 0.7f, 0.0f, 0.0f);
 
         loadDialogCanvasGroup = loadDialog.GetComponent<CanvasGroup>();
+
+        PlayerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().CurrentHealth;
     }
 
     void Update()
     {
+        PlayerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().CurrentHealth;
+
+        if (PlayerHealth <= 0)
+        {
+            // ... tell the animator the game is over.
+            Ani.SetTrigger("GameOver");
+
+            // .. increment a timer to count up to restarting.
+            restartTimer += Time.deltaTime;
+
+            // .. if it reaches the restart delay...
+            if (restartTimer >= restartDelay)
+            {
+                // .. then reload the currently loaded level.
+                Application.LoadLevel("safezone");
+            }
+        }
+
         // Update transitons.
         if (!portalTransition)
         {
@@ -350,4 +376,5 @@ public class UIManager : MonoBehaviour
         messageImageObject.SetActive(true);
         messageText.text = message;
     }
+
 }
