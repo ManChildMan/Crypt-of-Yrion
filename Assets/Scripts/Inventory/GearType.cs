@@ -5,7 +5,7 @@ public enum GearType
 {
     Ring,
     Neck,
-    Wrist,
+    Waist,
     Weapon,
     OneAboveMax
 }

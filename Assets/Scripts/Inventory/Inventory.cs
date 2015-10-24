@@ -72,6 +72,9 @@ public class Inventory : MonoBehaviour
             items[13] = new ScimitarOfTheEast();
             items[14] = new SharpAxeOfPower();
             items[15] = new SteelLongswordOfStrength();
+            items[16] = new GemstoneBelt();
+            items[17] = new BlueSash();
+            items[18] = new GreenSash();
         }
         else
         {
