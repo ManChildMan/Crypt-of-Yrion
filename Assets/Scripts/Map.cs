@@ -133,12 +133,13 @@ public class Map : MonoBehaviour
         m_torch = Resources.Load("WallTorch");
         m_chest = Resources.Load("Chest");
 
-        // Ensure the chests can talk with the game (for scripts).
-        GameObject m_chestGameObject = (GameObject)m_chest;
-        ChestLootAccessor chestLootAccessor = m_chestGameObject.transform.FindChild("ChestLootAccessor").GetComponent<ChestLootAccessor>();
+        // Ensure the chests can talk with the game (for accessing loot).
+        GameObject m_chestAccessor = (GameObject)Resources.Load("ChestLootAccessor");
+        ChestLootAccessor m_chestLootAccessor = m_chestAccessor.GetComponent<ChestLootAccessor>();
         GameObject uiAndInventory = GameObject.Find("UIAndInventory");
-        chestLootAccessor.inventory = uiAndInventory.transform.FindChild("Inventory").GetComponent<Inventory>();
-        chestLootAccessor.uiManager = uiAndInventory.transform.FindChild("Canvas").GetComponent<UIManager>();
+        m_chestLootAccessor.inventory = uiAndInventory.transform.FindChild("Inventory").GetComponent<Inventory>();
+        m_chestLootAccessor.uiManager = uiAndInventory.transform.FindChild("Canvas").GetComponent<UIManager>();
+        m_chestLootAccessor.playerController = GameObject.Find("Adventurer").GetComponent<PlayerController>();
 
         GameObject instance = null;
         float xPos = 0, zPos = 0;
@@ -194,6 +195,10 @@ public class Map : MonoBehaviour
                     zPos = m_minZ + (z * NodeSize) + 1;
                     chest.transform.position = new Vector3(xPos, 0, zPos);
                     chest.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+
+                    GameObject chestAccessor = Instantiate(m_chestAccessor);
+                    chest.transform.parent = Obstacles;
+                    chestAccessor.transform.position = new Vector3(xPos, 0, zPos);
                 }
                 else if (propData[x, z] == (int)TerrainType.Item_Chest_South)
                 {
@@ -203,6 +208,10 @@ public class Map : MonoBehaviour
                     zPos = m_minZ + (z * NodeSize) - 1;
                     chest.transform.position = new Vector3(xPos, 0, zPos);
                     chest.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+
+                    GameObject chestAccessor = Instantiate(m_chestAccessor);
+                    chest.transform.parent = Obstacles;
+                    chestAccessor.transform.position = new Vector3(xPos, 0, zPos);
                 }
                 else if (propData[x, z] == (int)TerrainType.Item_Chest_East)
                 {
@@ -212,6 +221,10 @@ public class Map : MonoBehaviour
                     zPos = m_minZ + (z * NodeSize);
                     chest.transform.position = new Vector3(xPos - 1, 0, zPos);
                     chest.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
+
+                    GameObject chestAccessor = Instantiate(m_chestAccessor);
+                    chest.transform.parent = Obstacles;
+                    chestAccessor.transform.position = new Vector3(xPos - 1, 0, zPos);
                 }
                 else if (propData[x, z] == (int)TerrainType.Item_Chest_West)
                 {
@@ -221,6 +234,10 @@ public class Map : MonoBehaviour
                     zPos = m_minZ + (z * NodeSize);
                     chest.transform.position = new Vector3(xPos + 1, 0, zPos);
                     chest.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+
+                    GameObject chestAccessor = Instantiate(m_chestAccessor);
+                    chest.transform.parent = Obstacles;
+                    chestAccessor.transform.position = new Vector3(xPos + 1, 0, zPos);
                 }
             }
         }

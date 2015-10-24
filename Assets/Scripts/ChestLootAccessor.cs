@@ -5,6 +5,7 @@ public class ChestLootAccessor : MonoBehaviour
 {
     public UIManager uiManager;
     public Inventory inventory;
+    public PlayerController playerController;
 
     private ChestLoot chestLoot;
 
@@ -17,6 +18,7 @@ public class ChestLootAccessor : MonoBehaviour
     {
         if (other.name == "Adventurer")
         {
+            playerController.StopMoving();
             uiManager.ShowLootWindow(chestLoot);
         }
     }
