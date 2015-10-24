@@ -83,6 +83,10 @@ public class UIManager : MonoBehaviour
             // .. if it reaches the restart delay...
             if (restartTimer >= restartDelay)
             {
+                // Ensure we save states before changing scene.
+                StateMigrator.lastPortalActionTaken = portalAction;
+                inventory.SaveState();
+
                 // .. then reload the currently loaded level.
                 Application.LoadLevel("safezone");
             }
