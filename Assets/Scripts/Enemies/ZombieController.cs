@@ -1,24 +1,32 @@
 ﻿using Pathfinding;
 using UnityEngine;
+
+
+
 public class ZombieController : MonoBehaviour
 {
 
     public PlayerController Player;
-
     public float MaxDetectionDistance = 12f;
     public float MaxDetectionChance = 0.15f;
     public float WaypointArrivalThreshold = 0.1f;
     public float PatrolChance = 0.005f;
     public float PatrolRadius = 15f;
     public float WalkSpeed = 50f;
+    public int CurrentHealth = 20;
+    public float HuntingPathfindingInterval = 3.0f;
+
+
+
+
+
     enum ZombieMode
     {
         Idle,
         Patrolling,
         Hunting,
-        FacingOff,
         Attacking,
-        Dying
+        Dead
     }
 
 
@@ -30,6 +38,11 @@ public class ZombieController : MonoBehaviour
     private Path m_currentPath;
     private int m_currentWaypoint = -1;
     private Vector3 m_lastPlayerPos;
+    private float m_lastPathfindingUpdate = 0f;
+    private bool m_attackStart = true;
+    private float m_attackTime;
+    bool m_playerDetected = false;
+
     void Start()
     {
         m_animator = GetComponentInChildren<Animator>();
@@ -40,10 +53,18 @@ public class ZombieController : MonoBehaviour
 
     void Update()
     {
+        // Die if health less than 0.
+        if (CurrentHealth < 0)
+        {
+            m_animator.SetBool("Die", true);
+            m_mode = ZombieMode.Dead;
+            GameObject.Destroy(this.gameObject, 5);
+        }
+
+
         // Cache distance from the controller to the player.
         m_playerDistance = Vector3.Distance(transform.position,
             Player.transform.position);
-
         if (m_mode == ZombieMode.Idle)
         {
             UpdateIdle();
@@ -56,126 +77,89 @@ public class ZombieController : MonoBehaviour
         {
             UpdateHunting();
         }
-        else if (m_mode == ZombieMode.FacingOff)
-        {
-            UpdateFacingOff();
-        }
         else if (m_mode == ZombieMode.Attacking)
         {
             UpdateAttacking();
         }
-        //else if (m_mode == SkeletonMode.TakingDamage)
-        //{
-        //    UpdateTakingDamage();
-        //}
-        //else if (m_mode == SkeletonMode.KnockedBack)
-        //{
-        //    UpdateKnockedBack();
-        //}
-        //else if (m_mode == SkeletonMode.Dying)
-        //{
-        //    UpdateDying();
-        //}   
+        else if (m_mode == ZombieMode.Dead)
+        {
+
+        }   
     }
 
-
-
-    private void UpdateFacingOff()
-    {
-
-        if (m_playerDistance < 2.5)
-        {
-            Vector3 directionToTarget = Player.transform.position - transform.position;
-            float angle = Vector3.Angle(transform.forward, directionToTarget);
-
-            if (Random.value < 0.1f && Mathf.Abs(angle) < 10)
-            {
-
-                m_animator.SetBool("Attack", true);
-
-
-
-                m_mode = ZombieMode.Attacking;
-                return;
-            }
-        }
-        else
-        {
-            Path path = m_seeker.StartPath(transform.position,
-                                Player.transform.position);
-            if (!path.error)
-            {
-                // Reset pathfinding variables.
-                m_lastPathfindingUpdate = 0f;
-                m_currentPath = path;
-                m_currentWaypoint = 0;
-                // Change the change to skeleton state and update animation 
-                // variables.
-                m_mode = ZombieMode.Hunting;
-
-
-                return;
-            }
-
-        }
-
-        // Orientate to player
-        Vector3 direction = Player.transform.position - transform.position;
-        direction.Normalize();
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), 3.5f * Time.deltaTime);
-    }
-
-
-    private float m_lastPathfindingUpdate = 0f;
-
-
-    private bool m_attackStart = true;
-    private float m_attackTime;
-    private void UpdateAttacking()
-    {
-        if (m_attackStart)
-        {
-            m_attackTime = 0;
-            m_attackStart = false;
-        }
-
-        m_attackTime += Time.deltaTime;
-        if (m_attackTime > 2.76)
-        {
-            m_attackTime = 0;
-            m_attackStart = true;
-
-            m_currentPath = null;
-            m_currentWaypoint = -1;
-            m_animator.SetBool("Attack", false);
-            m_mode = ZombieMode.FacingOff;
-        }
-    }
-
-
+  
     private void UpdateIdle()
     {
-
-        if (DetectPlayer()) return;
-        m_animator.SetFloat("Speed", 0);
-        // Check if the controller should transition from idle to patrolling.
-        if (Random.value < PatrolChance)
+        if (m_playerDetected)
         {
-            // Get a point within a radius of PatrolRadius units.
-            Vector2 randomPoint = Random.insideUnitCircle * PatrolRadius;
-            Vector3 end = transform.position;
-            end.x += randomPoint.x;
-            end.y = 0.5f;
-            end.z += randomPoint.y;
-
-            Path path = m_seeker.StartPath(transform.position, end);
-            if (!path.error)
+            WalkSpeed = 0;
+            // If within striking range attack the player at random intervals. If 
+            // not, attempt to get a path to the player and resume hunting.
+            if (m_playerDistance < 3f)
             {
-                m_lastPathfindingUpdate = 0f;
-                m_currentPath = path;
-                m_currentWaypoint = 0;
-                m_mode = ZombieMode.Patrolling;
-                return;
+                Vector3 displacement = Player.transform.position - transform.position;
+                float angle = Vector3.Angle(transform.forward, displacement);
+
+                if (Random.value < 0.05f && Mathf.Abs(angle) < 10)
+                {
+                    float r = Random.value;
+                    if (r < 1)
+                    {
+                        m_animator.SetBool("Attack", true);
+                        m_mode = ZombieMode.Attacking;
+                    }
+                    return;
+                }
+
+                // Reorientate the controller to face towards the player.
+                Vector3 direction = Player.transform.position - transform.position;
+                direction.Normalize();
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), 3.5f * Time.deltaTime);
+            }
+            else
+            {
+                Path path = m_seeker.StartPath(transform.position,
+                    Player.transform.position);
+                if (!path.error)
+                {
+                    // Reset pathfinding variables.
+                    m_lastPathfindingUpdate = 0f;
+                    m_currentPath = path;
+                    m_currentWaypoint = 0;
+                    m_mode = ZombieMode.Hunting;
+                    m_animator.SetFloat("Speed", 1);
+
+                }
+            }
+        }
+
+        else
+        {
+            m_playerDetected = DetectPlayer();
+            if (m_playerDetected) return;
+
+            // Check if the controller should transition from idle to patrolling.
+            if (Random.value < PatrolChance)
+            {
+                // Get a point within a radius of PatrolRadius units.
+                Vector2 randomPoint = Random.insideUnitCircle * PatrolRadius;
+                Vector3 end = transform.position;
+                end.x += randomPoint.x;
+                end.y = 0.5f;
+                end.z += randomPoint.y;
+
+                Path path = m_seeker.StartPath(transform.position, end);
+                if (!path.error)
+                {
+                    m_lastPathfindingUpdate = 0f;
+                    m_currentPath = path;
+                    m_currentWaypoint = 0;
+                    m_mode = ZombieMode.Patrolling;
+
+                    m_animator.SetFloat("Speed", 0.5f);
+
+                    return;
+                }
             }
         }
     }
@@ -197,26 +181,27 @@ public class ZombieController : MonoBehaviour
         }
         else m_animator.SetFloat("Speed", 25);
 
-        Move();
+
+        if (m_currentWaypoint >= 0 &&
+            m_currentWaypoint < m_currentPath.vectorPath.Count - 1) Move();
     }
-    public float HuntingPathfindingInterval = 3.0f;
+
     private void UpdateHunting()
     {
         WalkSpeed = 50;
         if (m_playerDistance < 2.0)
         {
 
-            m_animator.SetBool("Attack", true);
-            m_animator.SetFloat("Speed", 0);
-            m_mode = ZombieMode.FacingOff;
+            m_animator.SetFloat("Speed", 0f);
+            m_mode = ZombieMode.Idle;
             return;
         }
-        else m_animator.SetFloat("Speed", 50);
 
 
         // Check if we have reached the end of the current path. 
-        if (m_currentWaypoint >= m_currentPath.vectorPath.Count)
+        if (m_currentPath == null || m_currentWaypoint >= m_currentPath.vectorPath.Count)
         {
+
             // If so, find a new path to the player.
             Path path = m_seeker.StartPath(transform.position, Player.transform.position);
             if (!path.error)
@@ -237,33 +222,65 @@ public class ZombieController : MonoBehaviour
             Path path = m_seeker.StartPath(transform.position, Player.transform.position);
             if (!path.error)
             {
+                m_lastPathfindingUpdate = 0f;
                 m_lastPlayerPos = Player.transform.position;
                 m_currentPath = path;
                 m_currentWaypoint = 0;
             }
-            m_lastPathfindingUpdate = 0f;
+
         }
 
-        Move();
+        if (m_currentWaypoint >= 0 &&
+            m_currentWaypoint < m_currentPath.vectorPath.Count - 1) Move();
     }
 
 
 
+    
+
+    private void UpdateAttacking()
+    {
+        if (m_attackStart)
+        {
+            m_attackTime = 0;
+            m_attackStart = false;
+        }
+
+        m_attackTime += Time.deltaTime;
+        if (m_attackTime > 2.76)
+        {
+            m_attackTime = 0;
+            m_attackStart = true;
+
+            m_currentPath = null;
+            m_currentWaypoint = -1;
+            m_animator.SetBool("Attack", false);
+            m_mode = ZombieMode.Idle;
+        }
+    }
+
+
+ 
+
     private void Move()
     {
-        // Find direction and distance to the next waypoint and move the
-        // player via the attached character controller.
-        Vector3 direction = (m_currentPath.vectorPath[m_currentWaypoint] -
+        Vector3 pp = m_currentPath.vectorPath[m_currentWaypoint];
+
+        Vector3 direction = (pp -
             transform.position).normalized;
         Vector3 displacement = direction * WalkSpeed * Time.deltaTime;
         m_controller.SimpleMove(displacement);
+
         // Keep the player orientated in the direction of movement.
-        transform.rotation = Quaternion.LookRotation(
-            m_controller.velocity);
+        if (m_controller.velocity.magnitude > 0.1f)
+            transform.rotation = Quaternion.LookRotation(
+                m_controller.velocity);
 
         // If close enough to current waypoint switch to next waypoint.
         Vector2 transform2d = new Vector2(transform.position.x, transform.position.z);
-        Vector2 waypoint2d = new Vector2(m_currentPath.vectorPath[m_currentWaypoint].x, m_currentPath.vectorPath[m_currentWaypoint].z);
+        Vector2 waypoint2d = new Vector2(
+            pp.x,
+            pp.z);
         if (Vector2.Distance(transform2d, waypoint2d) < WaypointArrivalThreshold)
         {
             m_currentWaypoint++;
@@ -300,6 +317,7 @@ public class ZombieController : MonoBehaviour
                     // variables.
                     m_mode = ZombieMode.Hunting;
 
+                    m_animator.SetFloat("Speed", 1);
                     return true;
                 }
             }
@@ -313,17 +331,17 @@ public class ZombieController : MonoBehaviour
     {
         return (x - a) / (b - a) * (d - c) + c;
     }
-    public float pushPower = 2.0F;
-    void OnControllerColliderHit(ControllerColliderHit hit)
-    {
+    //public float pushPower = 2.0F;
+    //void OnControllerColliderHit(ControllerColliderHit hit)
+    //{
 
-        if (hit.gameObject.CompareTag("Enemy") ||
-            hit.gameObject.CompareTag("Player"))
-        {
-            Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
-            m_controller.Move(pushDir * pushPower);
-        }
-    }
+    //    if (hit.gameObject.CompareTag("Enemy") ||
+    //        hit.gameObject.CompareTag("Player"))
+    //    {
+    //        Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
+    //        m_controller.Move(pushDir * pushPower);
+    //    }
+    //}
 
 
 }

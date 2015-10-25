@@ -6,13 +6,13 @@ public class SkeletonController : MonoBehaviour
 {
    
     public PlayerController Player;
-
     public float MaxDetectionDistance = 12f;
     public float MaxDetectionChance = 0.15f;
     public float WaypointArrivalThreshold = 0.1f;
     public float PatrolChance = 0.005f;
     public float PatrolRadius = 15f;
     public float WalkSpeed = 50f;
+
     enum SkeletonMode
     {
         Idle,
@@ -38,7 +38,15 @@ public class SkeletonController : MonoBehaviour
     public float HuntingPathfindingInterval = 3.0f;
     bool m_playerDetected = false;
 
-	void Start () {
+
+
+
+
+
+
+
+	void Start ()
+    {
         m_animator = GetComponentInChildren<Animator>();
         m_controller = GetComponent<CharacterController>();
         m_seeker = GetComponent<Seeker>();
@@ -47,19 +55,18 @@ public class SkeletonController : MonoBehaviour
 
 	void Update () 
     {
-
-
+        // Die if health less than 0.
         if (CurrentHealth < 0)
         {
             m_animator.SetBool("Dead", true);
             m_mode = SkeletonMode.Dead;
+            GameObject.Destroy(this.gameObject, 5);
         }
         
         
         // Cache distance from the controller to the player.
         m_playerDistance = Vector3.Distance(transform.position,
             Player.transform.position);
-
         if (m_mode == SkeletonMode.Idle)
         {
             UpdateIdle();

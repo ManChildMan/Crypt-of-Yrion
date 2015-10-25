@@ -12,11 +12,19 @@ public class WeaponControllerP : MonoBehaviour {
 
     public void OnTriggerEnter(Collider col)
     {
-        if (col.gameObject.tag == "Enemy")
+        
+        SkeletonController skelController = col.GetComponent<SkeletonController>();
+        if (skelController != null)
         {
-            col.gameObject.GetComponent<SkeletonController>().CurrentHealth -= playerController.Attack / 10;
-            return;
+            skelController.CurrentHealth -= playerController.Attack / 10;
         }
+
+        ZombieController zombController = col.GetComponent<ZombieController>();
+        if (zombController != null)
+        {
+            zombController.CurrentHealth -= playerController.Attack / 10;
+        }
+
         BossController bossController = col.GetComponent<BossController>();
         if (bossController != null)
         {
