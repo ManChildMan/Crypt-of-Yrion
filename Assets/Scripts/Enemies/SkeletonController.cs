@@ -40,8 +40,6 @@ public class SkeletonController : MonoBehaviour
 
     private bool displayObjectName;
     private string objectName;
-    private Renderer[] renderers;
-    private Color[] rendererStartColors;
     private int MaxHealth;
 
 	void Start () {
@@ -50,13 +48,7 @@ public class SkeletonController : MonoBehaviour
         m_controller = GetComponent<CharacterController>();
         m_seeker = GetComponent<Seeker>();
 
-        objectName = gameObject.name;
-        renderers = GetComponentsInChildren<Renderer>();
-        rendererStartColors = new Color[renderers.Length];
-        for (int i = 0; i < renderers.Length; i++)
-        {
-            rendererStartColors[i] = renderers[i].material.color;
-        }
+        objectName = "Skeleton";
         MaxHealth = CurrentHealth;
 	}
 	
@@ -357,7 +349,7 @@ public class SkeletonController : MonoBehaviour
                     m_mode = SkeletonMode.Hunting;
 
                     m_animator.SetFloat("Speed", 1);
-
+                        return true;
                     }
                 }
             }
@@ -386,19 +378,11 @@ public class SkeletonController : MonoBehaviour
 
     void OnMouseEnter()
     {
-        for (int i = 0; i < renderers.Length; i++)
-        {
-            renderers[i].material.color = Color.red;
-        }
         displayObjectName = true;
     }
         
     void OnMouseExit()
     {
-        for (int i = 0; i < renderers.Length; i++)
-        {
-            renderers[i].material.color = rendererStartColors[i];
-    }
         displayObjectName = false;
     }
 
