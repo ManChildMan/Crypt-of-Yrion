@@ -72,7 +72,7 @@ public class UIManager : MonoBehaviour
     {
         PlayerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().CurrentHealth;
 
-        if (PlayerHealth <= 0)
+        if (PlayerHealth < 0)
         {
             // ... tell the animator the game is over.
             Ani.SetTrigger("GameOver");
