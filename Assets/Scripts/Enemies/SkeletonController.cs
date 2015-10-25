@@ -50,7 +50,7 @@ public class SkeletonController : MonoBehaviour
         m_controller = GetComponent<CharacterController>();
         m_seeker = GetComponent<Seeker>();
 
-        objectName = gameObject.name;
+        objectName = "Skeleton";
         renderers = GetComponentsInChildren<Renderer>();
         rendererStartColors = new Color[renderers.Length];
         for (int i = 0; i < renderers.Length; i++)
@@ -357,7 +357,7 @@ public class SkeletonController : MonoBehaviour
                     m_mode = SkeletonMode.Hunting;
 
                     m_animator.SetFloat("Speed", 1);
-
+                        return true;
                     }
                 }
             }
