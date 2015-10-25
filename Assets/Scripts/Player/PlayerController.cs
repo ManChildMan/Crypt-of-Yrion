@@ -198,7 +198,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!StateMigrator.anyWindowOpen)
         {
-            Vector3 screenPosition = Camera.current.WorldToScreenPoint(transform.position + new Vector3(0.0f, 2.0f, 0.0f));
+            Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0.0f, 2.0f, 0.0f));
             screenPosition.y = Screen.height - (screenPosition.y + 1);
             Rect rect = new Rect(screenPosition.x - MaxHealth / 2, screenPosition.y - 12, MaxHealth, 24);
             GUI.color = Color.green;

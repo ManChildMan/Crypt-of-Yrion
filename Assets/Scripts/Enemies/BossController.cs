@@ -42,7 +42,8 @@ public class BossController : MonoBehaviour {
         WaitingForPlayer,
         WalkingToPlayer,
         AttackingPlayer,
-        Dying
+        Dying,
+        None,
     }
 
     /// <summary>
@@ -86,6 +87,7 @@ public class BossController : MonoBehaviour {
                 UpdateAttackingPlayer();
                 break;
             case State.Dying:
+                UpdateDying();
                 break;
         }
 
@@ -163,7 +165,18 @@ public class BossController : MonoBehaviour {
         }
     }
 
-    public void UpdateAttackingPlayer()
+    public void OnPathComplete(Path path)
+    {
+        pathLoading = false;
+        if (!path.error)
+        {
+            this.path = path;
+            currentWayPoint = 0;
+            moving = true;
+        }
+    }
+
+    private void UpdateAttackingPlayer()
     {
         Vector3 directionToTarget = target.position - transform.position;
         transform.rotation = Quaternion.LookRotation(new Vector3(directionToTarget.x, 0.0f, directionToTarget.z));
@@ -177,7 +190,7 @@ public class BossController : MonoBehaviour {
                 {
                     doingAttackAnimation = true;
                     animator.SetBool("Attack3", true);
-                    animationTimer = 4.0f;
+                    animationTimer = 4.5f;
                 }
             }
         }
@@ -202,15 +215,12 @@ public class BossController : MonoBehaviour {
         }
     }
 
-    public void OnPathComplete(Path path)
+    private void UpdateDying()
     {
-        pathLoading = false;
-        if (!path.error)
-        {
-            this.path = path;
-            currentWayPoint = 0;
-            moving = true;
-        }
+        animator.SetFloat("Speed", 0.0f);
+        animator.SetBool("Attack1", false);
+        animator.SetBool("Die", true);
+        state = State.None;
     }
 
     /*
@@ -229,11 +239,14 @@ public class BossController : MonoBehaviour {
         {
             GUI.Box(new Rect(Event.current.mousePosition.x - 155, Event.current.mousePosition.y, 150, 25), objectName);
         }
-        Vector3 screenPosition = Camera.current.WorldToScreenPoint(transform.position + new Vector3(0.0f, 3.0f, 0.0f));
-        screenPosition.y = Screen.height - (screenPosition.y + 1);
-        Rect rect = new Rect(screenPosition.x - maxHealth / 2, screenPosition.y - 12, maxHealth, 24);
-        GUI.color = Color.red;
-        GUI.HorizontalScrollbar(rect, 0, health, 0, maxHealth);
+        if (!StateMigrator.anyWindowOpen && state != State.None)
+        {
+            Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0.0f, 3.0f, 0.0f));
+            screenPosition.y = Screen.height - (screenPosition.y + 1);
+            Rect rect = new Rect(screenPosition.x - maxHealth / 2, screenPosition.y - 12, maxHealth, 24);
+            GUI.color = Color.red;
+            GUI.HorizontalScrollbar(rect, 0, health, 0, maxHealth);
+        }
     }
 
     void OnMouseEnter()
