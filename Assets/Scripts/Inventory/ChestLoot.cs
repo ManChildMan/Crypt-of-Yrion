@@ -10,16 +10,16 @@ public class ChestLoot : Loot
         int index = 0;
         if (StateMigrator.lastPortalActionTaken == PortalAction.GotoLevel1)
         {
-            items[index++] = new Coin((int)(900 * Random.value) + 1);
-            if (Percent(5.0f))
+            items[index++] = new Coin((int)(1100 * Random.value) + 1);
+            if (Percent(3.0f))
             {
                 items[index++] = new PowerfulPortalBinding();
             }
         }
         else if (StateMigrator.lastPortalActionTaken == PortalAction.GotoLevel2)
         {
-            items[index++] = new Coin((int)(2000 * Random.value) + 1);
-            if (Percent(4.0f))
+            items[index++] = new Coin((int)(6500 * Random.value) + 1);
+            if (Percent(2.0f))
             {
                 items[index++] = new MysticPortalBinding();
             }

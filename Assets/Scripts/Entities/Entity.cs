@@ -13,7 +13,7 @@ public class Entity : MonoBehaviour
     protected int totalSpeed;
     protected int totalAttack;
 
-    public virtual void Start()
+    public virtual void Awake()
     {
         totalHealth = baseHealth;
         totalSpeed = baseSpeed;

@@ -5,9 +5,9 @@ public class Player : Entity
     // References set by unity.
     public Inventory inventory;
 
-    public override void Start()
+    public override void Awake()
     {
-        base.Start();
+        base.Awake();
     }
 
     public void RecalculateStats()
@@ -30,6 +30,4 @@ public class Player : Entity
             }
         }
     }
-
-
 }

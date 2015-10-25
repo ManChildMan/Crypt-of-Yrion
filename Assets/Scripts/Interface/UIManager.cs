@@ -191,7 +191,7 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        StateMigrator.anyWindowOpen = inventoryWindow.activeSelf || equipmentWindow.activeSelf || statsWindow.activeSelf || shopWindow.activeSelf || lootWindow.activeSelf || PlayerHealth <= 0;
+        StateMigrator.anyWindowOpen = inventoryWindow.activeSelf || equipmentWindow.activeSelf || statsWindow.activeSelf || shopWindow.activeSelf || lootWindow.activeSelf || PlayerHealth <= 0 || portalTransition;
     }
 
     public void ShowInventoryWindow()
