@@ -2,10 +2,10 @@
 using System.Collections;
 using Pathfinding;
 
-public class SkeletonController : MonoBehaviour 
-{
+public class MonsterControllerV2 : MonoBehaviour {
+
     private PlayerController Player;
-   
+
     public float MaxDetectionDistance = 12f;
     public float MaxDetectionChance = 0.15f;
     public float WaypointArrivalThreshold = 0.1f;
@@ -13,12 +13,17 @@ public class SkeletonController : MonoBehaviour
     public float PatrolRadius = 15f;
     public float WalkSpeed = 50f;
 
+    private bool displayObjectName;
+    private string objectName;
+    private int MaxHealth;
+
     enum SkeletonMode
     {
         Idle,
         Patrolling,
         Hunting,
         Attack1,
+        Sleeping,
         Dead,
     }
 
@@ -38,23 +43,19 @@ public class SkeletonController : MonoBehaviour
     public float HuntingPathfindingInterval = 3.0f;
     bool m_playerDetected = false;
 
-    private bool displayObjectName;
-    private string objectName;
-    private int MaxHealth;
-
-	void Start () {
+    // Use this for initialization
+    void Start () {
         Player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         m_animator = GetComponentInChildren<Animator>();
         m_controller = GetComponent<CharacterController>();
         m_seeker = GetComponent<Seeker>();
 
-        objectName = "Skeleton";
+        objectName = "Monster";
         MaxHealth = CurrentHealth;
-	}
+    }
 	
-
-	void Update () 
-    {
+	// Update is called once per frame
+	void Update () {
         // Die if health less than 0.
         if (CurrentHealth < 0)
         {
@@ -62,8 +63,8 @@ public class SkeletonController : MonoBehaviour
             m_mode = SkeletonMode.Dead;
             GameObject.Destroy(this.gameObject, 5);
         }
-        
-        
+
+
         // Cache distance from the controller to the player.
         m_playerDistance = Vector3.Distance(transform.position,
             Player.transform.position);
@@ -87,11 +88,7 @@ public class SkeletonController : MonoBehaviour
         {
             UpdateDead();
         }
-
-	}
-
-
-
+    }
 
     private void UpdateIdle()
     {
@@ -177,7 +174,6 @@ public class SkeletonController : MonoBehaviour
 
 
 
-
     private void UpdatePatrolling()
     {
         WalkSpeed = 50;
@@ -195,15 +191,15 @@ public class SkeletonController : MonoBehaviour
         }
 
         if (m_currentWaypoint >= 0 &&
-            m_currentWaypoint < m_currentPath.vectorPath.Count - 1) Move();
+            m_currentWaypoint < m_currentPath.vectorPath.Count - 1)
+            Move();
     }
-    
-    
+
 
     private void UpdateHunting()
     {
         WalkSpeed = 75;
-        
+
         if (m_playerDistance < 2.0)
         {
             m_animator.SetFloat("Speed", 0f);
@@ -217,16 +213,16 @@ public class SkeletonController : MonoBehaviour
         {
             if (m_seeker.IsDone())
             {
-            // If so, find a new path to the player.
-            Path path = m_seeker.StartPath(transform.position, Player.transform.position);
-            if (!path.error)
-            {
-                m_lastPathfindingUpdate = 0f;
-                m_lastPlayerPos = Player.transform.position;
-                m_currentPath = path;
-                m_currentWaypoint = 0;
+                // If so, find a new path to the player.
+                Path path = m_seeker.StartPath(transform.position, Player.transform.position);
+                if (!path.error)
+                {
+                    m_lastPathfindingUpdate = 0f;
+                    m_lastPlayerPos = Player.transform.position;
+                    m_currentPath = path;
+                    m_currentWaypoint = 0;
+                }
             }
-        }
         }
 
         // If the player has moved significantly since last pathfinding and more
@@ -236,23 +232,23 @@ public class SkeletonController : MonoBehaviour
         {
             if (m_seeker.IsDone())
             {
-            // Re-path to the player and reset pathfinding variables.
-            Path path = m_seeker.StartPath(transform.position, Player.transform.position);
-            if (!path.error)
-            {
-                m_lastPathfindingUpdate = 0f;
-                m_lastPlayerPos = Player.transform.position;
-                m_currentPath = path;
-                m_currentWaypoint = 0;
-            }
+                // Re-path to the player and reset pathfinding variables.
+                Path path = m_seeker.StartPath(transform.position, Player.transform.position);
+                if (!path.error)
+                {
+                    m_lastPathfindingUpdate = 0f;
+                    m_lastPlayerPos = Player.transform.position;
+                    m_currentPath = path;
+                    m_currentWaypoint = 0;
+                }
             }
 
         }
 
         if (m_currentWaypoint >= 0 &&
-            m_currentWaypoint < m_currentPath.vectorPath.Count - 1) Move();
+            m_currentWaypoint < m_currentPath.vectorPath.Count - 1)
+            Move();
     }
-
 
     private void UpdateAttack1()
     {
@@ -277,19 +273,8 @@ public class SkeletonController : MonoBehaviour
     }
 
 
-
-
-    private void UpdateDead()
-    {
-
-
-
-    }
-
-
-
     private void Move()
-    {        
+    {
 
 
         Vector3 pp = m_currentPath.vectorPath[m_currentWaypoint];
@@ -298,9 +283,9 @@ public class SkeletonController : MonoBehaviour
             transform.position).normalized;
         Vector3 displacement = direction * WalkSpeed * Time.deltaTime;
         m_controller.SimpleMove(displacement);
-        
+
         // Keep the player orientated in the direction of movement.
-        if(m_controller.velocity.magnitude > 0.1f)
+        if (m_controller.velocity.magnitude > 0.1f)
             transform.rotation = Quaternion.LookRotation(
                 m_controller.velocity);
 
@@ -313,6 +298,12 @@ public class SkeletonController : MonoBehaviour
         {
             m_currentWaypoint++;
         }
+    }
+    private void UpdateDead()
+    {
+
+
+
     }
 
 
@@ -334,20 +325,20 @@ public class SkeletonController : MonoBehaviour
             {
                 if (m_seeker.IsDone())
                 {
-                // If we have detected the player, attempt to get a path.
-                Path path = m_seeker.StartPath(transform.position,
-                    Player.transform.position);
-                if (!path.error)
-                {
-                    // Reset pathfinding variables.
-                    m_lastPathfindingUpdate = 0f;
-                    m_currentPath = path;
-                    m_currentWaypoint = 0;
-                    // Change the change to skeleton state and update animation 
-                    // variables.
-                    m_mode = SkeletonMode.Hunting;
+                    // If we have detected the player, attempt to get a path.
+                    Path path = m_seeker.StartPath(transform.position,
+                        Player.transform.position);
+                    if (!path.error)
+                    {
+                        // Reset pathfinding variables.
+                        m_lastPathfindingUpdate = 0f;
+                        m_currentPath = path;
+                        m_currentWaypoint = 0;
+                        // Change the change to skeleton state and update animation 
+                        // variables.
+                        m_mode = SkeletonMode.Hunting;
 
-                    m_animator.SetFloat("Speed", 1);
+                        m_animator.SetFloat("Speed", 1);
                         return true;
                     }
                 }
@@ -361,43 +352,5 @@ public class SkeletonController : MonoBehaviour
     private float LinearTransform(float x, float a, float b, float c, float d)
     {
         return (x - a) / (b - a) * (d - c) + c;
-    }
-
-
-
-
-
-
-
-
-    void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        
-    }
-
-    void OnMouseEnter()
-    {
-        displayObjectName = true;
-    }
-        
-    void OnMouseExit()
-    {
-        displayObjectName = false;
-    }
-
-    void OnGUI()
-    {
-        if (displayObjectName)
-        {
-            GUI.Box(new Rect(Event.current.mousePosition.x - 155, Event.current.mousePosition.y, 150, 25), objectName);
-        }
-        if (!StateMigrator.anyWindowOpen && CurrentHealth > 0)
-        {
-            Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0.0f, 3.0f, 0.0f));
-            screenPosition.y = Screen.height - (screenPosition.y + 1);
-            Rect rect = new Rect(screenPosition.x - MaxHealth / 2, screenPosition.y - 12, MaxHealth, 24);
-            GUI.color = Color.red;
-            GUI.HorizontalScrollbar(rect, 0, CurrentHealth, 0, MaxHealth);
-        }
     }
 }

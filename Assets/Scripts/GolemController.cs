@@ -87,7 +87,7 @@ public class GolemController : MonoBehaviour
     public float MaxSleepingDetectionChance = 0.1f;
     public float MinSleepingDetectionChance = 0.0f;
     public float MinDetectionDistance = 0.0f;
-
+ 
 
     private bool m_attackStart = true;
     private float m_attackTime;
