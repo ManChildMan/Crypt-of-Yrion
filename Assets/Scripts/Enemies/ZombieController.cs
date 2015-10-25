@@ -6,7 +6,7 @@ using UnityEngine;
 public class ZombieController : MonoBehaviour
 {
 
-    public PlayerController Player;
+    private PlayerController Player;
     public float MaxDetectionDistance = 12f;
     public float MaxDetectionChance = 0.15f;
     public float WaypointArrivalThreshold = 0.1f;
@@ -43,11 +43,20 @@ public class ZombieController : MonoBehaviour
     private float m_attackTime;
     bool m_playerDetected = false;
 
+    private bool displayObjectName;
+    private string objectName;
+    private int MaxHealth;
+
+
     void Start()
     {
+        Player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         m_animator = GetComponentInChildren<Animator>();
         m_controller = GetComponent<CharacterController>();
         m_seeker = GetComponent<Seeker>();
+
+        objectName = "Zombie";
+        MaxHealth = CurrentHealth;
     }
 
 
@@ -357,5 +366,31 @@ public class ZombieController : MonoBehaviour
     //    }
     //}
 
+
+    void OnMouseEnter()
+    {
+        displayObjectName = true;
+    }
+
+    void OnMouseExit()
+    {
+        displayObjectName = false;
+    }
+
+    void OnGUI()
+    {
+        if (displayObjectName)
+        {
+            GUI.Box(new Rect(Event.current.mousePosition.x - 155, Event.current.mousePosition.y, 150, 25), objectName);
+        }
+        if (!StateMigrator.anyWindowOpen && CurrentHealth > 0)
+        {
+            Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0.0f, 3.0f, 0.0f));
+            screenPosition.y = Screen.height - (screenPosition.y + 1);
+            Rect rect = new Rect(screenPosition.x - MaxHealth / 2, screenPosition.y - 12, MaxHealth, 24);
+            GUI.color = Color.red;
+            GUI.HorizontalScrollbar(rect, 0, CurrentHealth, 0, MaxHealth);
+        }
+    }
 
 }
