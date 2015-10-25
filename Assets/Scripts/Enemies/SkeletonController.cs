@@ -59,35 +59,14 @@ public class SkeletonController : MonoBehaviour
         {
             UpdateHunting();
         }
-        else if (m_mode == SkeletonMode.FacingOff)
-        {
-            UpdateFacingOff();
-        }
         else if (m_mode == SkeletonMode.Attack1)
         {
             UpdateAttack1();
         }
-        //else if (m_mode == SkeletonMode.TakingDamage)
-        //{
-        //    UpdateTakingDamage();
-        //}
-        //else if (m_mode == SkeletonMode.KnockedBack)
-        //{
-        //    UpdateKnockedBack();
-        //}
-        //else if (m_mode == SkeletonMode.Dying)
-        //{
-        //    UpdateDying();
-        //}   
+
 	}
 
 
-
-    private void UpdateFacingOff()
-    {
-
-  
-    }
 
 
     private float m_lastPathfindingUpdate = 0f;
@@ -131,7 +110,7 @@ public class SkeletonController : MonoBehaviour
                 Vector3 displacement = Player.transform.position - transform.position;
                 float angle = Vector3.Angle(transform.forward, displacement);
 
-                if (Random.value < 0.25f && Mathf.Abs(angle) < 10)
+                if (Random.value < 0.05f && Mathf.Abs(angle) < 10)
                 {
                     float r = Random.value;
                     if (r < 1)
@@ -214,15 +193,16 @@ public class SkeletonController : MonoBehaviour
             return;
         }
 
-        Move();
+        if (m_currentWaypoint >= 0 &&
+            m_currentWaypoint < m_currentPath.vectorPath.Count - 1) Move();
     }
     public float HuntingPathfindingInterval = 3.0f;
     private void UpdateHunting()
     {
         WalkSpeed = 75;
+        
         if (m_playerDistance < 2.0)
         {
-
             m_animator.SetFloat("Speed", 0f);
             m_mode = SkeletonMode.Idle;
             return;
@@ -232,6 +212,7 @@ public class SkeletonController : MonoBehaviour
         // Check if we have reached the end of the current path. 
         if (m_currentWaypoint >= m_currentPath.vectorPath.Count)
         {
+
             // If so, find a new path to the player.
             Path path = m_seeker.StartPath(transform.position, Player.transform.position);
             if (!path.error)
@@ -252,14 +233,16 @@ public class SkeletonController : MonoBehaviour
             Path path = m_seeker.StartPath(transform.position, Player.transform.position);
             if (!path.error)
             {
+                m_lastPathfindingUpdate = 0f;
                 m_lastPlayerPos = Player.transform.position;
                 m_currentPath = path;
                 m_currentWaypoint = 0;
             }
-            m_lastPathfindingUpdate = 0f;
+
         }
 
-        Move();
+        if (m_currentWaypoint >= 0 &&
+            m_currentWaypoint < m_currentPath.vectorPath.Count - 1) Move();
     }
 
 
@@ -268,17 +251,24 @@ public class SkeletonController : MonoBehaviour
     {        
         // Find direction and distance to the next waypoint and move the
         // player via the attached character controller.
-        Vector3 direction = (m_currentPath.vectorPath[m_currentWaypoint] -
+
+        Vector3 pp = m_currentPath.vectorPath[m_currentWaypoint];
+
+        Vector3 direction = (pp -
             transform.position).normalized;
         Vector3 displacement = direction * WalkSpeed * Time.deltaTime;
         m_controller.SimpleMove(displacement);
+        
         // Keep the player orientated in the direction of movement.
-        transform.rotation = Quaternion.LookRotation(
-            m_controller.velocity);
+        if(m_controller.velocity.magnitude > 0)
+            transform.rotation = Quaternion.LookRotation(
+                m_controller.velocity);
 
         // If close enough to current waypoint switch to next waypoint.
         Vector2 transform2d = new Vector2(transform.position.x, transform.position.z);
-        Vector2 waypoint2d = new Vector2(m_currentPath.vectorPath[m_currentWaypoint].x, m_currentPath.vectorPath[m_currentWaypoint].z);
+        Vector2 waypoint2d = new Vector2(
+            pp.x,
+            pp.z);
         if (Vector2.Distance(transform2d, waypoint2d) < WaypointArrivalThreshold)
         {
             m_currentWaypoint++;
@@ -332,14 +322,31 @@ public class SkeletonController : MonoBehaviour
     public float pushPower = 2.0F;
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        //if (hit.gameObject.CompareTag("Enemy"))
+        //{
+        //    // Get a point within a radius of PatrolRadius units.
+        //    Vector2 randomPoint = Random.insideUnitCircle * 15;
+        //    Vector3 end = transform.position;
+        //    end.x += randomPoint.x;
+        //    end.y = 0.0f;
+        //    end.z += randomPoint.y;
 
-        if (hit.gameObject.CompareTag("Enemy") ||
-            hit.gameObject.CompareTag("Player"))
-        {
-            Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
-            m_controller.Move(pushDir * pushPower);
-        }
+        //    Path path = m_seeker.StartPath(transform.position, end);
+        //    if (!path.error)
+        //    {
+        //        m_lastPathfindingUpdate = 0f;
+        //        m_currentPath = path;
+        //        m_currentWaypoint = 0;
+
+
+        //            m_mode = SkeletonMode.Patrolling;
+
+        //            m_animator.SetFloat("Speed", 0.5f);
+              
+        //        return;
+        //    }
+        //}
+
     }
-
 
 }

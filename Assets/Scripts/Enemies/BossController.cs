@@ -77,6 +77,9 @@ public class BossController : MonoBehaviour {
     {
         switch (state)
         {
+            case State.Dying:
+                UpdateDying();
+                break;
             case State.WaitingForPlayer:
                 UpdateWaitingForPlayer();
                 break;
@@ -85,9 +88,6 @@ public class BossController : MonoBehaviour {
                 break;
             case State.AttackingPlayer:
                 UpdateAttackingPlayer();
-                break;
-            case State.Dying:
-                UpdateDying();
                 break;
         }
 
