@@ -60,11 +60,15 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void Update()
     {
-
         HealTimer += Time.deltaTime;
 
         Speed = player.Speed;
         Attack = player.Attack;
+
+        if (CurrentHealth <= 0)
+        {
+            IncHeal = 0;
+        }
 
         if (MaxHealth < player.Health)
         {

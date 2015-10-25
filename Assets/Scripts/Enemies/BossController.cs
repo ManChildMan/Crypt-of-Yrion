@@ -190,7 +190,7 @@ public class BossController : MonoBehaviour {
                 {
                     doingAttackAnimation = true;
                     animator.SetBool("Attack3", true);
-                    animationTimer = 4.5f;
+                    animationTimer = 4.0f;
                 }
             }
         }
