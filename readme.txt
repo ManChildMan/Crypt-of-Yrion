@@ -41,12 +41,12 @@ Your are all that stands between salvation and Damnation.
 Destory Yrion and free the world.
 
 
-Controlls:
+Controls:
 Movement:
-Left Click on a tile to move to it.
+Right Click on a tile to move to it.
 
 Combat:
-Right Click to swing weapon.
+Left Click to swing weapon.
 You will do damage to any enemy in the within range.
 
 Chests/Shops:
