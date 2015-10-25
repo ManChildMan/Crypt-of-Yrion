@@ -4,45 +4,65 @@ using System.Collections;
 
 public class BossController : MonoBehaviour {
 
-    public float WalkSpeed;
-    public float WaypointArrivalThreshold = 0.1f;
-    public LayerMask MouseSelectionLayerMask;
+    private const float WaypointArrivalThreshold = 0.4f;
 
-    private Animator m_animator;
-    private CharacterController m_controller;
-    private Seeker m_seeker;
-    private Path m_path;
-    private bool m_moving = false;
-    private int m_currentWaypoint = -1;
+    private Animator animator;
+    private CharacterController controller;
+    private Seeker seeker;
+    private Path path;
+
+    private bool moving = false;
+    private int currentWayPoint = -1;
+    private int prevCurrentWayPoint = -1;
+    private bool pathLoading;
+    private Vector3 direction;
 
     private Transform target;
     private float distance;
 
-    public string objectName;
+    private bool displayObjectName;
+    private string objectName;
+    private Renderer[] renderers;
+    private Color[] rendererStartColors;
 
-    private Color startColour;
-    private bool _displayObjectName;
+    private bool doingAttackAnimation;
+    private string attackAnimationName;
+    private float animationTimer;
 
-    public int Health;
-    public int Speed;
-    public int Attack;
+    public int health;
+    private int maxHealth;
+    public float speed;
+    public int attack;
+
+    private State state;
+    private enum State
+    {
+        WaitingForPlayer,
+        WalkingToPlayer,
+        AttackingPlayer,
+        Dying
+    }
 
     /// <summary>
     /// 
     /// </summary>
     public void Start()
     {
-        Health = this.gameObject.GetComponent<Entity>().Health;
-        Speed = this.gameObject.GetComponent<Entity>().Speed;
-        Attack = this.gameObject.GetComponent<Entity>().Attack;
-
+        maxHealth = health;
         objectName = this.gameObject.name;
-        m_animator = GetComponent<Animator>();
-        m_controller = GetComponent<CharacterController>();
-        m_seeker = GetComponent<Seeker>();
+        animator = GetComponent<Animator>();
+        controller = GetComponent<CharacterController>();
+        seeker = GetComponent<Seeker>();
         target = GameObject.FindGameObjectWithTag("Player").transform;
 
-        SetSpeed();
+        renderers = GetComponentsInChildren<Renderer>();
+        rendererStartColors = new Color[renderers.Length];
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            rendererStartColors[i] = renderers[i].material.color;
+        }
+
+        animator.SetFloat("Speed", 1.0f);
     }
 
     /// <summary>
@@ -50,164 +70,174 @@ public class BossController : MonoBehaviour {
     /// </summary>
     public void Update()
     {
-        target = GameObject.FindGameObjectWithTag("Player").transform;
-        distance = Vector3.Distance(transform.position, target.position);
-
-        if (Health <= 0)
+        switch (state)
         {
-            StartCoroutine(DoAnimation());
-        }
-
-        // If the distance is less than 10 and the enemy is not
-        // currently moving...
-        if (distance < 10 && distance > 1.5 && !m_moving && m_seeker.IsDone() == true)
-        {
-            // Attempt to path to the ray intersection.
-            m_seeker.StartPath(transform.position, target.position,
-                OnPathComplete);
-        }
-
-        // If we don't have a path return.
-        if (m_path == null)
-        {
-            return;
+            case State.WaitingForPlayer:
+                UpdateWaitingForPlayer();
+                break;
+            case State.WalkingToPlayer:
+                UpdateWalkingToPlayer();
+                break;
+            case State.AttackingPlayer:
+                UpdateAttackingPlayer();
+                break;
+            case State.Dying:
+                break;
         }
 
         //Test to see if Player is in range to attack
         //If so, stop and attack
         if (distance <= 1.5)
         {
-            m_path = null;
-            m_currentWaypoint = -1;
-            m_moving = false;
+            path = null;
+            currentWayPoint = -1;
+            moving = false;
             //transform.rotation = Quaternion.LookRotation(
             //m_controller.velocity);
-            m_animator.SetBool("Attack1", false);
-            m_animator.SetBool("Attack2", false);
-            m_animator.SetBool("Attack3", true);
+            animator.SetBool("Attack1", false);
+            animator.SetBool("Attack2", false);
+            animator.SetBool("Attack3", true);
             return;
         }
-        /*else if (distance <= 1.5)
+    }
+
+    private void UpdateWaitingForPlayer()
+    {
+        distance = Vector3.Distance(transform.position, target.position);
+        if (distance <= 10.0f)
         {
-            m_path = null;
-            m_currentWaypoint = -1;
-            m_moving = false;
-            transform.rotation = Quaternion.LookRotation(
-            m_controller.velocity);
-            m_animator.SetBool("Attack2", false);
-            m_animator.SetBool("Attack3", false);
-            m_animator.SetBool("Attack1", true);
+            state = State.WalkingToPlayer;
+        }
+    }
+
+    private void UpdateWalkingToPlayer()
+    {
+        distance = Vector3.Distance(transform.position, target.position);
+        if (health <= 0)
+        {
+            state = State.Dying;
             return;
-        }*/
+        }
+        if (!moving)
+        {
+            if (!pathLoading)
+            {
+                seeker.StartPath(transform.position, target.position, OnPathComplete);
+                pathLoading = true;
+            }
+        }
         else
         {
-            m_animator.SetBool("Attack1", false);
-            m_animator.SetBool("Attack2", false);
-            m_animator.SetBool("Attack3", false);
+            bool setRotation = false;
+            if (prevCurrentWayPoint != currentWayPoint)
+            {
+                prevCurrentWayPoint = currentWayPoint;
+                direction = (path.vectorPath[currentWayPoint] - transform.position).normalized;
+                setRotation = true;
+            }
+            controller.SimpleMove(direction * speed * Time.deltaTime);
+            if (setRotation)
+            {
+                transform.rotation = Quaternion.LookRotation(new Vector3(controller.velocity.x, 0.0f, controller.velocity.z));
+            }
+            if (Vector3.Distance(transform.position, path.vectorPath[
+                currentWayPoint]) < WaypointArrivalThreshold)
+            {
+                currentWayPoint++;
+            }
+            if (currentWayPoint >= path.vectorPath.Count || distance < 2.0f)
+            {
+                currentWayPoint = -1;
+                prevCurrentWayPoint = -1;
+                moving = false;
+                if (distance < 2.0f)
+                {
+                    state = State.AttackingPlayer;
+                    animationTimer = 0.3f;
+                }
+            }
         }
-
-        // Test if we have just reached the end of the path. 
-        if (m_currentWaypoint >= m_path.vectorPath.Count)
-        {
-            m_path = null;
-            m_currentWaypoint = -1;
-            m_animator.SetFloat("Speed", 0);
-            m_moving = false;
-            return;
-        }
-
-        // Find direction and distance to the next waypoint and move the
-        // player via the attached character controller.
-        Vector3 direction = (m_path.vectorPath[m_currentWaypoint] -
-            transform.position).normalized;
-        Vector3 displacement = direction * WalkSpeed * Time.deltaTime;
-        m_controller.SimpleMove(displacement);
-        // Keep the adventurer looking in direction of movement.
-        transform.rotation = Quaternion.LookRotation(
-            m_controller.velocity);
-
-        // If close enough to current waypoint switch to next waypoint.
-        if (Vector3.Distance(transform.position, m_path.vectorPath[
-            m_currentWaypoint]) < WaypointArrivalThreshold)
-        {
-            m_currentWaypoint++;
-        }
-
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="path"></param>
+    public void UpdateAttackingPlayer()
+    {
+        Vector3 directionToTarget = target.position - transform.position;
+        transform.rotation = Quaternion.LookRotation(new Vector3(directionToTarget.x, 0.0f, directionToTarget.z));
+        if (!doingAttackAnimation)
+        {
+            // Stand for 0.8 of a second before attacking.
+            if (animationTimer > 0.0f)
+            {
+                animationTimer -= Time.deltaTime;
+                if (animationTimer <= 0.0f)
+                {
+                    doingAttackAnimation = true;
+                    animator.SetBool("Attack3", true);
+                    animationTimer = 4.0f;
+                }
+            }
+        }
+        else
+        {
+            animationTimer -= Time.deltaTime;
+            if (animationTimer <= 0.0f)
+            {
+                doingAttackAnimation = false;
+                animator.SetBool("Attack3", false);
+                state = State.WalkingToPlayer;
+            }
+        }
+    }
+
     public void OnPathComplete(Path path)
     {
+        pathLoading = false;
         if (!path.error)
         {
-            m_path = path;
-            m_currentWaypoint = 0;
-            m_animator.SetFloat("Speed", 1);
-            m_moving = true;
+            this.path = path;
+            currentWayPoint = 0;
+            moving = true;
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-
+    /*
     IEnumerator DoAnimation()
     {
-        WalkSpeed = 0;
+        m_seeker.pathCallback -= OnPathComplete;
+        speed = 0;
         m_animator.Play("Die");
         yield return new WaitForSeconds(2f);
-        Destroy(this.gameObject); //destroys the object after animation ended
-    }
-
-
-    public void OnDisable()
-    {
-        m_seeker.pathCallback -= OnPathComplete;
-    }
+        Destroy(this.gameObject);
+    }*/
 
     void OnGUI()
     {
-        DisplayName();
+        if (displayObjectName)
+        {
+            GUI.Box(new Rect(Event.current.mousePosition.x - 155, Event.current.mousePosition.y, 150, 25), objectName);
+        }
+        Vector3 screenPosition = Camera.current.WorldToScreenPoint(transform.position + new Vector3(0.0f, 3.0f, 0.0f));
+        screenPosition.y = Screen.height - (screenPosition.y + 1);
+        Rect rect = new Rect(screenPosition.x - maxHealth / 2, screenPosition.y - 12, maxHealth, 24);
+        GUI.color = Color.red;
+        GUI.HorizontalScrollbar(rect, 0, health, 0, maxHealth);
     }
 
     void OnMouseEnter()
     {
-        startColour = GetComponentInChildren<Renderer>().material.color;
-        GetComponentInChildren<Renderer>().material.color = Color.red;
-        _displayObjectName = true;
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            renderers[i].material.color = Color.red;
+        }
+        displayObjectName = true;
     }
 
     void OnMouseExit()
     {
-        GetComponentInChildren<Renderer>().material.color = startColour;
-        _displayObjectName = false;
-    }
-
-    public void DisplayName()
-    {
-        if (_displayObjectName == true)
+        for (int i = 0; i < renderers.Length; i++)
         {
-            GUI.Box(new Rect(Event.current.mousePosition.x - 155, Event.current.mousePosition.y, 150, 25), objectName);
+            renderers[i].material.color = rendererStartColors[i];
         }
+        displayObjectName = false;
     }
-
-    public void TakeDamage(int damage)
-    {
-        Health = Health - damage;
-    }
-
-    public int GiveDamage()
-    {
-        return Attack;
-    }
-
-    public void SetSpeed()
-    {
-        WalkSpeed = Speed;
-    }
-
-
 }

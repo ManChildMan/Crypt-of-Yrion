@@ -171,6 +171,7 @@ public class UIManager : MonoBehaviour
                 messageText.color = new Color(1.0f, 0.7f, 0.0f, messageShowRatio);
             }
         }
+        StateMigrator.anyWindowOpen = inventoryWindow.activeSelf || equipmentWindow.activeSelf || statsWindow.activeSelf || shopWindow.activeSelf || lootWindow.activeSelf;
     }
 
     public void ShowInventoryWindow()

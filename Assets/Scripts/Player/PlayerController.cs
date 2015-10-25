@@ -130,6 +130,11 @@ public class PlayerController : MonoBehaviour
         {
             m_currentWaypoint++;
         }
+
+        if (transform.position.y < -10.0f)
+        {
+            transform.position = new Vector3(transform.position.x, 0.0f, transform.position.z);
+        }
     }
 
     /// <summary>
@@ -188,5 +193,17 @@ public class PlayerController : MonoBehaviour
         m_currentWaypoint = -1;
         m_animator.SetFloat("Speed", 0);
         m_moving = false;
+    }
+
+    void OnGUI()
+    {
+        if (!StateMigrator.anyWindowOpen)
+        {
+            Vector3 screenPosition = Camera.current.WorldToScreenPoint(transform.position + new Vector3(0.0f, 2.0f, 0.0f));
+            screenPosition.y = Screen.height - (screenPosition.y + 1);
+            Rect rect = new Rect(screenPosition.x - MaxHealth / 2, screenPosition.y - 12, MaxHealth, 24);
+            GUI.color = Color.green;
+            GUI.HorizontalScrollbar(rect, 0, CurrentHealth, 0, MaxHealth);
+        }
     }
 }

@@ -12,7 +12,7 @@ public class Player : Entity
 
     public void RecalculateStats()
     {
-        totalHealth = baseAttack;
+        totalHealth = baseHealth;
         totalSpeed = baseSpeed;
         totalAttack = baseAttack;
         for (int i = 0; i < (int)GearType.OneAboveMax; i++)
