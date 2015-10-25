@@ -44,8 +44,7 @@ public class SkeletonController : MonoBehaviour
     private Color[] rendererStartColors;
     private int MaxHealth;
 
-    void Start () {
-        Player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+	void Start () {
         m_animator = GetComponentInChildren<Animator>();
         m_controller = GetComponent<CharacterController>();
         m_seeker = GetComponent<Seeker>();
