@@ -72,7 +72,7 @@ public class UIManager : MonoBehaviour
     {
         PlayerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().CurrentHealth;
 
-        if (PlayerHealth < 0)
+        if (PlayerHealth <= 0)
         {
             // ... tell the animator the game is over.
             Ani.SetTrigger("GameOver");
@@ -171,7 +171,7 @@ public class UIManager : MonoBehaviour
                 messageText.color = new Color(1.0f, 0.7f, 0.0f, messageShowRatio);
             }
         }
-        StateMigrator.anyWindowOpen = inventoryWindow.activeSelf || equipmentWindow.activeSelf || statsWindow.activeSelf || shopWindow.activeSelf || lootWindow.activeSelf;
+        StateMigrator.anyWindowOpen = inventoryWindow.activeSelf || equipmentWindow.activeSelf || statsWindow.activeSelf || shopWindow.activeSelf || lootWindow.activeSelf || PlayerHealth <= 0;
     }
 
     public void ShowInventoryWindow()
