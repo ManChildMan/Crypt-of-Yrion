@@ -239,7 +239,7 @@ public class BossController : MonoBehaviour {
         {
             GUI.Box(new Rect(Event.current.mousePosition.x - 155, Event.current.mousePosition.y, 150, 25), objectName);
         }
-        if (!StateMigrator.anyWindowOpen && state != State.None)
+        if (!StateMigrator.anyWindowOpen && health > 0)
         {
             Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0.0f, 3.0f, 0.0f));
             screenPosition.y = Screen.height - (screenPosition.y + 1);

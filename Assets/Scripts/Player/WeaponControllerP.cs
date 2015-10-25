@@ -15,7 +15,7 @@ public class WeaponControllerP : MonoBehaviour {
         BossController bossController = col.GetComponent<BossController>();
         if (bossController != null)
         {
-            bossController.health -= playerController.Attack;
+            bossController.health -= playerController.Attack / 10;
         }
     }
 }
