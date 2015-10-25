@@ -4,8 +4,7 @@ using Pathfinding;
 
 public class SkeletonController : MonoBehaviour 
 {
-   
-    public PlayerController Player;
+    private PlayerController Player;
 
     public float MaxDetectionDistance = 12f;
     public float MaxDetectionChance = 0.15f;
@@ -38,11 +37,27 @@ public class SkeletonController : MonoBehaviour
     public float HuntingPathfindingInterval = 3.0f;
     bool m_playerDetected = false;
 
-	void Start () {
+    private bool displayObjectName;
+    private string objectName;
+    private Renderer[] renderers;
+    private Color[] rendererStartColors;
+    private int MaxHealth;
+
+    void Start () {
+        Player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         m_animator = GetComponentInChildren<Animator>();
         m_controller = GetComponent<CharacterController>();
         m_seeker = GetComponent<Seeker>();
-	}
+
+        objectName = gameObject.name;
+        renderers = GetComponentsInChildren<Renderer>();
+        rendererStartColors = new Color[renderers.Length];
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            rendererStartColors[i] = renderers[i].material.color;
+        }
+        MaxHealth = CurrentHealth;
+    }
 	
 
 	void Update () 
@@ -355,4 +370,37 @@ public class SkeletonController : MonoBehaviour
         
     }
 
+    void OnMouseEnter()
+    {
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            renderers[i].material.color = Color.red;
+        }
+        displayObjectName = true;
+    }
+
+    void OnMouseExit()
+    {
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            renderers[i].material.color = rendererStartColors[i];
+        }
+        displayObjectName = false;
+    }
+
+    void OnGUI()
+    {
+        if (displayObjectName)
+        {
+            GUI.Box(new Rect(Event.current.mousePosition.x - 155, Event.current.mousePosition.y, 150, 25), objectName);
+        }
+        if (!StateMigrator.anyWindowOpen && CurrentHealth > 0)
+        {
+            Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0.0f, 3.0f, 0.0f));
+            screenPosition.y = Screen.height - (screenPosition.y + 1);
+            Rect rect = new Rect(screenPosition.x - MaxHealth / 2, screenPosition.y - 12, MaxHealth, 24);
+            GUI.color = Color.red;
+            GUI.HorizontalScrollbar(rect, 0, CurrentHealth, 0, MaxHealth);
+        }
+    }
 }

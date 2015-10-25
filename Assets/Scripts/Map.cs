@@ -61,6 +61,10 @@ public class Map : MonoBehaviour
     private UnityEngine.Object m_stairwellDown;
     private float m_minX;
     private float m_minZ;
+
+    // These two arrays should be the same size and set by the unity editor.
+    public GameObject[] enemyPrefabs;
+    public int[] enemyPrefabsSpawnCount;
     
 	void Start ()
     {
@@ -124,7 +128,9 @@ public class Map : MonoBehaviour
         graph.collision.heightMask = 1 << LayerMask.NameToLayer("Ground");
         AstarPath.active.Scan();
 
-	}
+        // Spawn enemies on the map.
+        SpawnEnemies(mapData);
+    }
 
     // Instantiates the appropriate prefab at each world space map location. 
 
@@ -417,6 +423,32 @@ public class Map : MonoBehaviour
                 }
             }
         }
+    }
 
+    void SpawnEnemies(int[,] mapData)
+    {
+        if (enemyPrefabs.Length != 0)
+        {
+            for (int i = 0; i < enemyPrefabs.Length; i++)
+            {
+                GameObject enemyPrefab = enemyPrefabs[i];
+                for (int j = 0; j < enemyPrefabsSpawnCount[i]; j++)
+                {
+                    bool placed = false;
+                    do
+                    {
+                        int x = StateMigrator.random.Next(0, Width);
+                        int z = StateMigrator.random.Next(0, Depth);
+                        if (mapData[x, z] == TerrainType.Floor_01)
+                        {
+                            GameObject spawnedPrefab = Instantiate(enemyPrefab);
+                            spawnedPrefab.transform.position = new Vector3(m_minX + (x * NodeSize), 0.0f, m_minZ + (z * NodeSize));
+                            placed = true;
+                        }
+                    }
+                    while (!placed);
+                }
+            }
+        }
     }
 }
