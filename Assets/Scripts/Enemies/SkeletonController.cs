@@ -5,13 +5,14 @@ using Pathfinding;
 public class SkeletonController : MonoBehaviour 
 {
     private PlayerController Player;
-
+   
     public float MaxDetectionDistance = 12f;
     public float MaxDetectionChance = 0.15f;
     public float WaypointArrivalThreshold = 0.1f;
     public float PatrolChance = 0.005f;
     public float PatrolRadius = 15f;
     public float WalkSpeed = 50f;
+
     enum SkeletonMode
     {
         Idle,
@@ -57,24 +58,23 @@ public class SkeletonController : MonoBehaviour
             rendererStartColors[i] = renderers[i].material.color;
         }
         MaxHealth = CurrentHealth;
-    }
+	}
 	
 
 	void Update () 
     {
-
-
+        // Die if health less than 0.
         if (CurrentHealth < 0)
         {
             m_animator.SetBool("Dead", true);
             m_mode = SkeletonMode.Dead;
+            GameObject.Destroy(this.gameObject, 5);
         }
         
         
         // Cache distance from the controller to the player.
         m_playerDistance = Vector3.Distance(transform.position,
             Player.transform.position);
-
         if (m_mode == SkeletonMode.Idle)
         {
             UpdateIdle();
@@ -132,6 +132,8 @@ public class SkeletonController : MonoBehaviour
             }
             else
             {
+                if (m_seeker.IsDone())
+                {
                 Path path = m_seeker.StartPath(transform.position,
                     Player.transform.position);
                 if (!path.error)
@@ -146,6 +148,7 @@ public class SkeletonController : MonoBehaviour
                 }
             }
         }
+        }
 
         else
         {
@@ -155,13 +158,15 @@ public class SkeletonController : MonoBehaviour
             // Check if the controller should transition from idle to patrolling.
             if (Random.value < PatrolChance)
             {
+
+                if (m_seeker.IsDone())
+                {                
                 // Get a point within a radius of PatrolRadius units.
                 Vector2 randomPoint = Random.insideUnitCircle * PatrolRadius;
                 Vector3 end = transform.position;
                 end.x += randomPoint.x;
                 end.y = 0.5f;
                 end.z += randomPoint.y;
-
                 Path path = m_seeker.StartPath(transform.position, end);
                 if (!path.error)
                 {
@@ -176,6 +181,7 @@ public class SkeletonController : MonoBehaviour
                 }
             }
         }
+    }
     }
 
 
@@ -218,7 +224,8 @@ public class SkeletonController : MonoBehaviour
         // Check if we have reached the end of the current path. 
         if (m_currentPath == null || m_currentWaypoint >= m_currentPath.vectorPath.Count)
         {
-
+            if (m_seeker.IsDone())
+            {
             // If so, find a new path to the player.
             Path path = m_seeker.StartPath(transform.position, Player.transform.position);
             if (!path.error)
@@ -229,12 +236,15 @@ public class SkeletonController : MonoBehaviour
                 m_currentWaypoint = 0;
             }
         }
+        }
 
         // If the player has moved significantly since last pathfinding and more
         // than the designated pathfinding interval has passed...
         m_lastPathfindingUpdate += Time.deltaTime;
         if (m_lastPathfindingUpdate > HuntingPathfindingInterval)
         {
+            if (m_seeker.IsDone())
+            {
             // Re-path to the player and reset pathfinding variables.
             Path path = m_seeker.StartPath(transform.position, Player.transform.position);
             if (!path.error)
@@ -243,6 +253,7 @@ public class SkeletonController : MonoBehaviour
                 m_lastPlayerPos = Player.transform.position;
                 m_currentPath = path;
                 m_currentWaypoint = 0;
+            }
             }
 
         }
@@ -330,6 +341,8 @@ public class SkeletonController : MonoBehaviour
                 MaxDetectionDistance, MaxDetectionChance, 0);
             if (Random.value < playerDetectionChance)
             {
+                if (m_seeker.IsDone())
+                {
                 // If we have detected the player, attempt to get a path.
                 Path path = m_seeker.StartPath(transform.position,
                     Player.transform.position);
@@ -344,7 +357,8 @@ public class SkeletonController : MonoBehaviour
                     m_mode = SkeletonMode.Hunting;
 
                     m_animator.SetFloat("Speed", 1);
-                    return true;
+
+                    }
                 }
             }
         }
@@ -378,13 +392,13 @@ public class SkeletonController : MonoBehaviour
         }
         displayObjectName = true;
     }
-
+        
     void OnMouseExit()
     {
         for (int i = 0; i < renderers.Length; i++)
         {
             renderers[i].material.color = rendererStartColors[i];
-        }
+    }
         displayObjectName = false;
     }
 
