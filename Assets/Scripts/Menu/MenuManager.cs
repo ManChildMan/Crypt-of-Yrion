@@ -15,7 +15,6 @@ public class MenuManager : MonoBehaviour
     private enum ToState
     {
         NewGame,
-        LoadGame,
         Quit
     }
 
@@ -41,8 +40,6 @@ public class MenuManager : MonoBehaviour
                 {
                     case ToState.NewGame:
                         Application.LoadLevel("intro");
-                        break;
-                    case ToState.LoadGame:
                         break;
                     case ToState.Quit:
                         Application.Quit();
@@ -70,24 +67,6 @@ public class MenuManager : MonoBehaviour
         }
         toState = ToState.NewGame;
         transition = true;
-    }
-    
-    public void LoadGame()
-    {
-        if (transition)
-        {
-            return;
-        }
-        toState = ToState.LoadGame;
-        transition = true;
-    }
-    
-    public void Settings()
-    {
-        if (transition)
-        {
-            return;
-        }
     }
     
     public void Quit()

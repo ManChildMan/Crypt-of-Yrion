@@ -58,7 +58,7 @@ public class Inventory : MonoBehaviour
 
             // Show all items for testing purposes.
             // Uncomment to show.
-            
+            /*
             int index = 0;
             items[index++] = new MagicalOrb();
             items[index++] = new TheOneRing();
@@ -78,6 +78,7 @@ public class Inventory : MonoBehaviour
             items[index++] = new ThornyNecklace();
             items[index++] = new GoldenPendant();
             items[index++] = new EnchantedLocket();
+            */
             equipped[(int)GearType.Weapon] = new RustedShortsword();
         }
         else

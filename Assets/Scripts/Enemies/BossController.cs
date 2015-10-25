@@ -221,17 +221,8 @@ public class BossController : MonoBehaviour {
         animator.SetBool("Attack1", false);
         animator.SetBool("Die", true);
         state = State.None;
+        GameObject.Find("Canvas").GetComponent<UIManager>().StartEndGameTransition();
     }
-
-    /*
-    IEnumerator DoAnimation()
-    {
-        m_seeker.pathCallback -= OnPathComplete;
-        speed = 0;
-        m_animator.Play("Die");
-        yield return new WaitForSeconds(2f);
-        Destroy(this.gameObject);
-    }*/
 
     void OnGUI()
     {

@@ -8,6 +8,8 @@ public class StateMigrator
     public static int wealth;
     public static Random random;
     public static bool anyWindowOpen;
+    public static int deathCounter;
+    public static float gameTimer;
 
     static StateMigrator()
     {

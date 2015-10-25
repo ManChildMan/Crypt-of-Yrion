@@ -45,6 +45,9 @@ public class UIManager : MonoBehaviour
     private float restartTimer;
     private float restartDelay = 5f;
 
+    private bool endGameTransition;
+    private float endGameTransitionRatio;
+
     void Start () {
         Ani = GetComponent<Animator>();
         transitionImage = transitionImageObject.GetComponent<Image>();
@@ -70,6 +73,8 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
+        StateMigrator.gameTimer += Time.deltaTime;
+
         PlayerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().CurrentHealth;
 
         if (PlayerHealth <= 0)
@@ -86,6 +91,8 @@ public class UIManager : MonoBehaviour
                 // Ensure we save states before changing scene.
                 StateMigrator.lastPortalActionTaken = portalAction;
                 inventory.SaveState();
+
+                StateMigrator.deathCounter++;
 
                 // .. then reload the currently loaded level.
                 Application.LoadLevel("safezone");
@@ -125,7 +132,19 @@ public class UIManager : MonoBehaviour
                 transitionImage.color = new Color(0.0f, 0.0f, 0.0f, transition);
             }
         }
-        
+        if (endGameTransition)
+        {
+            endGameTransitionRatio += Time.deltaTime;
+            if (endGameTransitionRatio >= 1.0f)
+            {
+                Application.LoadLevel("endgame");
+            }
+            else
+            {
+                transitionImage.color = new Color(1.0f, 1.0f, 1.0f, endGameTransitionRatio);
+            }
+        }
+
         // Move the item preview window if its open.
         if (itemPreviewWindowOpen)
         {
@@ -171,6 +190,7 @@ public class UIManager : MonoBehaviour
                 messageText.color = new Color(1.0f, 0.7f, 0.0f, messageShowRatio);
             }
         }
+
         StateMigrator.anyWindowOpen = inventoryWindow.activeSelf || equipmentWindow.activeSelf || statsWindow.activeSelf || shopWindow.activeSelf || lootWindow.activeSelf || PlayerHealth <= 0;
     }
 
@@ -382,4 +402,10 @@ public class UIManager : MonoBehaviour
         messageText.text = message;
     }
 
+    public void StartEndGameTransition()
+    {
+        endGameTransition = true;
+        transitionImageObject.SetActive(true);
+        transitionImage.color = new Color(1.0f, 1.0f, 1.0f, 0f);
+    }
 }
