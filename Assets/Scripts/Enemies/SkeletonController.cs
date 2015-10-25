@@ -45,6 +45,7 @@ public class SkeletonController : MonoBehaviour
     private int MaxHealth;
 
 	void Start () {
+        Player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         m_animator = GetComponentInChildren<Animator>();
         m_controller = GetComponent<CharacterController>();
         m_seeker = GetComponent<Seeker>();
