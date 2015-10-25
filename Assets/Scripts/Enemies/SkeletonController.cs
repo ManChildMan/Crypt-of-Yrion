@@ -18,11 +18,8 @@ public class SkeletonController : MonoBehaviour
         Idle,
         Patrolling,
         Hunting,
-        FacingOff,
         Attack1,
-        TakingDamage,
-        KnockedBack,
-        Dying
+        Dead,
     }
 
 
@@ -34,6 +31,13 @@ public class SkeletonController : MonoBehaviour
     private Path m_currentPath;
     private int m_currentWaypoint = -1;
     private Vector3 m_lastPlayerPos;
+    private float m_lastPathfindingUpdate = 0f;
+    private bool m_attackStart = true;
+    private float m_attackTime;
+    public int CurrentHealth = 20;
+    public float HuntingPathfindingInterval = 3.0f;
+    bool m_playerDetected = false;
+
 	void Start () {
         m_animator = GetComponentInChildren<Animator>();
         m_controller = GetComponent<CharacterController>();
@@ -43,6 +47,15 @@ public class SkeletonController : MonoBehaviour
 
 	void Update () 
     {
+
+
+        if (CurrentHealth < 0)
+        {
+            m_animator.SetBool("Dead", true);
+            m_mode = SkeletonMode.Dead;
+        }
+        
+        
         // Cache distance from the controller to the player.
         m_playerDistance = Vector3.Distance(transform.position,
             Player.transform.position);
@@ -63,40 +76,16 @@ public class SkeletonController : MonoBehaviour
         {
             UpdateAttack1();
         }
+        else if (m_mode == SkeletonMode.Dead)
+        {
+            UpdateDead();
+        }
 
 	}
 
 
 
 
-    private float m_lastPathfindingUpdate = 0f;
-
-
-    private bool m_attackStart = true;
-    private float m_attackTime;
-    private void UpdateAttack1()
-    {
-        if (m_attackStart)
-        {
-            m_attackTime = 0;
-            m_attackStart = false;
-        }
-       
-        m_attackTime += Time.deltaTime;
-        if (m_attackTime > 2.76)
-        {
-            m_attackTime = 0;
-            m_attackStart = true;
-
-            m_currentPath = null;
-            m_currentWaypoint = -1;
-            m_animator.SetBool("Attack1", false);
-
-            m_mode = SkeletonMode.Idle;
-        }
-    }
-
-    bool m_playerDetected = false;
     private void UpdateIdle()
     {
 
@@ -105,7 +94,7 @@ public class SkeletonController : MonoBehaviour
             WalkSpeed = 0;
             // If within striking range attack the player at random intervals. If 
             // not, attempt to get a path to the player and resume hunting.
-            if (m_playerDistance < 2.5)
+            if (m_playerDistance < 3f)
             {
                 Vector3 displacement = Player.transform.position - transform.position;
                 float angle = Vector3.Angle(transform.forward, displacement);
@@ -136,10 +125,7 @@ public class SkeletonController : MonoBehaviour
                     m_lastPathfindingUpdate = 0f;
                     m_currentPath = path;
                     m_currentWaypoint = 0;
-                    // Change the change to skeleton state and update animation 
-                    // variables.
                     m_mode = SkeletonMode.Hunting;
-
                     m_animator.SetFloat("Speed", 1);
 
                 }
@@ -177,6 +163,9 @@ public class SkeletonController : MonoBehaviour
         }
     }
 
+
+
+
     private void UpdatePatrolling()
     {
         WalkSpeed = 50;
@@ -196,7 +185,9 @@ public class SkeletonController : MonoBehaviour
         if (m_currentWaypoint >= 0 &&
             m_currentWaypoint < m_currentPath.vectorPath.Count - 1) Move();
     }
-    public float HuntingPathfindingInterval = 3.0f;
+    
+    
+
     private void UpdateHunting()
     {
         WalkSpeed = 75;
@@ -210,7 +201,7 @@ public class SkeletonController : MonoBehaviour
 
 
         // Check if we have reached the end of the current path. 
-        if (m_currentWaypoint >= m_currentPath.vectorPath.Count)
+        if (m_currentPath == null || m_currentWaypoint >= m_currentPath.vectorPath.Count)
         {
 
             // If so, find a new path to the player.
@@ -246,11 +237,43 @@ public class SkeletonController : MonoBehaviour
     }
 
 
+    private void UpdateAttack1()
+    {
+        if (m_attackStart)
+        {
+            m_attackTime = 0;
+            m_attackStart = false;
+        }
+
+        m_attackTime += Time.deltaTime;
+        if (m_attackTime > 2.76)
+        {
+            m_attackTime = 0;
+            m_attackStart = true;
+
+            m_currentPath = null;
+            m_currentWaypoint = -1;
+            m_animator.SetBool("Attack1", false);
+
+            m_mode = SkeletonMode.Idle;
+        }
+    }
+
+
+
+
+    private void UpdateDead()
+    {
+
+
+
+    }
+
+
 
     private void Move()
     {        
-        // Find direction and distance to the next waypoint and move the
-        // player via the attached character controller.
+
 
         Vector3 pp = m_currentPath.vectorPath[m_currentWaypoint];
 
@@ -260,7 +283,7 @@ public class SkeletonController : MonoBehaviour
         m_controller.SimpleMove(displacement);
         
         // Keep the player orientated in the direction of movement.
-        if(m_controller.velocity.magnitude > 0)
+        if(m_controller.velocity.magnitude > 0.1f)
             transform.rotation = Quaternion.LookRotation(
                 m_controller.velocity);
 
@@ -319,34 +342,17 @@ public class SkeletonController : MonoBehaviour
     {
         return (x - a) / (b - a) * (d - c) + c;
     }
-    public float pushPower = 2.0F;
+
+
+
+
+
+
+
+
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        //if (hit.gameObject.CompareTag("Enemy"))
-        //{
-        //    // Get a point within a radius of PatrolRadius units.
-        //    Vector2 randomPoint = Random.insideUnitCircle * 15;
-        //    Vector3 end = transform.position;
-        //    end.x += randomPoint.x;
-        //    end.y = 0.0f;
-        //    end.z += randomPoint.y;
-
-        //    Path path = m_seeker.StartPath(transform.position, end);
-        //    if (!path.error)
-        //    {
-        //        m_lastPathfindingUpdate = 0f;
-        //        m_currentPath = path;
-        //        m_currentWaypoint = 0;
-
-
-        //            m_mode = SkeletonMode.Patrolling;
-
-        //            m_animator.SetFloat("Speed", 0.5f);
-              
-        //        return;
-        //    }
-        //}
-
+        
     }
 
 }

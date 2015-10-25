@@ -144,8 +144,11 @@ public class PlayerController : MonoBehaviour
         // Keep the adventurer looking in direction of movement (ignores y axis)
         if (!attacking)
         {
+            if(m_controller.velocity.magnitude > 0.1f)
+            {
             transform.rotation = Quaternion.LookRotation(
                 new Vector3(m_controller.velocity.x, 0.0f, m_controller.velocity.z));
+                }
         }
 
         // If close enough to current waypoint switch to next waypoint.

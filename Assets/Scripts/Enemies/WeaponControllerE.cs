@@ -13,6 +13,10 @@ public class WeaponControllerE : MonoBehaviour {
         {
             col.gameObject.GetComponent<PlayerController>().CurrentHealth -= Damage;
         }
+        if (col.gameObject.tag == "Enemy")
+        {
+            col.gameObject.GetComponent<SkeletonController>().CurrentHealth -= Damage;
+        }
         else
         {
             return;
