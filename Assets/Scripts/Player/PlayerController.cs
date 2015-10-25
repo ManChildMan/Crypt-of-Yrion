@@ -7,11 +7,8 @@ using UnityEngine;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
-
-    public float WalkSpeed = 100;
     public float WaypointArrivalThreshold = 0.4f;
     public LayerMask MouseSelectionLayerMask;
-    private Transform WeaponSlot;
 
     private Animator m_animator;
     private CharacterController m_controller;
@@ -20,27 +17,28 @@ public class PlayerController : MonoBehaviour
     private bool m_moving = false;
     private int m_currentWaypoint = -1;
 
+    private Player player;
     public int MaxHealth;
     public int CurrentHealth;
     private int Heal;
     private int IncHeal = 10;
     private float HealTimer = 0f;
 
-    public int Speed;
+    public float Speed;
     public int Attack;
 
-    /// <summary>
-    /// 
-    /// </summary>
+    public bool attacking;
+    public float attackingDuration;
+    
     public void Start()
     {
-        MaxHealth = this.gameObject.GetComponent<Player>().Health;
+        player = GetComponent<Player>();
+        MaxHealth = player.Health;
         CurrentHealth = MaxHealth;
 
         m_animator = GetComponentInChildren<Animator>();
         m_controller = GetComponent<CharacterController>();
         m_seeker = GetComponent<Seeker>();
-        WeaponSlot = this.transform.FindChild("WeaponSlot");
 
         // Positions the player correctly in the map, based on the last portal taken.
         switch (StateMigrator.lastPortalActionTaken)
@@ -65,14 +63,14 @@ public class PlayerController : MonoBehaviour
 
         HealTimer += Time.deltaTime;
 
-        SetSpeed();
-        SetAttack();
+        Speed = player.Speed;
+        Attack = player.Attack;
 
-        if (MaxHealth < this.gameObject.GetComponent<Player>().Health)
+        if (MaxHealth < player.Health)
         {
-            Heal = this.gameObject.GetComponent<Player>().Health - MaxHealth;
+            Heal = player.Health - MaxHealth;
             CurrentHealth = CurrentHealth + Heal;
-            MaxHealth = this.gameObject.GetComponent<Player>().Health;
+            MaxHealth = player.Health;
         }
 
         if (HealTimer > 10 && CurrentHealth < MaxHealth)
@@ -84,6 +82,25 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             m_animator.SetTrigger("Attack");
+            attacking = true;
+            attackingDuration = 1.0f;
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 100, MouseSelectionLayerMask))
+            {
+                Vector3 attackDirection = hit.point - transform.position;
+                transform.rotation = Quaternion.LookRotation(new Vector3(attackDirection.x, 0.0f, attackDirection.z));
+            }
+        }
+
+        if (attacking)
+        {
+            attackingDuration -= Time.deltaTime;
+            if (attackingDuration <= 0.0f)
+            {
+                attacking = false;
+            }
         }
 
         // If the right mouse button was pressed start moving.
@@ -118,11 +135,14 @@ public class PlayerController : MonoBehaviour
         // player via the attached character controller.
         Vector3 direction = (m_path.vectorPath[m_currentWaypoint] -
             transform.position).normalized;
-        Vector3 displacement = direction * WalkSpeed * Time.deltaTime;
+        Vector3 displacement = direction * Speed * Time.deltaTime;
         m_controller.SimpleMove(displacement);
         // Keep the adventurer looking in direction of movement (ignores y axis)
-        transform.rotation = Quaternion.LookRotation(
-            new Vector3(m_controller.velocity.x, 0.0f, m_controller.velocity.z));
+        if (!attacking)
+        {
+            transform.rotation = Quaternion.LookRotation(
+                new Vector3(m_controller.velocity.x, 0.0f, m_controller.velocity.z));
+        }
 
         // If close enough to current waypoint switch to next waypoint.
         if (Vector3.Distance(transform.position, m_path.vectorPath[
@@ -165,28 +185,7 @@ public class PlayerController : MonoBehaviour
     {
         m_seeker.pathCallback -= OnPathComplete;
     }
-
-    public void TakeDamage(int damage)
-    {
-        CurrentHealth = CurrentHealth - damage;
-    }
-
-    public int GiveDamage()
-    {
-        return this.gameObject.GetComponent<Player>().Attack;
-    }
-
-    public void SetSpeed()
-    {
-        WalkSpeed = this.gameObject.GetComponent<Player>().Speed;
-        Speed = this.gameObject.GetComponent<Player>().Speed;
-    }
-
-    public void SetAttack()
-    {
-        Attack = this.gameObject.GetComponent<Player>().Attack;
-    }
-
+    
     public void StopMoving()
     {
         m_path = null;

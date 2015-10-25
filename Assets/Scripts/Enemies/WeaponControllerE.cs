@@ -11,13 +11,12 @@ public class WeaponControllerE : MonoBehaviour {
 
         if (col.gameObject.tag == "Player")
         {
-            col.gameObject.GetComponent<PlayerController>().TakeDamage(Damage);
+            col.gameObject.GetComponent<PlayerController>().CurrentHealth -= Damage;
         }
         else
         {
             return;
         }
-
     }
 
 }

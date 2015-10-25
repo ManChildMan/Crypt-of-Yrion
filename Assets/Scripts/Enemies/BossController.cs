@@ -18,6 +18,7 @@ public class BossController : MonoBehaviour {
     private Vector3 direction;
 
     private Transform target;
+    private PlayerController playerController;
     private float distance;
 
     private bool displayObjectName;
@@ -28,6 +29,7 @@ public class BossController : MonoBehaviour {
     private bool doingAttackAnimation;
     private string attackAnimationName;
     private float animationTimer;
+    private bool damageDealt;
 
     public int health;
     private int maxHealth;
@@ -53,7 +55,9 @@ public class BossController : MonoBehaviour {
         animator = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
         seeker = GetComponent<Seeker>();
-        target = GameObject.FindGameObjectWithTag("Player").transform;
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        playerController = player.GetComponent<PlayerController>();
+        target = player.transform;
 
         renderers = GetComponentsInChildren<Renderer>();
         rendererStartColors = new Color[renderers.Length];
@@ -180,11 +184,20 @@ public class BossController : MonoBehaviour {
         else
         {
             animationTimer -= Time.deltaTime;
+            if (animationTimer <= 3.0f && !damageDealt)
+            {
+                damageDealt = true;
+                if (Vector3.Distance(transform.position, target.position) < 2.0f)
+                {
+                    playerController.CurrentHealth -= attack;
+                }
+            }
             if (animationTimer <= 0.0f)
             {
                 doingAttackAnimation = false;
                 animator.SetBool("Attack3", false);
                 state = State.WalkingToPlayer;
+                damageDealt = false;
             }
         }
     }

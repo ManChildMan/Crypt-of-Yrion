@@ -3,20 +3,19 @@ using System.Collections;
 
 public class WeaponControllerP : MonoBehaviour {
 
-    public int Damage;
+    PlayerController playerController;
+
+    void Start()
+    {
+        playerController = transform.root.GetComponentInParent<PlayerController>();
+    }
 
     public void OnTriggerEnter(Collider col)
     {
-        Damage = gameObject.transform.root.GetComponentInParent<PlayerController>().GiveDamage();
-
-        if (col.gameObject.tag == "Enemy")
+        BossController bossController = col.GetComponent<BossController>();
+        if (bossController != null)
         {
-            col.gameObject.GetComponent<EnemyController>().TakeDamage(Damage);
+            bossController.health -= playerController.Attack;
         }
-        else
-        {
-            return;
-        }
-
     }
 }
