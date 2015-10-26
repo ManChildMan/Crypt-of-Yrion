@@ -16,31 +16,31 @@ public class WeaponControllerP : MonoBehaviour {
         SkeletonController skelController = col.GetComponent<SkeletonController>();
         if (skelController != null)
         {
-            skelController.CurrentHealth -= playerController.Attack / 7;
+            skelController.CurrentHealth -= playerController.Attack / 5;
         }
 
         ZombieController zombController = col.GetComponent<ZombieController>();
         if (zombController != null)
         {
-            zombController.CurrentHealth -= playerController.Attack / 7;
+            zombController.CurrentHealth -= playerController.Attack / 5;
         }
 
         MonsterControllerV2 monstController = col.GetComponent<MonsterControllerV2>();
         if (monstController != null)
         {
-            monstController.CurrentHealth -= playerController.Attack / 7;
+            monstController.CurrentHealth -= playerController.Attack / 5;
         }
 
         GolemControllerV2 golemController = col.GetComponent<GolemControllerV2>();
         if (golemController != null)
         {
-            golemController.CurrentHealth -= playerController.Attack / 7;
+            golemController.CurrentHealth -= playerController.Attack / 6;
         }
 
         BossController bossController = col.GetComponent<BossController>();
         if (bossController != null)
         {
-            bossController.health -= playerController.Attack / 10;
+            bossController.health -= playerController.Attack / 7;
         }
     }
 }

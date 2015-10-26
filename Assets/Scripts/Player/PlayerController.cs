@@ -76,6 +76,14 @@ public class PlayerController : MonoBehaviour
             CurrentHealth = CurrentHealth + Heal;
             MaxHealth = player.Health;
         }
+        else if (MaxHealth > player.Health)
+        {
+            MaxHealth = player.Health;
+            if (CurrentHealth > MaxHealth)
+            {
+                CurrentHealth = MaxHealth;
+            }
+        }
 
         if (HealTimer > 10 && CurrentHealth < MaxHealth)
         {

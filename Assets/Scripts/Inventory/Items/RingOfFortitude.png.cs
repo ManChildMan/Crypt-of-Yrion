@@ -3,7 +3,7 @@
 class RingOfFortitude : GearItem
 {
     public RingOfFortitude()
-        : base("Ring of Fortitude", "", Rarity.Uncommon, GearType.Ring, 40, 10, 10)
+        : base("Ring of Fortitude", "", Rarity.Uncommon, GearType.Ring, 40, 10, 4)
     {
     }
 }
