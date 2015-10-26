@@ -65,7 +65,7 @@ public class GolemControllerV2 : MonoBehaviour {
         {
             m_animator.SetBool("Dead", true);
             m_mode = SkeletonMode.Dead;
-            GameObject.Destroy(this.gameObject, 5);
+            GameObject.Destroy(this.gameObject, 10);
         }
 
 

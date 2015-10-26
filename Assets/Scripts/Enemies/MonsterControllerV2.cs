@@ -59,7 +59,7 @@ public class MonsterControllerV2 : MonoBehaviour {
         // Die if health less than 0.
         if (CurrentHealth < 0)
         {
-            m_animator.SetBool("Dead", true);
+            m_animator.SetBool("Die", true);
             m_mode = SkeletonMode.Dead;
             GameObject.Destroy(this.gameObject, 5);
         }
