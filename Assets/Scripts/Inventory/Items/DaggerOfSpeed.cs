@@ -3,7 +3,7 @@
 class DaggerOfSpeed : GearItem
 {
     public DaggerOfSpeed()
-        : base("Dagger of Speed", "", Rarity.Uncommon, GearType.Weapon, 0, 60, 40)
+        : base("Dagger of Speed", "", Rarity.Uncommon, GearType.Weapon, 0, 40, 23)
     {
     }
 }

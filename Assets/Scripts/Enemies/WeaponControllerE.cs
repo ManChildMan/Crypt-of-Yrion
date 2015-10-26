@@ -7,20 +7,9 @@ public class WeaponControllerE : MonoBehaviour {
 
     public void OnTriggerEnter(Collider col)
     {
-       // Damage = gameObject.transform.root.GetComponent<EnemyController>().GiveDamage();
-
         if (col.gameObject.tag == "Player")
         {
             col.gameObject.GetComponent<PlayerController>().CurrentHealth -= Damage;
         }
-        if (col.gameObject.tag == "Enemy")
-        {
-            col.gameObject.GetComponent<SkeletonController>().CurrentHealth -= Damage;
-        }
-        else
-        {
-            return;
-        }
     }
-
 }

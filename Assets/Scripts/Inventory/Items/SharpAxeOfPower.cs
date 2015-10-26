@@ -3,7 +3,7 @@
 class SharpAxeOfPower : GearItem
 {
     public SharpAxeOfPower()
-        : base("Sharp Axe of Power", "", Rarity.Rare, GearType.Weapon, 0, 0, 110)
+        : base("Sharp Axe of Power", "", Rarity.Rare, GearType.Weapon, 0, 0, 33)
     {
     }
 }
